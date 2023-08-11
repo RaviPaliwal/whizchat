@@ -13,8 +13,6 @@ import Box from "@mui/material/Box";
 import "../Assets/Styles/Login.css";
 const logo = require("../Assets/Images/logo.png");
 
-const defaultTheme = createTheme();
-
 export default function LoginPage() {
   const [showSignup, setShowSignup] = React.useState(false);
 
@@ -163,7 +161,7 @@ export default function LoginPage() {
                 <Grid container>
                   <Grid item xs>
                     <Link href="#" variant="body2">
-                      privacy policy
+                      Privacy policy
                     </Link>
                   </Grid>
                   <Grid item>
