@@ -1,0 +1,7 @@
+  const mytheme = createTheme({
+    palette: {
+      primary: {
+        main: "#683EF7", // Primary color
+      },
+    },
+  });

@@ -75,10 +75,11 @@ export default function LoginPage() {
             }}
           >
             <Typography variant="h4" gutterBottom>
-              Welcome to Our Chat App
+              Welcome to The Ai Powered Chat App!
             </Typography>
             <Typography variant="body1">
-              Join the conversation and connect with others!
+            😍😍
+              Join the conversation and connect with others smartly !
             </Typography>
           </div>
         </Grid>
@@ -152,7 +153,7 @@ export default function LoginPage() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2,backgroundColor: "#9D41E1" }}
+                  sx={{ mt: 3, mb: 2 }}
                 >
                   Sign Up
                 </Button>
