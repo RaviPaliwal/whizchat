@@ -1,121 +1,139 @@
-import React, { useState } from 'react';
+import * as React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+const logo = require("../Assets/Images/logo.png");
 
-const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
-  const [signingUp, setSigningUp] = useState(false);
+const defaultTheme = createTheme();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleMobileChange = (event) => {
-    setMobile(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleFormSubmit = (event) => {
+export default function LoginPage() {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Here, you can implement your actual signup logic
-    // For demonstration purposes, let's just log the form data
-    console.log('Username:', username);
-    console.log('Email:', email);
-    console.log('Mobile:', mobile);
-    console.log('Password:', password);
-
-    // You can clear the input fields after signup attempt if needed
-    setUsername('');
-    setEmail('');
-    setMobile('');
-    setPassword('');
-  };
-
-  const toggleSignupMode = () => {
-    setSigningUp(!signingUp);
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
   };
 
   return (
-    <div className='d-flex justify-content-center align-items-center vh-100'>
-      <div className='rounded p-4 col-lg-6 bg-light'>
-        <h2 className="mb-4">{signingUp ? 'Sign Up for WhizChat' : 'Welcome to WhizChat'}</h2>
-        <form onSubmit={handleFormSubmit}>
-          {signingUp && (
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <Grid container component="animateMotion" sx={{ height: "100vh" }}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{
+            position: "relative",
+            backgroundImage:
+              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            overflow: "hidden", // Hide overflowing text
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              padding: "16px",
+              background: "rgba(255, 255, 255, 0.7)",
+              borderRadius: "8px",
+            }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Welcome to Our Chat App
+            </Typography>
+            <Typography variant="body1">
+              Join the conversation and connect with others!
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item px={6} xs={12} md={6} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <img style={{ width: "60%" }} src={logo} alt="logo" />
+            <Typography component="h1" variant="h5">
+              Login
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="email"
-                value={email}
-                onChange={handleEmailChange}
-                required
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
               />
-            </div>
-          )}
-          {signingUp && (
-            <div className="mb-3">
-              <label htmlFor="mobile" className="form-label">Mobile Number</label>
-              <input
-                type="tel"
-                className="form-control"
-                id="mobile"
-                value={mobile}
-                onChange={handleMobileChange}
+              <TextField
+                margin="normal"
                 required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
               />
-            </div>
-          )}
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">Username</label>
-            <input
-              type="text"
-              className="form-control"
-              id="username"
-              value={username}
-              onChange={handleUsernameChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <div className="container text-center">
-            <button type="submit" className="w-100 btn btn-primary mb-3">
-              {signingUp ? 'Sign Up' : 'Login'}
-            </button>
-          </div>
-        </form>
-        <p className="text-muted text-center">Or</p>
-        <div className="container text-center">
-          <button className="btn btn-outline-primary">Login with Face Recognition</button>
-        </div>
-        <p className="mt-3 text-center">
-          {signingUp ? 'Already have an account?' : "Don't have an account?"}
-          <button className="btn btn-link" onClick={toggleSignupMode}>
-            {signingUp ? 'Login here' : 'Sign up now'}
-          </button>
-        </p>
-      </div>
-    </div>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
-};
-
-export default LoginPage;
+}
