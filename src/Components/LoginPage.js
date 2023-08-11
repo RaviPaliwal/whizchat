@@ -10,11 +10,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
+import "../Assets/Styles/Login.css"
 const logo = require("../Assets/Images/logo.png");
 
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
+  const [showSignup, setShowSignup] = React.useState(false);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -24,8 +27,21 @@ export default function LoginPage() {
     });
   };
 
+  const toggleSignup = (e) => {
+    e.preventDefault();
+    setShowSignup(!showSignup);
+  };
+  const mytheme = createTheme({
+    palette: {
+      primary: {
+        main: "#683EF7", // Primary color
+      },
+    },
+  });
+
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={mytheme}>
       <CssBaseline />
       <Grid container component="animateMotion" sx={{ height: "100vh" }}>
         <Grid
@@ -66,73 +82,174 @@ export default function LoginPage() {
             </Typography>
           </div>
         </Grid>
-        <Grid item px={6} xs={12} md={6} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+
+        {/* Signup Grid */}
+        {showSignup ? (
+          <Grid
+            px={6}
+            item
+            xs={12}
+            md={6}
+            component={Paper}
+            elevation={6}
+            square
           >
-            <img style={{ width: "60%" }} src={logo} alt="logo" />
-            <Typography component="h1" variant="h5">
-              Login
-            </Typography>
+            {/* Signup Form */}
+            {/* ... */}
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <img className="logoAnimation" style={{ width: "60%" }} src={logo} alt="logo" />
+              <Typography component="h1" variant="h5">
+                Signup
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
               >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="mobile"
+                  label="Mobile"
+                  name="mobile"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,backgroundColor: "#9D41E1" }}
+                >
+                  Sign Up
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      privacy policy
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="#" onClick={toggleSignup} variant="body2">
+                      Already have an account? Log in
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
-          </Box>
-        </Grid>
+          </Grid>
+        ) : (
+          <Grid
+            item
+            px={6}
+            xs={12}
+            md={6}
+            component={Paper}
+            elevation={6}
+            square
+          >
+            {/* Login Form */}
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <img className="logoAnimation" style={{ width: "60%" }} src={logo} alt="logo" />
+              <Typography component="h1" variant="h5">
+                Login
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="#" onClick={toggleSignup} variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            {/* ... */}
+          </Grid>
+        )}
       </Grid>
     </ThemeProvider>
   );
