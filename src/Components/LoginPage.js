@@ -10,14 +10,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import "../Assets/Styles/Login.css"
+import "../Assets/Styles/Login.css";
 const logo = require("../Assets/Images/logo.png");
 
 const defaultTheme = createTheme();
 
 export default function LoginPage() {
   const [showSignup, setShowSignup] = React.useState(false);
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,7 +38,6 @@ export default function LoginPage() {
       },
     },
   });
-
 
   return (
     <ThemeProvider theme={mytheme}>
@@ -78,8 +77,7 @@ export default function LoginPage() {
               Welcome to The Ai Powered Chat App!
             </Typography>
             <Typography variant="body1">
-            😍😍
-              Join the conversation and connect with others smartly !
+              😍😍 Join the conversation and connect with others smartly !
             </Typography>
           </div>
         </Grid>
@@ -106,7 +104,12 @@ export default function LoginPage() {
                 alignItems: "center",
               }}
             >
-              <img className="logoAnimation" style={{ width: "60%" }} src={logo} alt="logo" />
+              <img
+                className="logoAnimation"
+                style={{ width: "60%" }}
+                src={logo}
+                alt="logo"
+              />
               <Typography component="h1" variant="h5">
                 Signup
               </Typography>
@@ -192,7 +195,12 @@ export default function LoginPage() {
                 alignItems: "center",
               }}
             >
-              <img className="logoAnimation" style={{ width: "60%" }} src={logo} alt="logo" />
+              <img
+                className="logoAnimation"
+                style={{ width: "60%" }}
+                src={logo}
+                alt="logo"
+              />
               <Typography component="h1" variant="h5">
                 Login
               </Typography>
