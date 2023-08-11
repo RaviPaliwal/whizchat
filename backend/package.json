@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "whizChat backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "react",
+    "express",
+    "mongoos",
+    "faceRecognition",
+    "AI"
+  ],
+  "author": "Shashwat_Tiwari Ravi_Paliwal",
+  "license": "ISC"
+}
