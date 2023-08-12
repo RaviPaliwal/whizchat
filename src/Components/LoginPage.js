@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const [showSignup, setShowSignup] = React.useState(false);
   const navigate = useNavigate();
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -30,6 +31,11 @@ export default function LoginPage() {
     e.preventDefault();
     setShowSignup(!showSignup);
   };
+
+  const sendOTP= ()=>{
+
+  }
+
   const mytheme = createTheme({
     palette: {
       primary: {
