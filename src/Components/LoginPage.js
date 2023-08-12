@@ -84,7 +84,8 @@ export default function LoginPage() {
         {/* Signup Grid */}
         {showSignup ? (
           <Grid
-            px={6}
+            px={8}
+            pt={0}
             item
             xs={12}
             md={6}
