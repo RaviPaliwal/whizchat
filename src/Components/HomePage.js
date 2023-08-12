@@ -99,16 +99,16 @@ function HomePage() {
           </Typography>
           {/* Profile details */}
           <List>
-            <ListItem sx={{ ...listItemStyle }} component="button">
+            <ListItem id='1' sx={{ ...listItemStyle }} component="button">
               <ListItemAvatar>
-                <Avatar alt="userimg1" src="https://source.unsplash.com/random?wallpapers" />
+                <Avatar alt="userimg1" src="https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?b=1&s=170667a&w=0&k=20&c=c2rsC66nJQAjkN6vCkhyB0vLHUiZhJSACMCBVF9HJJs=" />
               </ListItemAvatar>
               <ListItemText
                 primary="Ravi Paliwal"
                 secondary="Welcome to WhizChat!"
               />
             </ListItem>
-            <ListItem sx={{ ...listItemStyle }} component="button">
+            <ListItem id='2' sx={{ ...listItemStyle }} component="button">
               <ListItemAvatar>
                 <Avatar alt="User 2" src="https://source.unsplash.com/random?wallpapers" />
               </ListItemAvatar>
