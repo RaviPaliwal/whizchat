@@ -32,9 +32,6 @@ export default function LoginPage() {
     setShowSignup(!showSignup);
   };
 
-  const sendOTP= ()=>{
-
-  }
 
   const mytheme = createTheme({
     palette: {
