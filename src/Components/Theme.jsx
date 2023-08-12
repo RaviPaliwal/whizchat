@@ -12,8 +12,8 @@ export const theme = createTheme({
       default: "#090912",
     },
     text: {
-      primary: "#683EF7",
-      secondary: "white",
+      primary: "#090912",
+      secondary: "#ffff",
     },
   },
 });
@@ -41,11 +41,16 @@ export const sidebarStyle = {
     display: 'flex',
     flexDirection: 'column',
     padding: '.8rem',
-    borderRadius:"0px"
+    borderRadius:"0px",
+    overflowY:"scroll",
   };
 
   export const chatAreaStyle = {
-    ...chatSectionStyle,
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '.8rem',
+    borderRadius:"0px",
     backgroundColor: "",
     color: "primary",
   };

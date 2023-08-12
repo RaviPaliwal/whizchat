@@ -1,31 +1,52 @@
-import React from 'react'
-import { Typography,TextField, Paper, InputAdornment } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Typography,
+  TextField,
+  Paper,
+  InputAdornment,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { chatAreaStyle } from './Theme';
-
-
+import Message from "./Message"; // A separate component for rendering messages
+import { chatAreaStyle } from "./Theme";
 
 const ChatTab = () => {
+  const [messages, setMessages] = useState([]); // Store the chat messages
+
+  const sendMessage = (text) => {
+    // Function to send a message
+    const newMessage = { text, sender: "user" };
+    setMessages([...messages, newMessage]);
+  };
+
   return (
     <Paper style={chatAreaStyle}>
-          {/* Display chat messages */}
-          <Typography variant="h6" gutterBottom>
-            Chat Area
-          </Typography>
-          {/* Chat messages */}
-          <TextField
-            label="Type a message"
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SendIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Paper>
-  )
-}
+      <Typography variant="h6" gutterBottom>
+        Chat Area
+      </Typography>
+      <div className="messages-container">
+        {messages.map((message, index) => (
+          <Message key={index} message={message} />
+        ))}
+      </div>
+      <TextField
+        label="Type a message"
+        variant="outlined"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.target.value.trim() !== "") {
+            sendMessage(e.target.value);
+            e.target.value = "";
+          }
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <SendIcon onClick={() => sendMessage("HI")} />
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Paper>
+  );
+};
 
-export default ChatTab
+export default ChatTab;
