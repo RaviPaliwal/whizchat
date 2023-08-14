@@ -50,7 +50,7 @@ export const chatAreaStyle = {
   flexGrow: 1,
   display: "block",
   // padding: '.8rem'
-  backgroundImage:"linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))",
+  // backgroundImage:"linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))",
   color: "primary",
   overflowY: "auto",
   position: "relative",
@@ -63,4 +63,5 @@ export const Typerstyle = {
   padding: "3px",
   bottom: "0",
   left: "0",
+  
 };
