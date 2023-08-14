@@ -16,29 +16,33 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 export default function LoginPage() {
-  
+  // Initialize state variables
   const [showSignup, setShowSignup] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [mobile, setMobile] = React.useState("");
+
+  // Get navigation and user details from context
   const goto = useNavigate();
   const userDetails = useAuth();
 
-
-
+  // Handle login form submission
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    // Set headers for the request
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
     };
 
+    // Create the request body
     const bodyContent = JSON.stringify({
       email: email,
       password: password,
     });
 
+    // Set options for the request
     const reqOptions = {
       method: "POST",
       headers: headersList,
@@ -46,39 +50,46 @@ export default function LoginPage() {
     };
 
     try {
-      
+      // Send the login request
       const response = await fetch(
         "http://localhost:5000/api/login",
         reqOptions
       );
       const responseData = await response.json();
-       if (responseData.success === true) {
-      const userData = {
-        Token: responseData.token,
-        ID: responseData.ID,
-      };
-      userDetails.setUser(userData); // Update the user context
-      console.log(userDetails.user);
-      goto("/chats"); 
-    }
+
+      // Check if login was successful
+      if (responseData.success === true) {
+        const userData = {
+          Token: responseData.token,
+          ID: responseData.ID,
+        };
+        userDetails.setUser(userData); // Update the user context
+        console.log(userDetails.user);
+        goto("/chats"); // Navigate to the chats page
+      }
     } catch (error) {
       console.error("Login error:", error);
     }
   };
 
+  // Handle signup form submission
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    // Set headers for the request
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
     };
 
+    // Create the request body
     const bodyContent = JSON.stringify({
       email: email,
       mobile: mobile,
       password: password,
     });
 
+    // Set options for the request
     const reqOptions = {
       method: "POST",
       headers: headersList,
@@ -86,6 +97,7 @@ export default function LoginPage() {
     };
 
     try {
+      // Send the signup request
       const response = await fetch(
         "http://localhost:5000/api/register",
         reqOptions
@@ -98,11 +110,13 @@ export default function LoginPage() {
     }
   };
 
+  // Toggle between login and signup forms
   const toggleSignup = (e) => {
     e.preventDefault();
     setShowSignup(!showSignup);
   };
 
+  // Create the theme
   const mytheme = createTheme({
     palette: {
       primary: {
@@ -115,6 +129,7 @@ export default function LoginPage() {
     <ThemeProvider theme={mytheme}>
       <CssBaseline />
       <Grid container sx={{ height: "100vh" }}>
+        {/* Background Image Grid */}
         <Grid
           item
           xs={12}
@@ -286,9 +301,14 @@ export default function LoginPage() {
               <Typography component="h1" variant="h5">
                 Login
               </Typography>
-              <Box onSubmit={handleLogin} component="form" noValidate sx={{ mt: 1 }}>
+              <Box
+                onSubmit={handleLogin}
+                component="form"
+                noValidate
+                sx={{ mt: 1 }}
+              >
                 <TextField
-                  margin="normal" 
+                  margin="normal"
                   required
                   fullWidth
                   id="email"

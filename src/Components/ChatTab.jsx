@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { Box, Paper, TextField } from "@mui/material";
 import Message from "./Message";
 import { Typerstyle, chatAreaStyle } from "./Theme";
 import ChatHeader from "./ChatHeader";
@@ -27,8 +23,22 @@ const ChatTab = () => {
   }, [messages]);
 
   return (
-    <div style={{ ...chatAreaStyle, display: "flex", flexDirection: "column", height: "100%",position:"relative" }}>
-      <Paper style={{ height: "100%", borderRadius: "0px", borderLeft: ".5px solid gray" }}>
+    <div
+      style={{
+        ...chatAreaStyle,
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        position: "relative",
+      }}
+    >
+      <Paper
+        style={{
+          height: "100%",
+          borderRadius: "0px",
+          borderLeft: ".5px solid gray",
+        }}
+      >
         <ChatHeader />
         <div
           ref={scrollRef}
@@ -43,11 +53,11 @@ const ChatTab = () => {
             <Message key={index} message={message} />
           ))}
         </div>
-        <Box style={Typerstyle} >
-        <TextField
+        <Box style={Typerstyle}>
+          <TextField
             label="Type a message"
             style={{
-              width:"100%"
+              width: "100%",
             }}
             variant="outlined"
             onKeyDown={(e) => {
@@ -55,13 +65,9 @@ const ChatTab = () => {
                 sendMessage(e.target.value);
                 e.target.value = "";
               }
-
             }}
-            
           />
         </Box>
-
-        
       </Paper>
     </div>
   );

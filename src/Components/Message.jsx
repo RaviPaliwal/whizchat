@@ -10,7 +10,7 @@ const Message = ({ message }) => {
         padding: "8px 12px",
         width:"fit-content",
         margin: "5px",
-        backgroundColor: "#E0E0E0", // Set your desired background color
+        backgroundImage:"linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))", // Set your desired background color
         borderRadius: "10px",
         wordWrap: "break-word",
         maxWidth: "70%", // You can adjust the maximum width as needed
