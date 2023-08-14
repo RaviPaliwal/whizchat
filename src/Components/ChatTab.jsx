@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Box,
   Paper,
   TextField,
-  InputAdornment,
 } from "@mui/material";
 import Message from "./Message";
-import { chatAreaStyle } from "./Theme";
-import SendIcon from "@mui/icons-material/Send";
+import { Typerstyle, chatAreaStyle } from "./Theme";
 import ChatHeader from "./ChatHeader";
 
 const ChatTab = () => {
@@ -28,7 +27,7 @@ const ChatTab = () => {
   }, [messages]);
 
   return (
-    <div style={{ ...chatAreaStyle, display: "flex", flexDirection: "column", height: "100%" }}>
+    <div style={{ ...chatAreaStyle, display: "flex", flexDirection: "column", height: "100%",position:"relative" }}>
       <Paper style={{ height: "100%", borderRadius: "0px", borderLeft: ".5px solid gray" }}>
         <ChatHeader />
         <div
@@ -44,12 +43,11 @@ const ChatTab = () => {
             <Message key={index} message={message} />
           ))}
         </div>
-        <div style={{ display:"flex", flexDirection:"row", alignSelf: "flex-end", width: "100%"  }}>
-          <TextField
+        <Box style={Typerstyle} >
+        <TextField
             label="Type a message"
             style={{
-              width: "100%",
-              margin:"4px",
+              width:"100%"
             }}
             variant="outlined"
             onKeyDown={(e) => {
@@ -57,16 +55,13 @@ const ChatTab = () => {
                 sendMessage(e.target.value);
                 e.target.value = "";
               }
+
             }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SendIcon onClick={() => sendMessage("Bye")} />
-                </InputAdornment>
-              ),
-            }}
+            
           />
-        </div>
+        </Box>
+
+        
       </Paper>
     </div>
   );

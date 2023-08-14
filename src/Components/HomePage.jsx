@@ -4,7 +4,6 @@ import {
   ThemeProvider,
   Container,
 } from "@mui/material";
-import "../Assets/Styles/HomePage.css";
 import Chats from "./Chats";
 import ChatTab from "./ChatTab";
 import SideNavbar from "./SideNavbar";
