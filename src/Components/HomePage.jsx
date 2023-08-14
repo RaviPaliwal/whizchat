@@ -18,7 +18,7 @@ function HomePage() {
         {/* Sidebar */}
         <SideNavbar /> {/* Use the SideNavbar component */}
         {/* Chat profiles */}
-        <Chats />
+        <Chats/>
         {/* Chat area */}
         <ChatTab />
       </Container>

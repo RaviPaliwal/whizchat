@@ -21,8 +21,8 @@ export const theme = createTheme({
 export const appContainerStyle = {
     display: "flex",
     height: "100vh",
-    maxWidth: "100vw",
-    overflow: "hidden",
+    // maxWidth: "100vw",
+    // overflow: "hidden",
   };
 
 export const sidebarStyle = {
@@ -41,7 +41,6 @@ export const sidebarStyle = {
     display: 'flex',
     flexDirection: 'column',
     padding: '.8rem',
-    borderRadius:"0px",
     overflowY:"scroll",
   };
 
@@ -49,9 +48,8 @@ export const sidebarStyle = {
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    padding: '.8rem',
-    borderRadius:"0px",
+    // padding: '.8rem'
     backgroundColor: "",
     color: "primary",
-    overflowY:"scroll"
+    overflowY: "auto",
   };
