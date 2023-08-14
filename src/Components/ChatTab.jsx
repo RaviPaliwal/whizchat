@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Typography,
   Paper,
   TextField,
   InputAdornment,
@@ -8,6 +7,7 @@ import {
 import Message from "./Message";
 import { chatAreaStyle } from "./Theme";
 import SendIcon from "@mui/icons-material/Send";
+import ChatHeader from "./ChatHeader";
 
 const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
@@ -28,38 +28,28 @@ const ChatTab = () => {
   }, [messages]);
 
   return (
-    <div  style={{...chatAreaStyle, display: "flex", flexDirection: "column", height: "100%" }}>
-      <Paper style={{height:"100%",borderRadius:"0px",borderLeft:".5px solid gray"}}>
-        {/* <Typography variant="h6" gutterBottom>
-          Chat Area
-        </Typography> */}
-
-
-
-
-
-
-
-        
+    <div style={{ ...chatAreaStyle, display: "flex", flexDirection: "column", height: "100%" }}>
+      <Paper style={{ height: "100%", borderRadius: "0px", borderLeft: ".5px solid gray" }}>
+        <ChatHeader />
         <div
           ref={scrollRef}
-          style={{ maxHeight: "75vh", overflowY: "auto",
-          flex: 1, // Let the messages container fill the remaining height
-         }}
+          style={{
+            maxHeight: "75vh",
+            overflowY: "auto",
+            flex: 1, // Let the messages container fill the remaining height
+          }}
           className="messages-container"
         >
           {messages.map((message, index) => (
             <Message key={index} message={message} />
           ))}
         </div>
-        <div style={{ marginTop: "auto" }}>
+        <div style={{ display:"flex", flexDirection:"row", alignSelf: "flex-end", width: "100%"  }}>
           <TextField
             label="Type a message"
             style={{
-              width: "90%",
-              marginLeft:"2%",
-              marginRight:"2%"
-              
+              width: "100%",
+              margin:"4px",
             }}
             variant="outlined"
             onKeyDown={(e) => {
@@ -71,7 +61,7 @@ const ChatTab = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <SendIcon onClick={() => sendMessage("HI")} />
+                  <SendIcon onClick={() => sendMessage("Bye")} />
                 </InputAdornment>
               ),
             }}
