@@ -5,25 +5,39 @@ const UserModel = require('../models/user.model');
 
 exports.register = async (req, res) => {
   try {
-    
     const user = await UserModel.findOne({ email: req.body.email });
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     }
 
     const newUser = new UserModel({
-        email: req.body.email,
+      email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
     });
 
-    // Hash password before saving in database
+    // Hash password before saving in the database
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(newUser.password, salt);
     newUser.password = hash;
 
     const savedUser = await newUser.save();
-    res.json(savedUser);
+
+    // Create JWT payload
+    const payload = {
+      id: savedUser._id,
+      email: savedUser.email,
+      // You can include other user data as needed
+    };
+
+    // Sign token
+    const token = jwt.sign(payload, 'yourSecretKey', { expiresIn: '24h' });
+
+    res.json({
+      success: true,
+      token: token,
+      ID: savedUser._id
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -56,11 +70,12 @@ exports.login = async (req, res) => {
     };
 
     // Sign token
-    const token = jwt.sign(payload, 'yourSecretKey', { expiresIn: '1h' });
+    const token = jwt.sign(payload, 'yourSecretKey', { expiresIn: '24h' });
 
     res.json({
       success: true,
-      token: token
+      token: token,
+      ID : user._id
     });
   } catch (error) {
     console.error(error);
