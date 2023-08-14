@@ -53,4 +53,5 @@ export const sidebarStyle = {
     borderRadius:"0px",
     backgroundColor: "",
     color: "primary",
+    overflowY:"scroll"
   };
