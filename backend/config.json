@@ -1,6 +1,6 @@
 {
     "port": 5000,
     "apiPrefix": "/api",
-    "mongoURI": "mongodb://0.0.0.0:27017/whizChat",
+    "mongoURI": "mongodb+srv://ravipaliwal:Whizchat%40123@cluster0.grtg1wn.mongodb.net/whizchat",
     "secretOrKey": "secret"
 }

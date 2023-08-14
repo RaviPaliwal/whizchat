@@ -13,25 +13,95 @@ import Box from "@mui/material/Box";
 import logo from "../Assets/Images/logo.png";
 import "../Assets/Styles/Login.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 export default function LoginPage() {
-  const [showSignup, setShowSignup] = React.useState(false);
-  const navigate = useNavigate();
   
-  const handleSubmit = (event) => {
+  const [showSignup, setShowSignup] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [mobile, setMobile] = React.useState("");
+  const goto = useNavigate();
+  const userDetails = useAuth();
+
+
+
+  const handleLogin = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+
+    const headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+
+    const bodyContent = JSON.stringify({
+      email: email,
+      password: password,
     });
+
+    const reqOptions = {
+      method: "POST",
+      headers: headersList,
+      body: bodyContent,
+    };
+
+    try {
+      
+      const response = await fetch(
+        "http://localhost:5000/api/login",
+        reqOptions
+      );
+      const responseData = await response.json();
+       if (responseData.success === true) {
+      const userData = {
+        Token: responseData.token,
+        ID: responseData.ID,
+      };
+      userDetails.setUser(userData); // Update the user context
+      console.log(userDetails.user);
+      goto("/chats"); 
+    }
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    const headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+
+    const bodyContent = JSON.stringify({
+      email: email,
+      mobile: mobile,
+      password: password,
+    });
+
+    const reqOptions = {
+      method: "POST",
+      headers: headersList,
+      body: bodyContent,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/register",
+        reqOptions
+      );
+      const responseData = await response.json();
+      console.log(responseData);
+      alert(responseData);
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
   };
 
   const toggleSignup = (e) => {
     e.preventDefault();
     setShowSignup(!showSignup);
   };
-
 
   const mytheme = createTheme({
     palette: {
@@ -119,7 +189,7 @@ export default function LoginPage() {
               <Box
                 component="form"
                 noValidate
-                onSubmit={handleSubmit}
+                onSubmit={handleSignup}
                 sx={{ mt: 1 }}
               >
                 <TextField
@@ -131,6 +201,8 @@ export default function LoginPage() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -139,7 +211,11 @@ export default function LoginPage() {
                   id="mobile"
                   label="Mobile"
                   name="mobile"
+                  autoComplete="tel"
                   autoFocus
+                  type="tel"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -150,16 +226,15 @@ export default function LoginPage() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 />
                 <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/chats");
-                  }}
+                  onClick={handleSignup}
                   type="submit"
                   fullWidth
                   variant="contained"
@@ -211,14 +286,9 @@ export default function LoginPage() {
               <Typography component="h1" variant="h5">
                 Login
               </Typography>
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 1 }}
-              >
+              <Box onSubmit={handleLogin} component="form" noValidate sx={{ mt: 1 }}>
                 <TextField
-                  margin="normal"
+                  margin="normal" 
                   required
                   fullWidth
                   id="email"
@@ -226,6 +296,8 @@ export default function LoginPage() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -236,6 +308,8 @@ export default function LoginPage() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
@@ -244,6 +318,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   fullWidth
+                  onClick={handleLogin}
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
