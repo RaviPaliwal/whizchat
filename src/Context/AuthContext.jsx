@@ -10,25 +10,14 @@ export const useAuth = () => {
 
 // AuthContext Provider component
 export const AuthProvider = ({ children }) => {
-  const [userName, setUserName] = useState("");
-  const [authToken, setAuthToken] = useState("");
-  // Add other important user details as needed
-
-  const login = (name, token) => {
-    setUserName(name);
-    setAuthToken(token);
-  };
-
-  const logout = () => {
-    setUserName("");
-    setAuthToken("");
-  };
-
+  const [user, setUser] = useState(null); // Store user details (null if not logged in)
+  const [receiver,setReceiver]= useState(null)
+  
   const authContextValue = {
-    userName,
-    authToken,
-    login,
-    logout,
+    user,
+    setUser,
+    setReceiver,
+    receiver,
   };
 
   return (
