@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Paper, TextField } from "@mui/material";
 import Message from "./Message";
 import { Typerstyle, chatAreaStyle } from "./Theme";
-import ChatHeader from "./ChatHeader";
+import ChatHeader from "./ChatTabHeader";
 
 const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
@@ -21,7 +21,6 @@ const ChatTab = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
   return (
     <div
       style={{
@@ -34,7 +33,7 @@ const ChatTab = () => {
           backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           height: "100%",
           backgroundPositionX: "center",
-          backgroundPositionY:"center",
+          backgroundPositionY: "center",
           borderRadius: "0px",
           borderLeft: ".8px solid gray",
         }}

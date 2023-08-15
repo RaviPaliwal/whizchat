@@ -3,17 +3,18 @@ import ChatItem from './ChatItem'
 import { Paper, Typography, List} from '@mui/material';
 import { chatSectionStyle } from './Theme';
 import { useGenContext } from '../Context/GeneralContext';
+import ChatListHeader from './ChatListHeader';
 
 const Chats = () => {
   const states = useGenContext();
   
   return (
-    
     <Paper id="chatList" style={{ ...chatSectionStyle, display: states.toggle? "" : "none", }}>
     {/* Display selected user's profile */}
-    <Typography variant="h6" gutterBottom>
+    {/* <Typography variant="h6" gutterBottom>
       Chats
-    </Typography>
+    </Typography> */}
+<ChatListHeader/>
     {/* Profile details */}
     <List>
     <ChatItem id={1} avatarSrc={"https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?b=1&s=170667a&w=0&k=20&c=c2rsC66nJQAjkN6vCkhyB0vLHUiZhJSACMCBVF9HJJs="} primary={"Ravi Paliwal"} secondary={"Welcome To WhiZchat!"} />

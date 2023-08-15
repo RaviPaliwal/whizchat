@@ -45,7 +45,8 @@ export const chatSectionStyle = {
   overflowY: "scroll",
   maxWidth: "40%",
   minWidth: "35%",
-};
+  WebkitOverflowScrolling: 'touch'
+ };
 
 export const chatAreaStyle = {
   flexGrow: 1,
@@ -54,7 +55,9 @@ export const chatAreaStyle = {
   // backgroundImage:"linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))",
   color: "primary",
   overflowY: "auto",
+
   position: "relative",
+  WebkitOverflowScrolling: 'touch'
   
 };
 
