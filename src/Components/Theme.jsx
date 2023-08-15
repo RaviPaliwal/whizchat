@@ -27,7 +27,7 @@ export const appContainerStyle = {
 
 export const sidebarStyle = {
   position: "relative",
-  right: "10px",
+  right: "5px",
   width: "4.5rem",
   backgroundColor: theme.palette.background.default,
   padding: ".08rem",
@@ -43,7 +43,8 @@ export const chatSectionStyle = {
   padding: ".08rem",
   width: "auto",
   overflowY: "scroll",
-  maxWidth: "50%",
+  maxWidth: "40%",
+  minWidth: "35%",
 };
 
 export const chatAreaStyle = {
@@ -54,6 +55,7 @@ export const chatAreaStyle = {
   color: "primary",
   overflowY: "auto",
   position: "relative",
+  
 };
 
 export const Typerstyle = {

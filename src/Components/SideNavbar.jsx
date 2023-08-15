@@ -1,6 +1,6 @@
 import React from "react";
-import { Paper, Tabs, Tab } from "@mui/material";
-import { AccountCircle, FiberManualRecord, Chat } from "@mui/icons-material";
+import { Paper, Tabs, Tab, SpeedDialIcon } from "@mui/material";
+import { AccountCircle,  Chat } from "@mui/icons-material";
 import { sidebarStyle} from "./Theme"
 
 const SideNavbar = () => {
@@ -12,11 +12,18 @@ const SideNavbar = () => {
         value={0}
         textColor="secondary"
         indicatorColor="secondary"
+        TabIndicatorProps={{
+          style : {
+            left:"14.25px",
+            right:"unset",
+            width:"2px",
+          }
+        }}
         style={{ marginBottom: "16px" }}
       >
-        <Tab label="Home" icon={<AccountCircle className="customNavicon " />} />
-        <Tab label="Status" icon={<FiberManualRecord className="customNavicon" />} />
-        <Tab label="New Chat" icon={<Chat className="customNavicon" />} />
+        <Tab sx={{typography: {fontSize: 10, },}} label="Chats" icon={<Chat className="customNavicon" /> } />
+        <Tab sx={{typography: {fontSize: 10, },}} label="Profile" icon={<AccountCircle className="customNavicon " />} />
+        <Tab sx={{typography: {fontSize: 10, },}} label="Add Chat" icon={<SpeedDialIcon className="customNavicon" />} />
       </Tabs>
     </Paper>
   );

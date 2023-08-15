@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ChatItem from './ChatItem'
 import { Paper, Typography, List} from '@mui/material';
 import { chatSectionStyle } from './Theme';
-
+import { useGenContext } from '../Context/GeneralContext';
 
 const Chats = () => {
+  const states = useGenContext();
+  
   return (
-    <Paper style={{ ...chatSectionStyle, maxWidth:"28rem", }}>
+    
+    <Paper style={{ ...chatSectionStyle, display: states.toggle? "" : "none", }}>
     {/* Display selected user's profile */}
     <Typography variant="h6" gutterBottom>
       Chats

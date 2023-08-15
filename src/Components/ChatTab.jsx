@@ -3,11 +3,10 @@ import { Box, Paper, TextField } from "@mui/material";
 import Message from "./Message";
 import { Typerstyle, chatAreaStyle } from "./Theme";
 import ChatHeader from "./ChatHeader";
-import styled from "@emotion/styled";
 
 const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
-  
+
   const sendMessage = (text) => {
     // Function to send a message
     const newMessage = { text, sender: "user" };
@@ -31,7 +30,7 @@ const ChatTab = () => {
     >
       <Paper
         style={{
-          backgroundImage:"url(https://source.unsplash.com/random?wallpapers)",
+          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           height: "100%",
           borderRadius: "0px",
           borderLeft: ".8px solid gray",
@@ -44,7 +43,6 @@ const ChatTab = () => {
             maxHeight: "75vh",
             overflowY: "auto",
             flex: 1, // Let the messages container fill the remaining height
-            
           }}
           className="messages-container"
         >
@@ -60,7 +58,8 @@ const ChatTab = () => {
             }}
             InputProps={{
               style: {
-                color: "white", // Change this color to the color you want
+                color: "white",
+                // Change this color to the color you want
               },
             }}
             variant="standard"
