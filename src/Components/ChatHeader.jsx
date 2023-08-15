@@ -18,6 +18,7 @@ const customTheme = createTheme({
           color: "green", // Change this color to your desired color
         },
         title: {
+          fontSize:"20px",
           fontWeight: "700",
         },
       },
