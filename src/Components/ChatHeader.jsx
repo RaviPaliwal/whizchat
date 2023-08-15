@@ -9,6 +9,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Grid from "@mui/material/Grid"; // Import the Grid component
 import { useGenContext } from '../Context/GeneralContext';
 
+
+
+
+
 // Create custom theme for the card header
 const customTheme = createTheme({
   components: {
@@ -28,6 +32,7 @@ const customTheme = createTheme({
 
 export default function ChatHeader() {
   const states = useGenContext()
+  
   return (
     <ThemeProvider theme={customTheme}>
       <Card sx={{ maxWidth: "100%" }}>
@@ -35,7 +40,7 @@ export default function ChatHeader() {
           title={
             <Grid container alignItems="center" spacing={1}>
               {!states.toggle&&<Grid item>
-                <IconButton aria-label="back">
+                <IconButton aria-label="back" onClick={states.OpenChats}>
                   <ArrowBackIcon />
                 </IconButton>
               </Grid>}

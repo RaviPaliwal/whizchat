@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ChatItem from './ChatItem'
 import { Paper, Typography, List} from '@mui/material';
 import { chatSectionStyle } from './Theme';
@@ -9,7 +9,7 @@ const Chats = () => {
   
   return (
     
-    <Paper style={{ ...chatSectionStyle, display: states.toggle? "" : "none", }}>
+    <Paper id="chatList" style={{ ...chatSectionStyle, display: states.toggle? "" : "none", }}>
     {/* Display selected user's profile */}
     <Typography variant="h6" gutterBottom>
       Chats

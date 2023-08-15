@@ -27,11 +27,14 @@ const ChatTab = () => {
       style={{
         ...chatAreaStyle,
       }}
+      id="chats"
     >
       <Paper
         style={{
           backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           height: "100%",
+          backgroundPositionX: "center",
+          backgroundPositionY:"center",
           borderRadius: "0px",
           borderLeft: ".8px solid gray",
         }}
