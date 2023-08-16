@@ -35,7 +35,7 @@ const ChatTab = () => {
           backgroundPositionX: "center",
           backgroundPositionY: "center",
           borderRadius: "0px",
-          borderLeft: ".8px solid gray",
+          // borderLeft: ".8px solid gray",
         }}
       >
         <ChatHeader />

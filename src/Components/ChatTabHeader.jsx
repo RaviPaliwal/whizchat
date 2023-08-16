@@ -35,7 +35,7 @@ export default function ChatHeader() {
   
   return (
     <ThemeProvider theme={customTheme}>
-      <Card sx={{ maxWidth: "100%" }}>
+      <Card sx={{ maxWidth: "100%",height:"5rem",borderRadius:"0px" }}>
         <CardHeader
           title={
             <Grid container alignItems="center" spacing={1}>
