@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  CssBaseline,
-  ThemeProvider,
-  Container,
-} from "@mui/material";
+import { CssBaseline, ThemeProvider, Container, Divider } from "@mui/material";
 import Chats from "./Chats";
 import ChatTab from "./ChatTab";
 import SideNavbar from "./SideNavbar";
-import {theme,appContainerStyle} from "./Theme"
-
+import { theme, appContainerStyle } from "./Theme";
 function HomePage() {
   return (
     <ThemeProvider theme={theme}>
@@ -17,8 +12,9 @@ function HomePage() {
         {/* Sidebar */}
         <SideNavbar /> {/* Use the SideNavbar component */}
         {/* Chat profiles */}
-        <Chats/>
+        <Chats />
         {/* Chat area */}
+        <Divider orientation="vertical" flexItem></Divider>
         <ChatTab />
       </Container>
     </ThemeProvider>

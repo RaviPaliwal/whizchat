@@ -1,6 +1,6 @@
 import React from 'react'
 import ChatItem from './ChatItem'
-import { Paper, Typography, List} from '@mui/material';
+import { Paper, List} from '@mui/material';
 import { chatSectionStyle } from './Theme';
 import { useGenContext } from '../Context/GeneralContext';
 import ChatListHeader from './ChatListHeader';
@@ -9,7 +9,7 @@ const Chats = () => {
   const states = useGenContext();
   
   return (
-    <Paper id="chatList" style={{ ...chatSectionStyle, display: states.toggle? "" : "none", }}>
+    <Paper id="chatList" style={{ ...chatSectionStyle, display: states.toggle? "" : "none",borderRadius:"0px" }}>
     {/* Display selected user's profile */}
     {/* <Typography variant="h6" gutterBottom>
       Chats
