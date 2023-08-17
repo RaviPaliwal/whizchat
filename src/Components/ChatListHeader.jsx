@@ -24,14 +24,13 @@ const ChatListHeader = () => {
         title={
           <TextField
             size="small"
-            sx={{}}
-            type="search"
+            type="text"
             id="search"
-            label="Search"
+            label="Find Chats"
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end" sx={{position:"static"}}>
-                  <Button   sx={{position:"absolute", right:"0",transition:"ease-in-out" , '&:hover': {transform:"scale(1.2)"}}} disableRipple >< Search /></Button>
+                <InputAdornment position="end">
+                  <Button   sx={{ right:"0",transition:"ease-in-out" , '&:hover': {transform:"scale(1.2)"}}} disableRipple >< Search /></Button>
                 </InputAdornment>
               ),
             }}

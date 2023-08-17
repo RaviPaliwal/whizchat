@@ -4,9 +4,13 @@ import Chats from "./Chats";
 import ChatTab from "./ChatTab";
 import SideNavbar from "./SideNavbar";
 import { theme, appContainerStyle } from "./Theme";
+import { useAuth } from "../Context/AuthContext";
+
+
 function HomePage() {
+  const auth = useAuth()
   return (
-    <ThemeProvider theme={theme}>
+  auth.loggedIn &&<ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth={false} disableGutters style={appContainerStyle}>
         {/* Sidebar */}

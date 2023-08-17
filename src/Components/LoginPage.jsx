@@ -14,6 +14,7 @@ import logo from "../Assets/Images/logo.png";
 import "../Assets/Styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import { BaseUrl } from "../config";
 
 export default function LoginPage() {
   // Initialize state variables
@@ -24,7 +25,7 @@ export default function LoginPage() {
 
   // Get navigation and user details from context
   const goto = useNavigate();
-  const userDetails = useAuth();
+  const auth = useAuth();
 
   // Handle login form submission
   const handleLogin = async (event) => {
@@ -52,7 +53,7 @@ export default function LoginPage() {
     try {
       // Send the login request
       const response = await fetch(
-        "http://localhost:5000/api/login",
+        `${BaseUrl}/api/login`,
         reqOptions
       );
       const responseData = await response.json();
@@ -63,8 +64,9 @@ export default function LoginPage() {
           Token: responseData.token,
           ID: responseData.ID,
         };
-        userDetails.setUser(userData); // Update the user context
-        console.log(userDetails.user);
+        auth.setUser(userData); // Update the user context
+        auth.setloggedIn(true);
+        alert(auth.user.Token);
         goto("/chats"); // Navigate to the chats page
       }
     } catch (error) {
@@ -99,12 +101,13 @@ export default function LoginPage() {
     try {
       // Send the signup request
       const response = await fetch(
-        "http://localhost:5000/api/register",
+        `${BaseUrl}/api/register`,
         reqOptions
       );
       const responseData = await response.json();
       console.log(responseData);
       alert(responseData);
+      
     } catch (error) {
       console.error("Signup error:", error);
     }

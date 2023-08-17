@@ -10,7 +10,6 @@ export const useGenContext = () => {
 
 export const GenStateProvider = ({ children }) => {
   const [toggle, setToggle] = useState(true);
-  
   const OpenChats = () => {
     const chatsElement = document.getElementById("chats");
     const chatList = document.getElementById("chatList");

@@ -48,7 +48,7 @@ export default function ChatHeader() {
                 <Avatar aria-label="recipe">D</Avatar>
               </Grid >
               <Grid item style={{display:"flex",flexDirection:"column"}}>
-                Deepti Sharma
+                Ravi Paliwal
                <span style={{fontSize:"17px"}} className="text-success">online</span>
               </Grid>
               

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem, ListItemAvatar, Avatar, ListItemText } from '@mui/material';
+import { ListItem, ListItemAvatar, Avatar, ListItemText, Box } from '@mui/material';
 
 // Define the style for the list item
 const listItemStyle = {
@@ -7,8 +7,7 @@ const listItemStyle = {
   borderRadius: "15px",
   backgroundImage: "linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))",
   marginBottom: "5px",
-  height: "5rem",
-  backgroundColor: "#683EF7",
+  backgroundColor: "rgba(104, 62, 247, 0.9)",
   width: "100%",
   "@media (max-width: 600px)": {
     height: "auto",
@@ -18,12 +17,14 @@ const listItemStyle = {
 // ChatItem component
 const ChatItem = ({ id, avatarSrc, primary, secondary }) => {
   return (
+    <Box sx={{margin:"2px 8px"}}>
     <ListItem sx={{ ...listItemStyle }} id={id} component="button">
       <ListItemAvatar>
         <Avatar alt={`userimg${id}`} src={avatarSrc} />
       </ListItemAvatar>
       <ListItemText primary={primary} secondary={secondary} />
     </ListItem>
+    </Box>
   );
 };
 
