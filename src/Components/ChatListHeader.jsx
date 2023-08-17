@@ -8,12 +8,12 @@ const ChatListHeader = () => {
     <Paper sx={
       {
         borderRadius:"0",
-        padding:"7px 16px",
         height:"4.95rem"
       }
     }>
-      <CardHeader
-        avatar={<img width={120} src={logo} alt="logo" />}
+      <CardHeader 
+        style={{paddingTop:"0", marginTop:"0"}}
+        avatar={<img  width={120}  src={logo} alt="logo" />}
         // action={
         //   <IconButton aria-label="chatlistheader-nav">
         //     <>
