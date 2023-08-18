@@ -29,8 +29,25 @@ const UserSchema = new Schema({
     type: String,
     default: 'active'
   },  
+  avatar: {
+    type: String, // Store the avatar file name
+    default: null,
+  }
 },
 {
   timestamps:true
 });
+
+UserSchema.methods.updateAvatar = async function (avatarFilename) {
+  try {
+    this.avatar = avatarFilename;
+    await this.save();
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+
 module.exports = mongoose.model("User", UserSchema);

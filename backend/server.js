@@ -25,6 +25,7 @@ const io = new Server(server,{
 });
 
 // Routes
+
 app.use(config.apiPrefix, userRoute);
 
 io.on("connection",(socket)=>{
