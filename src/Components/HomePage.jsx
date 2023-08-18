@@ -10,7 +10,7 @@ import { useAuth } from "../Context/AuthContext";
 function HomePage() {
   const auth = useAuth()
   return (
-  auth.loggedIn &&<ThemeProvider theme={theme}>
+  sessionStorage.getItem('login_status') &&<ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth={false} disableGutters style={appContainerStyle}>
         {/* Sidebar */}

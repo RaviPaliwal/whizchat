@@ -66,7 +66,8 @@ export default function LoginPage() {
         };
         auth.setUser(userData); // Update the user context
         auth.setloggedIn(true);
-        alert(auth.user.Token);
+        // alert(auth.user.Token);
+        sessionStorage.setItem('login_status',true)
         goto("/chats"); // Navigate to the chats page
       }
     } catch (error) {
