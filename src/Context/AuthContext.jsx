@@ -10,9 +10,12 @@ export const useAuth = () => {
 
 // AuthContext Provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Store user details (null if not logged in)
-  const [receiver,setReceiver]= useState(null)
-  const [loggedIn,setloggedIn]= useState(false)
+  const [user, setUser] = useState({
+    ID: null,
+    Token: null,
+  }); // Store user details (null if not logged in)
+  const [receiver, setReceiver] = useState(null);
+  const [loggedIn, setloggedIn] = useState(false);
 
   const authContextValue = {
     user,
@@ -21,7 +24,6 @@ export const AuthProvider = ({ children }) => {
     setReceiver,
     setloggedIn,
     receiver,
-
   };
 
   return (

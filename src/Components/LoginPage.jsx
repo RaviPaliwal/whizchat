@@ -57,14 +57,13 @@ export default function LoginPage() {
         reqOptions
       );
       const responseData = await response.json();
-
+      console.log(responseData)
       // Check if login was successful
       if (responseData.success === true) {
-        const userData = {
-          Token: responseData.token,
-          ID: responseData.ID,
-        };
-        auth.setUser(userData); // Update the user context
+        auth.setUser({
+          ID:responseData.id,
+          Token:responseData.token,
+        }); // Update the user context
         auth.setloggedIn(true);
         // alert(auth.user.Token);
         sessionStorage.setItem('login_status',true)

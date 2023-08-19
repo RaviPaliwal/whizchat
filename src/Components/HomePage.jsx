@@ -9,6 +9,7 @@ import { useAuth } from "../Context/AuthContext";
 
 function HomePage() {
   const auth = useAuth()
+  if(auth.user.Token)
   return (
   sessionStorage.getItem('login_status') &&<ThemeProvider theme={theme}>
       <CssBaseline />
