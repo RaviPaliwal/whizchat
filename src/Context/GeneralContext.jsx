@@ -6,38 +6,40 @@ export const useGenContext = () => {
   return useContext(GeneralContext);
 };
 
-
-
 export const GenStateProvider = ({ children }) => {
   const [toggle, setToggle] = useState(true);
+
   const OpenChats = () => {
     const chatsElement = document.getElementById("chats");
     const chatList = document.getElementById("chatList");
-    // Modify the style properties
-    chatsElement.style.display = "none"
-    chatList.style.maxWidth="100%"
-    chatList.style.flexGrow="1"
-    setToggle(true);
-  }
+    
+    if (chatsElement && chatList) {
+      chatsElement.style.display = "none";
+      chatList.style.maxWidth = "100%";
+      chatList.style.flexGrow = "1";
+      setToggle(true);
+    }
+  };
+
   const CloseChats = () => {
     const chatsElement = document.getElementById("chats");
     const chatList = document.getElementById("chatList");
-    // Modify the style properties
-    chatsElement.style.display = "block"
-    chatList.style.maxWidth="40%"
-    chatList.style.flexGrow="0"
-    setToggle(true);
-  }
+    
+    if (chatsElement && chatList) {
+      chatsElement.style.display = "block";
+      chatList.style.maxWidth = "40%";
+      chatList.style.flexGrow = "0";
+      setToggle(false); // Corrected: should be false for closing
+    }
+  };
 
-  // Update toggle state based on screen width
   useEffect(() => {
     const handleResize = () => {
       const newScreenWidth = window.innerWidth;
       if (newScreenWidth <= 768) {
-        setToggle(false);
-      }
-       else if(newScreenWidth>768) {
-        CloseChats()
+        CloseChats(); // Close chats on smaller screens
+      } else {
+        OpenChats(); // Open chats on larger screens
       }
     };
 
@@ -45,11 +47,11 @@ export const GenStateProvider = ({ children }) => {
     handleResize();
 
     // Add event listener to handle window resize
-    window.addEventListener('resize', handleResize);
-     
+    window.addEventListener("resize", handleResize);
+
     // Clean up the event listener when component unmounts
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -57,6 +59,7 @@ export const GenStateProvider = ({ children }) => {
     toggle,
     setToggle,
     OpenChats,
+    CloseChats,
   };
 
   return (

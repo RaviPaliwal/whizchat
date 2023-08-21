@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import LoginPage from './Components/LoginPage';
 import HomePage from './Components/HomePage';
 import { GenStateProvider } from './Context/GeneralContext';
-import { socketConnect } from './Socket/SocketConfig';
-import { readReceipt } from './Socket/ReceiveEvents';
-import { sendMessage } from './Socket/SendEvents';
-const socket = socketConnect();
+
 
 export default function App() {
-  sendMessage(socket,"Hey I Am connected")
-
-  useEffect(()=>{
-    readReceipt(socket)
-  },[socket])
+  
 
   return (
     <BrowserRouter>

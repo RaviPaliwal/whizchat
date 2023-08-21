@@ -6,16 +6,11 @@ const fs = require("fs/promises");
 
 const secretKey = "Whizchat@spsu"; // Replace with a secure secret key
 
-/**
- * Register a new user
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
 exports.register = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: req.body.email });
     if (user) {
-      return res.status(400).json({ email: "User with this email already exists" });
+      return res.status(400).json({ message: "User with this email already exists" });
     }
 
     const ext = path.extname(req.file.originalname);
@@ -26,7 +21,7 @@ exports.register = async (req, res) => {
       email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
-      avatar: filename,
+      avatar: filename
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -38,7 +33,7 @@ exports.register = async (req, res) => {
     const payload = {
       id: savedUser._id,
       username: savedUser.username,
-      email: savedUser.email,
+      email: savedUser.email
     };
 
     const token = jwt.sign(payload, secretKey, { expiresIn: "24h" });
@@ -46,7 +41,7 @@ exports.register = async (req, res) => {
     res.json({
       success: true,
       token: token,
-      ID: savedUser._id,
+      ID: savedUser._id
     });
   } catch (error) {
     console.error(error);
@@ -76,7 +71,7 @@ exports.login = async (req, res) => {
     const payload = {
       id: user._id,
       username: user.username,
-      email: user.email,
+      email: user.email
     };
 
     const token = jwt.sign(payload, secretKey, { expiresIn: "24h" });
@@ -84,7 +79,7 @@ exports.login = async (req, res) => {
     res.json({
       success: true,
       token: token,
-      ID: user._id,
+      ID: user._id
     });
   } catch (error) {
     console.error(error);
@@ -144,7 +139,7 @@ exports.deleteAccount = async (req, res) => {
     res.json({ success: true, message: "User account deleted" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success:false ,message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -184,6 +179,6 @@ exports.updateAvatar = async (req, res) => {
     res.json({ success: true, message: "Avatar updated successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success:false,message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

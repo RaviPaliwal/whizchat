@@ -1,129 +1,106 @@
-import React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
-import logo from "../Assets/Images/logo.png";
-import "../Assets/Styles/Login.css";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
-import { BaseUrl } from "../config";
+import React, { useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import logo from '../Assets/Images/logo.png';
+import '../Assets/Styles/Login.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
+import { BaseUrl } from '../config';
+import { Checkbox, FormControlLabel, Link } from '@mui/material';
 
 export default function LoginPage() {
-  // Initialize state variables
-  const [showSignup, setShowSignup] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [mobile, setMobile] = React.useState("");
+  const [showSignup, setShowSignup] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [avatar, setAvatar] = useState(null);
+  const [username, setUsername] = useState(null);
 
-  // Get navigation and user details from context
-  const goto = useNavigate();
+  const navigate = useNavigate();
   const auth = useAuth();
 
-  // Handle login form submission
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Set headers for the request
     const headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
+      Accept: '*/*',
+      'Content-Type': 'application/json',
     };
 
-    // Create the request body
     const bodyContent = JSON.stringify({
-      email: email,
-      password: password,
+      email,
+      password,
     });
 
-    // Set options for the request
     const reqOptions = {
-      method: "POST",
+      method: 'POST',
       headers: headersList,
       body: bodyContent,
     };
 
     try {
-      // Send the login request
-      const response = await fetch(
-        `${BaseUrl}/api/login`,
-        reqOptions
-      );
-      const responseData = await response.json();
-      console.log(responseData)
-      // Check if login was successful
-      if (responseData.success === true) {
-        auth.setUser({
-          ID:responseData.id,
-          Token:responseData.token,
-        }); // Update the user context
-        auth.setloggedIn(true);
-        // alert(auth.user.Token);
-        sessionStorage.setItem('login_status',true)
-        goto("/chats"); // Navigate to the chats page
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
-
-  // Handle signup form submission
-  const handleSignup = async (e) => {
-    e.preventDefault();
-
-    // Set headers for the request
-    const headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-
-    // Create the request body
-    const bodyContent = JSON.stringify({
-      email: email,
-      mobile: mobile,
-      password: password,
-    });
-
-    // Set options for the request
-    const reqOptions = {
-      method: "POST",
-      headers: headersList,
-      body: bodyContent,
-    };
-
-    try {
-      // Send the signup request
-      const response = await fetch(
-        `${BaseUrl}/api/register`,
-        reqOptions
-      );
+      const response = await fetch(`${BaseUrl}/api/login`, reqOptions);
       const responseData = await response.json();
       console.log(responseData);
-      alert(responseData);
-      
+
+      if (responseData.success === true) {
+        auth.setUser({
+          ID: responseData.id,
+          Token: responseData.token,
+        });
+        auth.setLoggedIn(true);
+        sessionStorage.setItem('login_status', true);
+        navigate('/chats');
+      }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error('Login error:', error);
     }
   };
 
-  // Toggle between login and signup forms
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    const bodyContent = new FormData();
+    bodyContent.append('username', username);
+    bodyContent.append('email', email);
+    bodyContent.append('password', password);
+    bodyContent.append('mobile', mobile);
+    bodyContent.append('avatar', avatar);
+
+    const headersList = {
+      Accept: '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+    };
+
+    try {
+      const response = await fetch(`${BaseUrl}/api/register`, {
+        method: 'POST',
+        body: bodyContent,
+        headers: headersList,
+      });
+
+      const responseData = await response.json();
+      console.log(responseData.message);
+    } catch (error) {
+      console.error('Signup error:', error);
+    }
+  };
+
   const toggleSignup = (e) => {
     e.preventDefault();
     setShowSignup(!showSignup);
   };
 
-  // Create the theme
   const mytheme = createTheme({
     palette: {
       primary: {
-        main: "#683EF7", // Primary color
+        main: '#683EF7',
       },
     },
   });
@@ -131,48 +108,42 @@ export default function LoginPage() {
   return (
     <ThemeProvider theme={mytheme}>
       <CssBaseline />
-      <Grid container sx={{ height: "100vh" }}>
-        {/* Background Image Grid */}
+      <Grid container sx={{ height: '100vh' }}>
         <Grid
           item
           xs={12}
           md={6}
           sx={{
-            position: "relative",
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            overflow: "hidden", // Hide overflowing text
+            position: 'relative',
+            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            overflow: 'hidden',
           }}
         >
           <div
             style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              textAlign: "center",
-              padding: "16px",
-              background: "rgba(255, 255, 255, 0.7)",
-              borderRadius: "8px",
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              padding: '16px',
+              background: 'rgba(255, 255, 255, 0.7)',
+              borderRadius: '8px',
             }}
           >
             <Typography variant="h4" gutterBottom>
               Welcome to The Ai Powered Chat App!
             </Typography>
             <Typography variant="body1">
-              😍😍 Join the conversation and connect with others smartly !
+              😍😍 Join the conversation and connect with others smartly!
             </Typography>
           </div>
         </Grid>
 
-        {/* Signup Grid */}
         {showSignup ? (
           <Grid
             px={8}
@@ -184,20 +155,18 @@ export default function LoginPage() {
             elevation={6}
             square
           >
-            {/* Signup Form */}
-            {/* ... */}
             <Box
               sx={{
                 my: 8,
                 mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
               <img
                 className="logoAnimation"
-                style={{ width: "60%" }}
+                style={{ width: '60%' }}
                 src={logo}
                 alt="logo"
               />
@@ -210,6 +179,18 @@ export default function LoginPage() {
                 onSubmit={handleSignup}
                 sx={{ mt: 1 }}
               >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
                 <TextField
                   margin="normal"
                   required
@@ -246,6 +227,14 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  accept="image/*"
+                  id="image-file-upload"
+                  required
+                  type="file"
+                  name="avatar"
+                  onChange={(e) => setAvatar(e.target.files[0])}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
@@ -285,19 +274,18 @@ export default function LoginPage() {
             elevation={6}
             square
           >
-            {/* Login Form */}
             <Box
               sx={{
                 my: 8,
                 mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
               <img
                 className="logoAnimation"
-                style={{ width: "60%" }}
+                style={{ width: '60%' }}
                 src={logo}
                 alt="logo"
               />
@@ -361,7 +349,6 @@ export default function LoginPage() {
                 </Grid>
               </Box>
             </Box>
-            {/* ... */}
           </Grid>
         )}
       </Grid>
