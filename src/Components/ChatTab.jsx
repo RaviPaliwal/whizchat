@@ -19,7 +19,7 @@ const ChatTab =  () => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    const text = getMsg(socket).then((data)=>{
+    getMsg(socket).then((data)=>{
       const text  = data.message;
       if (text) {
         const newMessage = { text, sender: "bot" };
