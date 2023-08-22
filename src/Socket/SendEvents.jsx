@@ -1,3 +1,3 @@
-export const sendMessage=(socket,m)=>{
-    socket.emit('message',m)
+export const sendMsg=(socket,m)=>{
+    socket.emit('sendMessage',m);
   }

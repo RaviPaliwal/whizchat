@@ -15,14 +15,14 @@ export const AuthProvider = ({ children }) => {
     Token: null,
   }); // Store user details (null if not logged in)
   const [receiver, setReceiver] = useState(null);
-  const [loggedIn, setloggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const authContextValue = {
     user,
     loggedIn,
     setUser,
     setReceiver,
-    setloggedIn,
+    setLoggedIn,
     receiver,
   };
 

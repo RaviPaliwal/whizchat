@@ -29,12 +29,11 @@ const io = new Server(server,{
 app.use(config.apiPrefix, userRoute);
 
 io.on("connection",(socket)=>{
-  console.log(`Usser Connected : ${socket.id}`)
+  // console.log(`User Connected : ${socket.id}`);
+  socket.on("sendMessage", (message) => {
+  socket.broadcast.emit("getMessage", { message });
+});
   
-  socket.on("message",(msg)=>{
-    console.log(`Message : ${msg}`)
-    socket.broadcast.emit('read_recept',{recept:"Successfully Received"});
-  }) ;
 });
 
 

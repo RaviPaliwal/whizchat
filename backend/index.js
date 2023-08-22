@@ -1,5 +1,6 @@
+//Initialize Database
+require("./database");
+
 // Initialize Server
 require("./server");
 
-//Initialize Database
-require("./database");
