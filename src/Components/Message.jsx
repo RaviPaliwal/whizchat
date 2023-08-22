@@ -23,7 +23,7 @@ const Message = ({ message }) => {
           margin: "5px",
           backgroundImage: isUserMessage
             ? "linear-gradient(135deg, rgba(157, 65, 225, 0.95), rgba(104, 62, 247, .9))"
-            : "linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05))",
+            : "linear-gradient(135deg, lightgreen, lavender)",
           borderRadius: "10px",
           wordWrap: "break-word",
           maxWidth: "70%",
