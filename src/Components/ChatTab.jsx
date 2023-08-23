@@ -19,18 +19,20 @@ const ChatTab =  () => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
+    console.log(messages);
     getMsg(socket).then((data)=>{
       const text  = data.message;
       if (text) {
         const newMessage = { text, sender: "bot" };
-        setMessages([...messages, newMessage]);
+        // console.log(newMessage);
+        setMessages([...messages,newMessage]);
       }
     });
     // Scroll chat container to the bottom when messages change
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages,socket]);
+  }, [socket,messages]);
   return (
     <div
       style={{
