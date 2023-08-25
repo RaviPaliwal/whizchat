@@ -4,7 +4,7 @@ const AvatarStorage = multer.diskStorage({
   destination: "./UserData/Avatars",
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, req.body.username + ext);
+    cb(null, req.username + ext);
   },
 });
 

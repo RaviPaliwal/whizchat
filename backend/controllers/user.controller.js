@@ -1,42 +1,48 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const UserModel = require("../models/user.model");
 const path = require("path");
 const fs = require("fs/promises");
+const UserModel = require("../models/user.model");
 
 const secretKey = "Whizchat@spsu"; // Replace with a secure secret key
 
+// Helper function to generate token
+function generateToken(user) {
+  const payload = {
+    id: user._id,
+    username: user.username,
+    email: user.email
+  };
+  return jwt.sign(payload, secretKey, { expiresIn: "24h" });
+}
+
+// Helper function to handle errors
+function handleError(res, error) {
+  console.error(error);
+  res.status(500).json({ success: false, message: "Internal server error" });
+}
+
+// Path to avatar directory
+const avatarDir = path.join(__dirname, "..", "UserData", "Avatars");
+
+
+// Register a user
 exports.register = async (req, res) => {
   try {
-    const user = await UserModel.findOne({ email: req.body.email });
-    if (user) {
-      return res.status(400).json({ message: "User with this email already exists" });
+    const existingUser = await UserModel.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(400).json({ success:false,message: "User with this email already exists" });
     }
-
-    const ext = path.extname(req.file.originalname);
-    const filename = req.body.username + ext;
 
     const newUser = new UserModel({
       username: req.body.username,
       email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
-      avatar: filename
     });
 
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(newUser.password, salt);
-    newUser.password = hash;
-
     const savedUser = await newUser.save();
-
-    const payload = {
-      id: savedUser._id,
-      username: savedUser.username,
-      email: savedUser.email
-    };
-
-    const token = jwt.sign(payload, secretKey, { expiresIn: "24h" });
+    const token = generateToken(savedUser);
 
     res.json({
       success: true,
@@ -44,54 +50,37 @@ exports.register = async (req, res) => {
       ID: savedUser._id
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    handleError(res, error);
   }
 };
 
-/**
- * Login a user
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
+// Login a user
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await UserModel.findOne({ email });
+
     if (!user) {
-      return res.status(404).json({ emailnotfound: "User not found with this email" });
+      return res.status(404).json({ success:false,message: "User not found with this email" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      return res.status(400).json({ passwordincorrect: "Password incorrect" });
+      return res.status(400).json({ success:false,message: "Password incorrect" });
     }
 
-    const payload = {
-      id: user._id,
-      username: user.username,
-      email: user.email
-    };
-
-    const token = jwt.sign(payload, secretKey, { expiresIn: "24h" });
+    const token = generateToken(user);
 
     res.json({
       success: true,
       token: token,
-      ID: user._id
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    handleError(res, error);
   }
 };
 
-/**
- * Get the avatar of a user
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
+// Get the avatar of a user
 exports.getAvatar = async (req, res) => {
   try {
     const email = req.params.email;
@@ -106,66 +95,22 @@ exports.getAvatar = async (req, res) => {
       return res.status(404).json({ message: "User has no avatar" });
     }
 
-    const avatarPath = path.join(__dirname, "..", "UserData", "Avatars", avatarFilename);
-
+    const avatarPath = path.join(avatarDir, avatarFilename);
     res.sendFile(avatarPath);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    handleError(res, error);
   }
 };
 
-/**
- * Delete a user account
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
-exports.deleteAccount = async (req, res) => {
-  try {
-    const email = req.params.email;
-    const user = await UserModel.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const avatarFilename = user.avatar;
-    const avatarPath = path.join(__dirname, "..", "UserData", "Avatars", avatarFilename);
-
-    await fs.unlink(avatarPath);
-
-    await UserModel.findByIdAndDelete(user._id);
-
-    res.json({ success: true, message: "User account deleted" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
-};
-
-/**
- * Update the avatar of a user
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
+// Update the avatar of a user
 exports.updateAvatar = async (req, res) => {
   try {
     const email = req.params.email;
     const user = await UserModel.findOne({ email });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     const newAvatarFile = req.file;
     if (!newAvatarFile) {
       return res.status(400).json({ message: "No new avatar file provided" });
-    }
-
-    const oldAvatarFilename = user.avatar;
-    if (oldAvatarFilename) {
-      const oldAvatarPath = path.join(__dirname, "..", "UserData", "Avatars", oldAvatarFilename);
-      await fs.unlink(oldAvatarPath);
     }
 
     const newExt = path.extname(newAvatarFile.originalname);
@@ -173,12 +118,38 @@ exports.updateAvatar = async (req, res) => {
     user.avatar = newFilename;
     await user.save();
 
-    const newAvatarPath = path.join(__dirname, "..", "UserData", "Avatars", newFilename);
+    const newAvatarPath = path.join(avatarDir, newFilename);
     await fs.rename(newAvatarFile.path, newAvatarPath);
 
     res.json({ success: true, message: "Avatar updated successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    handleError(res, error);
   }
 };
+
+// Delete a user account to be saperated from this as Many Dependecies Should 
+//deleted 
+exports.deleteAccount = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success:false,message: "User not found" });
+    }
+
+    if(user.avatar!=null){
+      const avatarFilename = user.avatar;
+      const avatarPath = path.join(avatarDir, avatarFilename);
+  
+      await fs.unlink(avatarPath);
+    }
+
+    await UserModel.findByIdAndDelete(user._id);
+
+    res.json({ success: true, message: "User account deleted" });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
