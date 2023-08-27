@@ -36,6 +36,7 @@ exports.register = async (req, res) => {
 
     const newUser = new UserModel({
       username: req.body.username,
+      name:req.body.name,
       email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
@@ -152,4 +153,18 @@ exports.deleteAccount = async (req, res) => {
     handleError(res, error);
   }
 };
+
+
+exports.searchUsers = async (req, res) => {
+  const username  = req.query.username;
+  try {
+    const users = await UserModel.find({ username: { $regex: username, $options: 'i' } });
+    res.json(users);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Error searching users.' });
+  }
+};
+
+
 

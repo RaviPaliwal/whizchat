@@ -11,12 +11,15 @@ const UserSchema = new Schema(
       unique: true,
       trim: true,
     },
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
     mobile: {
       type: String,
       unique: true,
       required: true,
-    },           
+    },
     email: {
       type: String,
       required: true,

@@ -7,39 +7,34 @@ export const useGenContext = () => {
 };
 
 export const GenStateProvider = ({ children }) => {
-  const [toggle, setToggle] = useState(true);
+  const [autosetView, setAutoSetView] = useState(true);
+  const [handle, setHandle] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  const OpenChats = () => {
-    const chatsElement = document.getElementById("chats");
-    const chatList = document.getElementById("chatList");
-    
-    if (chatsElement && chatList) {
-      chatsElement.style.display = "none";
-      chatList.style.maxWidth = "100%";
-      chatList.style.flexGrow = "1";
-      setToggle(true);
-    }
-  };
-
-  const CloseChats = () => {
-    const chatsElement = document.getElementById("chats");
-    const chatList = document.getElementById("chatList");
-    
-    if (chatsElement && chatList) {
-      chatsElement.style.display = "block";
-      chatList.style.maxWidth = "40%";
-      chatList.style.flexGrow = "0";
-      setToggle(false); // Corrected: should be false for closing
-    }
-  };
 
   useEffect(() => {
+    const chatList = document.getElementById("chatList");
+    const chatsElement = document.getElementById("chats");
+    if (window.innerWidth <= 768) {
+      chatList.style.display = "block";
+      chatList.style.maxWidth = "100%";
+      chatList.style.flexGrow = 1;
+      chatsElement.style.display = "none";
+    } else {
+      chatList.style.display = "block";
+    }
     const handleResize = () => {
       const newScreenWidth = window.innerWidth;
+      setScreenWidth(newScreenWidth);
+      console.log(newScreenWidth);
       if (newScreenWidth <= 768) {
-        CloseChats(); // Close chats on smaller screens
+        setHandle(newScreenWidth); //Above Styles
       } else {
-        OpenChats(); // Open chats on larger screens
+        setHandle(newScreenWidth);
+        chatsElement.style.display = "block";
+        chatList.style.maxWidth = "40%";
+        chatList.style.flexGrow = 0;
+        chatsElement.style.flexGrow = 1;
       }
     };
 
@@ -53,18 +48,15 @@ export const GenStateProvider = ({ children }) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handle]);
 
   const value = {
-    toggle,
-    setToggle,
-    OpenChats,
-    CloseChats,
+    autosetView,
+    screenWidth,
+    setAutoSetView
   };
 
   return (
-    <GeneralContext.Provider value={value}>
-      {children}
-    </GeneralContext.Provider>
+    <GeneralContext.Provider value={value}>{children}</GeneralContext.Provider>
   );
 };

@@ -39,8 +39,8 @@ export default function ChatHeader() {
         <CardHeader
           title={
             <Grid container alignItems="center" spacing={1}>
-              {!states.toggle&&<Grid item>
-                <IconButton aria-label="back" onClick={states.OpenChats}>
+              {states.screenWidth<=768 &&<Grid item>
+                <IconButton aria-label="back" onClick={null}>
                   <ArrowBackIcon />
                 </IconButton>
               </Grid>}

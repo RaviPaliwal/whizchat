@@ -13,11 +13,12 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(bodyParser.json());
 
-// Initialize Socket.io
-createSocket(server);
 
 // Routes
 app.use(config.apiPrefix, userRoute);
+
+// Initialize Socket.io
+createSocket(server);
 
 // Start the server
 server.listen(config.port, () => {

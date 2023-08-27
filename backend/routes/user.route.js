@@ -24,4 +24,7 @@ router.post("/deleteaccount/:email", UserController.deleteAccount);
 router.use('/updateavatar/:email', getFileName);
 router.put('/updateavatar/:email', uploadAvatar, UserController.updateAvatar);
 
+router.get('/users/search',UserController.searchUsers);
+
+
 module.exports = router;

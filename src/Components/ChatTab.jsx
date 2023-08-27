@@ -6,7 +6,7 @@ import ChatHeader from "./ChatTabHeader";
 import { socketConnect } from "../Socket/SocketConfig";
 import { getMsg } from "../Socket/ReceiveEvents";
 
-const ChatTab =  () => {
+const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
   const socket = socketConnect();
   const sendMessage = (text) => {
@@ -17,23 +17,23 @@ const ChatTab =  () => {
   };
 
   const scrollRef = useRef(null);
-  
 
   useEffect(() => {
     console.log(messages);
-    getMsg(socket).then((data)=>{
-      const text  = data.message;
+    getMsg(socket).then((data) => {
+      const text = data.message;
       if (text) {
         const newMessage = { text, sender: "bot" };
         // console.log(newMessage);
-        setMessages([...messages,newMessage]);
+        setMessages([...messages, newMessage]);
       }
     });
     // Scroll chat container to the bottom when messages change
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [socket,messages]);
+  }, [socket, messages]);
+
   return (
     <div
       style={{
