@@ -1,21 +1,89 @@
-import Conversation from '../models/conversation.model';
+const Conversation = require('../models/conversation.model');
 
-export const createConversation = async (req, res) => {
+// exports.createConversation = async (req, res) => {
+//   try {
+//     const { members, group, groupName } = req.body;
+//     const conversation = new Conversation({
+//       members,
+//       group,
+//       groupName,
+//     });
+//     await conversation.save();
+//     res.status(201).json(conversation);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: 'Could not create conversation.' });
+//   }
+// };
+
+// exports.createConversation = async (req, res) => {
+//   try {
+//     const { members, group, groupName } = req.body;
+
+//     // Ensure uniqueness of members (irrespective of order)
+//     const uniqueMembers = [...new Set(members)];
+
+//     if (uniqueMembers.length !== members.length ) {
+//       return res.status(400).json({ error: 'Duplicate member IDs in the conversation.' });
+//     }
+
+//     // Check if the same combination of members already exists
+//     const existingConversation = await Conversation.findOne({ members: uniqueMembers });
+
+//     if (existingConversation) {
+//       return res.status(409).json({ error: 'Conversation with the same members already exists.' });
+//     }
+
+//     const conversation = new Conversation({
+//       members: uniqueMembers,
+//       group,
+//       groupName,
+//     });
+
+//     await conversation.save();
+//     res.status(201).json(conversation);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: 'Could not create conversation.' });
+//   }
+// };
+
+exports.createConversation = async (req, res) => {
   try {
     const { members, group, groupName } = req.body;
+
+    // Ensure uniqueness of members (irrespective of order)
+    const uniqueMembers = [...new Set(members)];
+
+    if (uniqueMembers.length !== members.length) {
+      return res.status(400).json({ error: 'Duplicate member IDs in the conversation.' });
+    }
+
+    // Sort the unique members before checking for existence
+    const sortedMembers = uniqueMembers.sort();
+
+    // Check if the same combination of members already exists
+    const existingConversation = await Conversation.findOne({ members: sortedMembers });
+
+    if (existingConversation) {
+      return res.status(409).json({ error: 'Conversation with the same members already exists.' });
+    }
+
     const conversation = new Conversation({
-      members,
+      members: sortedMembers,
       group,
       groupName,
     });
+
     await conversation.save();
     res.status(201).json(conversation);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Could not create conversation.' });
   }
 };
 
-export const getConversationById = async (req, res) => {
+exports.getConversationById = async (req, res) => {
   const { conversationId } = req.params;
   try {
     const conversation = await Conversation.findById(conversationId);
@@ -25,7 +93,7 @@ export const getConversationById = async (req, res) => {
   }
 };
 
-export const sendMessage = async (req, res) => {
+exports.sendMessage = async (req, res) => {
   const { conversationId } = req.params;
   const { sender, content } = req.body;
   try {
@@ -39,7 +107,7 @@ export const sendMessage = async (req, res) => {
   }
 };
 
-export const getConversationsByUser = async (req, res) => {
+exports.getConversationsByUser = async (req, res) => {
   const { userId } = req.params;
   try {
     const conversations = await Conversation.find({ members: userId });

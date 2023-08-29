@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import logo from '../Assets/Images/logo.png';
-import '../Assets/Styles/Login.css';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
-import { BaseUrl } from '../config';
-import { Checkbox, FormControlLabel, Link } from '@mui/material';
+import React, { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import logo from "../Assets/Images/logo.png";
+import "../Assets/Styles/Login.css";
+import { useNavigate } from "react-router-dom";
+// import { useAuth } from '../Context/AuthContext';
+import { BaseUrl } from "../config";
+import { Checkbox, FormControlLabel, Link } from "@mui/material";
 
 export default function LoginPage() {
   const [showSignup, setShowSignup] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [avatar, setAvatar] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mobile, setMobile] = useState("");
+  // const [avatar, setAvatar] = useState(null);
+
   const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
 
   const navigate = useNavigate();
-  const auth = useAuth();
+  // const auth = useAuth();
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     const headersList = {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
+      Accept: "*/*",
+      "Content-Type": "application/json",
     };
 
     const bodyContent = JSON.stringify({
@@ -39,7 +41,7 @@ export default function LoginPage() {
     });
 
     const reqOptions = {
-      method: 'POST',
+      method: "POST",
       headers: headersList,
       body: bodyContent,
     };
@@ -50,45 +52,50 @@ export default function LoginPage() {
       console.log(responseData);
 
       if (responseData.success === true) {
-        auth.setUser({
-          ID: responseData.id,
-          Token: responseData.token,
-        });
-        auth.setLoggedIn(true);
-        sessionStorage.setItem('login_status', true);
-        navigate('/chats');
+        const user=JSON.stringify(responseData.user);
+        sessionStorage.setItem("user", user);
+        sessionStorage.setItem("login_status", true);
+        navigate("/chats");
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
     }
   };
 
   const handleSignup = async (event) => {
     event.preventDefault();
 
-    const bodyContent = new FormData();
-    bodyContent.append('username', username);
-    bodyContent.append('email', email);
-    bodyContent.append('password', password);
-    bodyContent.append('mobile', mobile);
-    bodyContent.append('avatar', avatar);
+    const bodyContent = JSON.stringify({
+      name: name,
+      username: username,
+      email: email,
+      password: password,
+      mobile: mobile,
+    });
+    console.log(bodyContent);
 
     const headersList = {
-      Accept: '*/*',
-      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      Accept: "*/*",
+      "Content-Type": "application/json",
     };
 
     try {
       const response = await fetch(`${BaseUrl}/api/register`, {
-        method: 'POST',
+        method: "POST",
         body: bodyContent,
         headers: headersList,
       });
 
       const responseData = await response.json();
-      console.log(responseData.message);
+      console.log(responseData.user);
+      if (responseData.success === true) {
+        const user=JSON.stringify(responseData.user);
+        sessionStorage.setItem("user", user);
+        sessionStorage.setItem("login_status", true);
+        navigate("/chats");
+      }
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error("Signup error:", error);
     }
   };
 
@@ -100,7 +107,7 @@ export default function LoginPage() {
   const mytheme = createTheme({
     palette: {
       primary: {
-        main: '#683EF7',
+        main: "#683EF7",
       },
     },
   });
@@ -108,31 +115,35 @@ export default function LoginPage() {
   return (
     <ThemeProvider theme={mytheme}>
       <CssBaseline />
-      <Grid container sx={{ height: '100vh' }}>
+      <Grid container sx={{ height: "100vh" }}>
         <Grid
           item
           xs={12}
           md={6}
           sx={{
-            position: 'relative',
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            overflow: 'hidden',
+            position: "relative",
+            backgroundImage:
+              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            overflow: "hidden",
           }}
         >
           <div
             style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              textAlign: 'center',
-              padding: '16px',
-              background: 'rgba(255, 255, 255, 0.7)',
-              borderRadius: '8px',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              padding: "16px",
+              background: "rgba(255, 255, 255, 0.7)",
+              borderRadius: "8px",
             }}
           >
             <Typography variant="h4" gutterBottom>
@@ -159,14 +170,14 @@ export default function LoginPage() {
               sx={{
                 my: 8,
                 mx: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <img
                 className="logoAnimation"
-                style={{ width: '60%' }}
+                style={{ width: "60%" }}
                 src={logo}
                 alt="logo"
               />
@@ -179,6 +190,18 @@ export default function LoginPage() {
                 onSubmit={handleSignup}
                 sx={{ mt: 1 }}
               >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  name="name"
+                  autoComplete="name"
+                  autoFocus
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
                 <TextField
                   margin="normal"
                   required
@@ -228,14 +251,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <input
-                  accept="image/*"
-                  id="image-file-upload"
-                  required
-                  type="file"
-                  name="avatar"
-                  onChange={(e) => setAvatar(e.target.files[0])}
-                />
+
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
@@ -278,14 +294,14 @@ export default function LoginPage() {
               sx={{
                 my: 8,
                 mx: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <img
                 className="logoAnimation"
-                style={{ width: '60%' }}
+                style={{ width: "60%" }}
                 src={logo}
                 alt="logo"
               />

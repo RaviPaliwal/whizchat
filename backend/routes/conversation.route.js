@@ -1,16 +1,17 @@
-import express from 'express';
-import {
+const express = require('express');
+
+const {
   createConversation,
   getConversationById,
   sendMessage,
   getConversationsByUser,
-} from '../controllers/conversation.controller';
+} = require('../controllers/conversation.controller');
 
 const router = express.Router();
 
-router.post('/conversations', createConversation);
+router.post('/conversations/create', createConversation);
 router.get('/conversations/:conversationId', getConversationById);
 router.post('/conversations/:conversationId/messages', sendMessage);
 router.get('/user/:userId/conversations', getConversationsByUser);
 
-export default router;
+module.exports= router;

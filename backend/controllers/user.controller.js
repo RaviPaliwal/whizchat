@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ success:false,message: "User with this email already exists" });
     }
-
+    console.log(req.body);
     const newUser = new UserModel({
       username: req.body.username,
       name:req.body.name,
@@ -45,11 +45,7 @@ exports.register = async (req, res) => {
     const savedUser = await newUser.save();
     const token = generateToken(savedUser);
 
-    res.json({
-      success: true,
-      token: token,
-      ID: savedUser._id
-    });
+    res.json({success:true,savedUser,token});
   } catch (error) {
     handleError(res, error);
   }
@@ -72,10 +68,7 @@ exports.login = async (req, res) => {
 
     const token = generateToken(user);
 
-    res.json({
-      success: true,
-      token: token,
-    });
+    res.json({success:true,user,token});
   } catch (error) {
     handleError(res, error);
   }
