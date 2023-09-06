@@ -12,9 +12,43 @@ export const ConversationContextProvider = ({ children }) => {
 
   const getAllConversations = async (userId) => {
     try {
-      const response = await fetch(`${BaseUrl}/user/${userId}/conversations`);
+      const response = await fetch(
+        `${BaseUrl}/api/user/${userId}/conversations`
+      );
       const data = await response.json();
-      setConversations(data);
+
+      if (data && data[0] != null && !data.group) {
+        // Loop through each object in the data array
+        for (let i = 0; i < data.length; i++) {
+          const currentData = data[i];
+
+          // Check if currentData.members exists and is not null
+          if (currentData.members) {
+            let headersList = {
+              Accept: "*/*",
+            };
+            const newArray = currentData.members.filter(
+              (UID) => UID !== userId
+            );
+            if (newArray.length > 0) {
+              let response = await fetch(`${BaseUrl}/api/user/${newArray[0]}`, {
+                method: "GET",
+                headers: headersList,
+              });
+
+              let receiver = await response.json();
+              // Set the receiver property for the current object
+              currentData.receiver = receiver.user;
+              data[i] = currentData;
+            }
+          }
+        }
+
+        setConversations(data);
+        console.log(data);
+      } else if (data[0] !== null && data.group) {
+        setConversations(data);
+      }
     } catch (error) {
       console.error("Error fetching conversations:", error);
     }
@@ -25,16 +59,14 @@ export const ConversationContextProvider = ({ children }) => {
       const response = await fetch(`${BaseUrl}/api/conversations/create`, {
         method: "POST",
         headers: {
-           Accept: "*/*",
+          Accept: "*/*",
           "Content-Type": "application/json",
         },
-        
+
         body: JSON.stringify({ members: userIds }),
       });
       const newConversation = await response.json();
-      console.log(newConversation)
-      console.log(userIds)
-      setConversations([...conversations, newConversation]);
+      console.log("Conversation Created ID " + newConversation._id);
     } catch (error) {
       console.error("Error creating conversation:", error);
     }

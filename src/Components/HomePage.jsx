@@ -7,14 +7,11 @@ import { theme, appContainerStyle } from "./Theme";
 import { SearchContextProvider } from "../Context/SearchContext";
 import PageNotFound from "./PageNotFound";
 import { useGenContext } from "../Context/GeneralContext";
-//import { useAuth } from "../Context/AuthContext";
 
   
 
 function HomePage() {
   const state = useGenContext();
-  //const auth = useAuth()
-  //if(auth.user.Token)
   if (sessionStorage.getItem("login_status")) {
     return (
       <ThemeProvider theme={theme}>

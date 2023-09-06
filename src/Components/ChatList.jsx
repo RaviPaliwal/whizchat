@@ -5,15 +5,16 @@ import { chatListStyle } from "./Theme";
 import ChatListHeader from "./ChatListHeader";
 import { useSearchContext } from "../Context/SearchContext";
 import { useConversationContext } from "../Context/ConversationContext";
-// import { useAuth } from "../Context/AuthContext";
+
 const ChatList = () => {
   const search = useSearchContext();
   const conversation = useConversationContext();
 
-  useEffect((conversation) => {
-    conversation.getAllConversations();
-  },[])
-  // const auth = useAuth();
+  useEffect(() => {
+    const User = JSON.parse(sessionStorage.getItem("user"));
+    console.log(User);
+    conversation.getAllConversations(User._id);
+  }, []);
 
   return (
     <Paper id="chatList" style={{ ...chatListStyle, borderRadius: "0px" }}>
@@ -51,27 +52,19 @@ const ChatList = () => {
       {/* Display existing chats */}
       <List>
         <p className="mx-3">Chats</p>
-        {conversation[0]
-          ? conversation.map((resultItem) => (
+        {conversation.conversations
+          ? conversation.conversations.map((resultItem) => (
               <ChatItem
                 key={resultItem._id}
                 itemId={resultItem._id}
                 avatarUrl={
                   "https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?b=1&s=170667a&w=0&k=20&c=c2rsC66nJQAjkN6vCkhyB0vLHUiZhJSACMCBVF9HJJs="
                 }
-                username={resultItem._id}
+                username={resultItem.receiver.name}
                 lastMessage={"Welcome To WhiZchat!"}
               />
             ))
           : ""}
-        <ChatItem
-          itemId={2}
-          avatarUrl={
-            "https://th.bing.com/th?id=OIP.UGlKxiZQylR3CnJIXSbFIAHaLL&w=203&h=307&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-          }
-          username={"Shashwat Tiwari"}
-          lastMessage={"Welcome To WhiZchat!"}
-        />
       </List>
     </Paper>
   );

@@ -1,9 +1,8 @@
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs/promises");
 const UserModel = require("../models/user.model");
-
+const { ObjectId } = require('mongoose'); // Import ObjectId from mongoose
 const secretKey = "Whizchat@spsu"; // Replace with a secure secret key
 
 // Helper function to generate token
@@ -159,5 +158,25 @@ exports.searchUsers = async (req, res) => {
   }
 };
 
+
+
+
+
+// Get a user by their ID
+exports.getUserById = async (req, res) => {
+  try {
+    const userId = req.params.id; // Assuming you pass the user ID as a parameter
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, user });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 
 
