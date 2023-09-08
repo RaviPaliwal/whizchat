@@ -8,6 +8,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Grid from "@mui/material/Grid"; // Import the Grid component
 import { useGenContext } from '../Context/GeneralContext';
+import { useChatContext } from "../Context/ChatContext";
 
 
 
@@ -32,6 +33,7 @@ const customTheme = createTheme({
 
 export default function ChatHeader() {
   const states = useGenContext()
+  const chat = useChatContext();
   
   return (
     <ThemeProvider theme={customTheme}>
@@ -48,8 +50,8 @@ export default function ChatHeader() {
                 <Avatar aria-label="recipe">D</Avatar>
               </Grid >
               <Grid item style={{display:"flex",flexDirection:"column"}}>
-                Ravi Paliwal
-               <span style={{fontSize:"17px"}} className="text-success">online</span>
+                {chat.chat.receiver.name}
+               <span style={{fontSize:"17px"}} className="text-success">{chat.chat.receiver.status}</span>
               </Grid>
               
             </Grid>

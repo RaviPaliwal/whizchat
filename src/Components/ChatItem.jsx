@@ -1,7 +1,9 @@
 import React from 'react';
-import { ListItem, ListItemAvatar, Avatar, ListItemText, Box } from '@mui/material';
+import { ListItem, ListItemAvatar, Avatar, ListItemText, Box, Button } from '@mui/material';
+import { useChatContext } from '../Context/ChatContext';
+const ChatItem = ({ itemId, avatarUrl, name, lastMessage,newchat }) => {
+  const chat = useChatContext();
 
-const ChatItem = ({ itemId, avatarUrl, username, lastMessage }) => {
   const listItemStyle = {
     border: "none",
     borderRadius: "15px",
@@ -15,13 +17,16 @@ const ChatItem = ({ itemId, avatarUrl, username, lastMessage }) => {
   };
 
   return (
-    <Box sx={{ margin: "2px 8px" }}>
-      <ListItem sx={{ ...listItemStyle }} id={itemId} component="button">
-        <ListItemAvatar>
-          <Avatar alt={`user_avatar_${itemId}`} src={avatarUrl} />
-        </ListItemAvatar>
-        <ListItemText primary={username} secondary={lastMessage} />
-      </ListItem>
+    <Box sx={{ width: "100%" }}>
+      {/* Wrap the Box with a Button */}
+      <Button sx={{ padding: 0, textTransform:"none",color: 'inherit', }} onClick={() => chat.setChat(newchat)} fullWidth >
+        <ListItem sx={{ ...listItemStyle }} id={itemId} component="div">
+          <ListItemAvatar>
+            <Avatar alt={`user_avatar_${itemId}`} src={avatarUrl} />
+          </ListItemAvatar>
+          <ListItemText primary={name} secondary={lastMessage} />
+        </ListItem>
+      </Button>
     </Box>
   );
 };

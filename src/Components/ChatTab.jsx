@@ -5,8 +5,10 @@ import { Typerstyle, chatAreaStyle } from "./Theme";
 import ChatHeader from "./ChatTabHeader";
 import { socketConnect } from "../Socket/SocketConfig";
 import { getMsg } from "../Socket/ReceiveEvents";
+import { useChatContext } from "../Context/ChatContext";
 
 const ChatTab = () => {
+  const chat = useChatContext();
   const [messages, setMessages] = useState([]); // Store the chat messages
   const socket = socketConnect();
   const sendMessage = (text) => {
@@ -43,6 +45,8 @@ const ChatTab = () => {
     >
       <Paper
         style={{
+          //{chat.chat.receiver.username ==="!!!null"?} conditionally setting
+
           backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           height: "100%",
           backgroundPositionX: "center",
@@ -66,7 +70,8 @@ const ChatTab = () => {
           ))}
         </Box>
         <Box style={Typerstyle}>
-          <TextField
+          {chat.chat.receiver.username==="!!!null" ?"":
+          <TextField 
             label="Type a message"
             style={{
               width: "100%",
@@ -84,7 +89,7 @@ const ChatTab = () => {
                 e.target.value = "";
               }
             }}
-          />
+          />}
         </Box>
       </Paper>
     </div>

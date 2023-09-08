@@ -5,4 +5,8 @@ export const socketConnect=() =>{
     return io.connect(SocketUrl)
 }
 
+export const joinRoom=(socket,room_id)=>{
+    socket.emit('join_room',room_id);
+}
+
 
