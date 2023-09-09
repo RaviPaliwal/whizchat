@@ -32,6 +32,13 @@ const customTheme = createTheme({
 });
 
 export default function ChatHeader() {
+
+  const handleBack = () => {
+    const chatList = document.getElementById("chatList");
+    const chatsElement = document.getElementById("chats");
+    chatsElement.style.display="none";
+    chatList.style.display="block";
+  };
   const states = useGenContext()
   const chat = useChatContext();
   
@@ -42,7 +49,7 @@ export default function ChatHeader() {
           title={
             <Grid container alignItems="center" spacing={1}>
               {states.screenWidth<=768 &&<Grid item>
-                <IconButton aria-label="back" onClick={null}>
+                <IconButton aria-label="back" onClick={handleBack}>
                   <ArrowBackIcon />
                 </IconButton>
               </Grid>}

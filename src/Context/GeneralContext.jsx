@@ -16,10 +16,10 @@ export const GenStateProvider = ({ children }) => {
     const chatList = document.getElementById("chatList");
     const chatsElement = document.getElementById("chats");
     if (window.innerWidth <= 768) {
-      chatList.style.display = "block";
+      chatList.style.display = "none";
       chatList.style.maxWidth = "100%";
       chatList.style.flexGrow = 1;
-      chatsElement.style.display = "none";
+      chatsElement.style.display = "block";
     } else {
       chatList.style.display = "block";
     }
