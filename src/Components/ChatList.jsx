@@ -13,12 +13,12 @@ import {
 const ChatList = () => {
   const search = useSearchContext();
   const [conversations, setConversations] = useState([]);
-  const [call,setCall] = useState(0);
+  const [call,setCall] = useState(14);
   
   useEffect(() => {
     const fetchData = async () => {
       const User = JSON.parse(sessionStorage.getItem("user"));
-      console.log(User.name);
+      // console.log(User.name);
 
       try {
         const data = await getAllConversations(User._id);
@@ -48,14 +48,16 @@ const ChatList = () => {
               key={resultItem._id}
               fullWidth
               sx={{ padding: 0, textTransform:"none",color: 'inherit', }}
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
                 const userJSON = sessionStorage.getItem("user"); // Retrieve user data as JSON string
                 const user = JSON.parse(userJSON); // Parse the JSON string to an object
                 console.log(user);
-                createConversation([resultItem._id, user._id]);
+                await createConversation([resultItem._id, user._id]);
+                //Handeling Delay
+                setCall(call+2);
+                console.log(call)
                 search.setSearchResults([])
-                setCall(call+1);
               }}
             >
               <SearchItem
