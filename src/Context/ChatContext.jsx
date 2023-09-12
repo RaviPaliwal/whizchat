@@ -14,7 +14,7 @@ export const useChatContext = () => {
 export const ChatContextProvider = ({ children }) => {
   // Define your chat object and setChat function
   const [chat, setChat] = useState({
-    _id: "Whizchat",
+    _id: "Whizchat!!!null",
     members: ["64dsdssdsdd", "64ec4sascsa"],
     unseenCount: 0,
     group: false,

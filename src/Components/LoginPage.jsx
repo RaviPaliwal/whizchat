@@ -53,7 +53,7 @@ export default function LoginPage() {
 
       if (responseData.success === true) {
         const user=JSON.stringify(responseData.user);
-        sessionStorage.setItem("user", user);
+        await sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
         navigate("/chats");
       }

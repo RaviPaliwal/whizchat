@@ -9,10 +9,12 @@ import {
 } from "@mui/material";
 import { useChatContext } from "../Context/ChatContext";
 import { useGenContext } from "../Context/GeneralContext";
+// import { joinRoom} from "../Socket/SocketConfig";
+
 const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
   const chat = useChatContext();
   const ctx = useGenContext();
-
+  // const socket= ctx.socket
   const listItemStyle = {
     border: "none",
     borderRadius: "15px",
@@ -27,12 +29,14 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box key={itemId} sx={{ width: "100%" }}>
       {/* Wrap the Box with a Button */}
       <Button
         sx={{ padding: 0, textTransform: "none", color: "inherit" }}
         onClick={() => {
           chat.setChat(newchat);
+          //Should it be good to join room here using socket
+          // joinRoom(socket,newchat._id);
           const chatList = document.getElementById("chatList");
           const chatsElement = document.getElementById("chats");
           if (ctx.screenWidth < 768) {

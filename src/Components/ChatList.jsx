@@ -10,11 +10,15 @@ import {
   createConversation,
   getAllConversations,
 } from "../Utils/ConversationUtil";
+import { useGenContext } from "../Context/GeneralContext";
+import { joinRoom } from "../Socket/SocketConfig";
 
 const ChatList = () => {
   const search = useSearchContext();
+  const ctx = useGenContext();
   const [conversations, setConversations] = useState([]);
-  const [call, setCall] = useState(14);
+  const [call, setCall] = useState(3);
+  const socket = ctx.socket;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +35,16 @@ const ChatList = () => {
     };
     fetchData();
   }, [call]);
+
+  //Automatically Getting New Conversation Pending
+  // useEffect(()=>{
+  //   setCall(call+3);
+  // },[socket,setCall]);
+
+  //joining All Rooms
+  conversations
+    ? conversations.map((resultItem) => joinRoom(socket, resultItem._id))
+    : console.log("No Chat Found");
 
   return (
     <Paper id="chatList" style={{ ...chatListStyle, borderRadius: "0px" }}>
@@ -83,14 +97,14 @@ const ChatList = () => {
               <ChatItem
                 key={resultItem._id}
                 newchat={resultItem}
-                itemId={resultItem._id}
+                itemId={resultItem._id + "xyz"}
                 avatarUrl={
                   resultItem.receiver.avatar != null
                     ? `${BaseUrl}/api/user/${resultItem.receiver.email}/avatar`
                     : "Url to avatar.jpg"
                 }
                 name={resultItem.receiver.name}
-                lastMessage={resultItem.messages[0] || "Send a Message"}
+                lastMessage={"Send a Message"}
               />
             ))
           : ""}

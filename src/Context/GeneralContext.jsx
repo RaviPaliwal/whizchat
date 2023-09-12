@@ -1,4 +1,5 @@
 import { useState, useContext, createContext, useEffect } from "react";
+import { socketConnect } from "../Socket/SocketConfig";
 
 const GeneralContext = createContext();
 
@@ -10,7 +11,12 @@ export const GenStateProvider = ({ children }) => {
   const [autosetView, setAutoSetView] = useState(true);
   const [handle, setHandle] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
+  const socket = socketConnect();
+  
+  // useEffect(() => {
+  //   getMessagefromRoom(socket);
+  // },[socket])
+ 
 
   useEffect(() => {
     const chatList = document.getElementById("chatList");
@@ -53,6 +59,7 @@ export const GenStateProvider = ({ children }) => {
   const value = {
     autosetView,
     screenWidth,
+    socket,
     setAutoSetView
   };
 

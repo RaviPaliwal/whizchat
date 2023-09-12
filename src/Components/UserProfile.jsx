@@ -13,9 +13,9 @@ import { BaseUrl } from "../config";
 import EditIcon from "@mui/icons-material/Edit";
 import AvatarUpdateDialog from "./AvatarUpdateDialog"; // Import the AvatarUpdateDialog component
 import "../Assets/Styles/UserProfile.css";
-let user = JSON.parse(sessionStorage.getItem("user"));
 
 const UserProfile = ({ open, onClose }) => {
+  let user = JSON.parse(sessionStorage.getItem("user"));
   const [isAvatarHovered, setIsAvatarHovered] = useState(false);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [isUsernameEditing, setIsUsernameEditing] = useState(false);

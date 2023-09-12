@@ -2,7 +2,8 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const Message = ({ message }) => {
-  const isUserMessage = message.sender === "user"; // Corrected this line
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const isUserMessage = message.sender === user._id ; // Corrected this line
   return (
     <Box style={{
         display: "flex",
@@ -10,7 +11,8 @@ const Message = ({ message }) => {
         justifyContent: "end",
         alignItems: isUserMessage ? "end" : "start", // Adjusted alignment
         marginRight: isUserMessage ? ".35rem" : "0.35rem", // Adjusted margin
-      }}>
+      }}
+      >
       <Typography
         variant="body1"
         style={{
@@ -29,7 +31,7 @@ const Message = ({ message }) => {
           maxWidth: "70%",
         }}
       >
-        {message.text}
+        {message.content}
       </Typography>
     </Box>
   );
