@@ -52,7 +52,7 @@ export default function LoginPage() {
       console.log(responseData);
 
       if (responseData.success === true) {
-        const user=JSON.stringify(responseData.user);
+        const user = JSON.stringify(responseData.user);
         await sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
         navigate("/chats");
@@ -89,7 +89,7 @@ export default function LoginPage() {
       const responseData = await response.json();
       console.log(responseData.user);
       if (responseData.success === true) {
-        const user=JSON.stringify(responseData.user);
+        const user = JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
         navigate("/chats");

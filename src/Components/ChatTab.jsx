@@ -34,10 +34,10 @@ const ChatTab = () => {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      setGetMsg(getMsg+2);
+      setGetMsg(getMsg + 2);
       // return Date.now();
     });
-  }, [socket,getMsg]);
+  }, [socket, getMsg]);
 
   useEffect(() => {
     // Scroll chat container to the bottom when messages change
@@ -75,7 +75,13 @@ const ChatTab = () => {
 
     // setMessages([...messages, newMessage]);
 
-    sendMessageToRoom(ctx.socket, chat.chat._id, newMessage);
+    sendMessageToRoom(
+      ctx.socket,
+      chat.chat._id,
+      chat.chat.receiver._id,
+      newMessage,
+      user.name
+    );
     // You can place your sending logic here if you have an alternative to socket.io
   };
 
@@ -115,6 +121,12 @@ const ChatTab = () => {
             messages.map((message, index) => (
               <Message key={index} message={message} />
             ))}
+
+          {/* {messages.length > 0 &&
+        
+            messages.map((message, index) => (
+              <Message key={index} message={message} />
+            ))} */}
         </Box>
 
         <Box style={Typerstyle}>

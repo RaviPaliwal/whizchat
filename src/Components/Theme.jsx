@@ -41,20 +41,20 @@ export const sidebarStyle = {
 export const chatListStyle = {
   flexGrow: 0,
   padding: ".08rem",
-  display:"none",
+  display: "none",
   width: "100%",
   overflowY: "scroll",
   maxWidth: "40%",
   minWidth: "35%",
-  WebkitOverflowScrolling: 'touch'
- };
+  WebkitOverflowScrolling: "touch",
+};
 
 export const chatAreaStyle = {
   flexGrow: 1,
   color: "primary",
   overflowY: "auto",
   position: "relative",
-  WebkitOverflowScrolling: 'touch'
+  WebkitOverflowScrolling: "touch",
   // padding: '.8rem'
   // backgroundImage:"linear-gradient(135deg, rgba(157, 65, 225, 0.7), rgba(104, 62, 247, 0.6))",
 };

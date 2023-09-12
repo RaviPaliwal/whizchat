@@ -20,7 +20,9 @@ const UserProfile = ({ open, onClose }) => {
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [isUsernameEditing, setIsUsernameEditing] = useState(false);
   const [isMobileEditing, setIsMobileEditing] = useState(false);
-  const [isAvatarUpdateDialogOpen, setIsAvatarUpdateDialogOpen] = useState(false);
+  const [isAvatarUpdateDialogOpen, setIsAvatarUpdateDialogOpen] = useState(
+    false
+  );
 
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
@@ -103,96 +105,96 @@ const UserProfile = ({ open, onClose }) => {
 
           {/* Name */}
           {isNameEditing ? (
-          <TextField
-            label="Name"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        ) : (
-          <div className="non-edit-mode">
             <TextField
               label="Name"
               variant="outlined"
               fullWidth
               margin="normal"
               value={name}
-              InputProps={{ readOnly: true }}
+              onChange={(e) => setName(e.target.value)}
             />
-            <IconButton
-              color="primary"
-              aria-label="Edit Name"
-              component="span"
-              onClick={() => handleEditClick("name")}
-            >
-              <EditIcon />
-            </IconButton>
-          </div>
-        )}
+          ) : (
+            <div className="non-edit-mode">
+              <TextField
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={name}
+                InputProps={{ readOnly: true }}
+              />
+              <IconButton
+                color="primary"
+                aria-label="Edit Name"
+                component="span"
+                onClick={() => handleEditClick("name")}
+              >
+                <EditIcon />
+              </IconButton>
+            </div>
+          )}
 
-        {/* Username */}
-        {isUsernameEditing ? (
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        ) : (
-          <div className="non-edit-mode">
+          {/* Username */}
+          {isUsernameEditing ? (
             <TextField
               label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
               value={username}
-              InputProps={{ readOnly: true }}
+              onChange={(e) => setUsername(e.target.value)}
             />
-            <IconButton
-              color="primary"
-              aria-label="Edit Username"
-              component="span"
-              onClick={() => handleEditClick("username")}
-            >
-              <EditIcon />
-            </IconButton>
-          </div>
-        )}
+          ) : (
+            <div className="non-edit-mode">
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={username}
+                InputProps={{ readOnly: true }}
+              />
+              <IconButton
+                color="primary"
+                aria-label="Edit Username"
+                component="span"
+                onClick={() => handleEditClick("username")}
+              >
+                <EditIcon />
+              </IconButton>
+            </div>
+          )}
 
-        {/* Mobile */}
-        {isMobileEditing ? (
-          <TextField
-            label="Mobile"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-          />
-        ) : (
-          <div className="non-edit-mode">
+          {/* Mobile */}
+          {isMobileEditing ? (
             <TextField
               label="Mobile"
               variant="outlined"
               fullWidth
               margin="normal"
               value={mobile}
-              InputProps={{ readOnly: true }}
+              onChange={(e) => setMobile(e.target.value)}
             />
-            <IconButton
-              color="primary"
-              aria-label="Edit Mobile"
-              component="span"
-              onClick={() => handleEditClick("mobile")}
-            >
-              <EditIcon />
-            </IconButton>
-          </div>
-        )}
+          ) : (
+            <div className="non-edit-mode">
+              <TextField
+                label="Mobile"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={mobile}
+                InputProps={{ readOnly: true }}
+              />
+              <IconButton
+                color="primary"
+                aria-label="Edit Mobile"
+                component="span"
+                onClick={() => handleEditClick("mobile")}
+              >
+                <EditIcon />
+              </IconButton>
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSave} color="primary">

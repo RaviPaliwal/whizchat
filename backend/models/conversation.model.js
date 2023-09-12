@@ -21,8 +21,8 @@ const ConversationSchema = new mongoose.Schema(
       },
     ],
     lastMessage: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
+      type:"String",
+      default:"Send a message",
     },
     unseenCount: {
       type: Number,

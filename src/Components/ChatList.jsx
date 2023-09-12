@@ -11,7 +11,7 @@ import {
   getAllConversations,
 } from "../Utils/ConversationUtil";
 import { useGenContext } from "../Context/GeneralContext";
-import { joinRoom } from "../Socket/SocketConfig";
+// import { joinRoom } from "../Socket/SocketConfig";
 
 const ChatList = () => {
   const search = useSearchContext();
@@ -19,6 +19,19 @@ const ChatList = () => {
   const [conversations, setConversations] = useState([]);
   const [call, setCall] = useState(3);
   const socket = ctx.socket;
+
+  useEffect(() => {
+    const handleSocketMessage = (data, call) => {
+      setCall(Date.now());
+    };
+
+    socket.on("message", handleSocketMessage);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off("message", handleSocketMessage);
+    };
+  }, [socket, setCall]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,15 +49,12 @@ const ChatList = () => {
     fetchData();
   }, [call]);
 
-  //Automatically Getting New Conversation Pending
-  // useEffect(()=>{
-  //   setCall(call+3);
-  // },[socket,setCall]);
+  // Automatically Getting New Conversation Pending
 
   //joining All Rooms
-  conversations
-    ? conversations.map((resultItem) => joinRoom(socket, resultItem._id))
-    : console.log("No Chat Found");
+  // conversations
+  //   ? conversations.map((resultItem) => joinRoom(socket, resultItem._id))
+  //   : console.log("No Chat Found");
 
   return (
     <Paper id="chatList" style={{ ...chatListStyle, borderRadius: "0px" }}>
@@ -104,7 +114,7 @@ const ChatList = () => {
                     : "Url to avatar.jpg"
                 }
                 name={resultItem.receiver.name}
-                lastMessage={"Send a Message"}
+                lastMessage={resultItem.lastMessage}
               />
             ))
           : ""}

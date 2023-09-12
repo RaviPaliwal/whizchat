@@ -51,7 +51,10 @@ const SideNavbar = () => {
       </Tabs>
 
       {/* Profile Dialog */}
-      <UserProfile open={openProfileDialog} onClose={handleProfileDialogClose} />
+      <UserProfile
+        open={openProfileDialog}
+        onClose={handleProfileDialogClose}
+      />
     </Paper>
   );
 };

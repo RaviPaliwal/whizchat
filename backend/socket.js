@@ -33,8 +33,9 @@ module.exports = function(server) {
     });
 
     // Example: Sending a message to a room
-    socket.on("sendMessageToRoom", ({ roomId, message }) => {
-      
+    socket.on("sendMessageToRoom", ({ roomId,genRoomId, message,senderName }) => {
+      io.to(genRoomId).emit("message", `Message From ${senderName}`)
+      console.log(`New message By ${senderName}`);
       io.to(roomId).emit("message", message);
       console.log(`Message sent to room ${roomId}: ${message.message} by ${message.sender}`);
     });

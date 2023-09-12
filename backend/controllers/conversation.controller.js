@@ -99,7 +99,8 @@ exports.sendMessage = async (req, res) => {
   try {
     const conversation = await Conversation.findById(conversationId);
     conversation.messages.push({ sender, content });
-    conversation.lastMessage = conversation.messages[conversation.messages.length - 1];
+    conversation.lastMessage = content;
+    conversation.unseenCount = conversation.unseenCount+1;
     await conversation.save();
     res.status(201).json(conversation);
   } catch (error) {
@@ -116,3 +117,19 @@ exports.getConversationsByUser = async (req, res) => {
     res.status(500).json({ error: 'Could not retrieve conversations.' });
   }
 };
+
+exports.markAllAsRead = async(req,res) => {
+  const { conversationId } = req.params;
+  try {
+    const conversation = await Conversation.findById(conversationId);
+    conversation.unseenCount=0;
+    conversation.save();
+    res.json({success:true,messages:"Marked as Read"});
+  } catch (error) {
+    res.status(404).json({ error: 'Conversation not found.' });
+  }
+
+};
+
+
+
