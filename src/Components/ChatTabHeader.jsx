@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useGenContext } from "../Context/GeneralContext";
 import { useChatContext } from "../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
-
+import { BaseUrl } from "../config";
 const customTheme = createTheme({
   components: {
     MuiCardHeader: {
@@ -76,8 +76,13 @@ export default function ChatHeader() {
               )}
               <Grid item>
                 <Avatar
-                  sx={{ pt: 0.5, borderRadius: "8px" }}
-                  aria-label="recipe"
+                  sx={{ height: "45px", width: "45px" }}
+                  aria-label={chat.chat.receiver.avatar}
+                  src={
+                    chat.chat.receiver.avatar != null
+                      ? `${BaseUrl}/api/user/${chat.chat.receiver.email}/avatar`
+                      : "noavatar.jpg"
+                  }
                 >
                   {chat.chat.receiver.name[0]}
                 </Avatar>

@@ -1,102 +1,3 @@
-// import * as React from 'react';
-// import PropTypes from 'prop-types';
-// import Button from '@mui/material/Button';
-// import { styled } from '@mui/material/styles';
-// import Dialog from '@mui/material/Dialog';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogActions from '@mui/material/DialogActions';
-// import IconButton from '@mui/material/IconButton';
-// import CloseIcon from '@mui/icons-material/Close';
-// import Typography from '@mui/material/Typography';
-
-// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-//   '& .MuiDialogContent-root': {
-//     padding: theme.spacing(2),
-//   },
-//   '& .MuiDialogActions-root': {
-//     padding: theme.spacing(1),
-//   },
-// }));
-
-// function BootstrapDialogTitle(props) {
-//   const { children, onClose, ...other } = props;
-
-//   return (
-//     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-//       {children}
-//       {onClose ? (
-//         <IconButton
-//           aria-label="close"
-//           onClick={onClose}
-//           sx={{
-//             position: 'absolute',
-//             right: 8,
-//             top: 8,
-//             color: (theme) => theme.palette.grey[500],
-//           }}
-//         >
-//           <CloseIcon />
-//         </IconButton>
-//       ) : null}
-//     </DialogTitle>
-//   );
-// }
-
-// BootstrapDialogTitle.propTypes = {
-//   children: PropTypes.node,
-//   onClose: PropTypes.func.isRequired,
-// };
-
-// export default function CustomizedDialogs() {
-//   const [open, setOpen] = React.useState(false);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   return (
-//     <div>
-//       <Button variant="outlined" onClick={handleClickOpen}>
-//         Open dialog
-//       </Button>
-//       <BootstrapDialog
-//         onClose={handleClose}
-//         aria-labelledby="customized-dialog-title"
-//         open={open}
-//       >
-//         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-//           Modal title
-//         </BootstrapDialogTitle>
-//         <DialogContent dividers>
-//           <Typography gutterBottom>
-//             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-//             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-//             consectetur ac, vestibulum at eros.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-//             Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-//             magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-//             ullamcorper nulla non metus auctor fringilla.
-//           </Typography>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button autoFocus onClick={handleClose}>
-//             Save changes
-//           </Button>
-//         </DialogActions>
-//       </BootstrapDialog>
-//     </div>
-//   );
-// }
-
 import React, { useState } from "react";
 import {
   Dialog,
@@ -108,16 +9,70 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
+import { BaseUrl } from "../config";
 import EditIcon from "@mui/icons-material/Edit";
+import AvatarUpdateDialog from "./AvatarUpdateDialog"; // Import the AvatarUpdateDialog component
 import "../Assets/Styles/UserProfile.css";
+let user = JSON.parse(sessionStorage.getItem("user"));
 
 const UserProfile = ({ open, onClose }) => {
   const [isAvatarHovered, setIsAvatarHovered] = useState(false);
+  const [isNameEditing, setIsNameEditing] = useState(false);
+  const [isUsernameEditing, setIsUsernameEditing] = useState(false);
+  const [isMobileEditing, setIsMobileEditing] = useState(false);
+  const [isAvatarUpdateDialogOpen, setIsAvatarUpdateDialogOpen] = useState(false);
+
+  const [name, setName] = useState(user.name);
+  const [username, setUsername] = useState(user.username);
+  const [mobile, setMobile] = useState(user.mobile);
+
+  const handleEditClick = (field) => {
+    switch (field) {
+      case "name":
+        setIsNameEditing(true);
+        setName(user.name); // Set the initial value
+        break;
+      case "username":
+        setIsUsernameEditing(true);
+        setUsername(user.username); // Set the initial value
+        break;
+      case "mobile":
+        setIsMobileEditing(true);
+        setMobile(user.mobile); // Set the initial value
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleAvatarEditClick = () => {
+    setIsAvatarUpdateDialogOpen(true);
+  };
+
+  const handleAvatarEditClose = () => {
+    setIsAvatarUpdateDialogOpen(false);
+  };
+
+  const handleSave = () => {
+    // Log the values of name, username, and mobile
+    console.log("Name:", name);
+    console.log("Username:", username);
+    console.log("Mobile:", mobile);
+
+    // Reset editing states
+    setIsNameEditing(false);
+    setIsMobileEditing(false);
+    setIsUsernameEditing(false);
+
+    // Saving (you can implement your saving logic here)
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Edit Profile</DialogTitle>
-      <DialogContent>
-        <div className="profile-section">
+    <>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent>
           {/* Profile Image */}
           <div
             className={`avatar-wrapper ${isAvatarHovered ? "hovered" : ""}`}
@@ -125,7 +80,7 @@ const UserProfile = ({ open, onClose }) => {
             onMouseLeave={() => setIsAvatarHovered(false)}
           >
             <Avatar
-              src="path_to_profile_image.jpg"
+              src={`${BaseUrl}/api/user/${user.email}/avatar`}
               alt="Profile Image"
               className="avatar"
             />
@@ -134,59 +89,125 @@ const UserProfile = ({ open, onClose }) => {
                 color="primary"
                 aria-label="Edit Profile Image"
                 component="span"
+                onClick={handleAvatarEditClick} // Open avatar update dialog
               >
                 <EditIcon />
               </IconButton>
             </div>
           </div>
-          {/*current User name */}
+          {/* Current User name */}
           <div className="currentuser">
-            <p>User's Name</p>
+            <p>{user.name}</p>
             <p className="online-text">Online</p>
           </div>
-        </div>
-        {/* Name */}
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          defaultValue="John Doe"
-        />
-        <IconButton color="primary" aria-label="Edit Name" component="span">
-          <EditIcon />
-        </IconButton>
+
+          {/* Name */}
+          {isNameEditing ? (
+          <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        ) : (
+          <div className="non-edit-mode">
+            <TextField
+              label="Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={name}
+              InputProps={{ readOnly: true }}
+            />
+            <IconButton
+              color="primary"
+              aria-label="Edit Name"
+              component="span"
+              onClick={() => handleEditClick("name")}
+            >
+              <EditIcon />
+            </IconButton>
+          </div>
+        )}
 
         {/* Username */}
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          defaultValue="johndoe"
-        />
-        <IconButton color="primary" aria-label="Edit Username" component="span">
-          <EditIcon />
-        </IconButton>
+        {isUsernameEditing ? (
+          <TextField
+            label="Username"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        ) : (
+          <div className="non-edit-mode">
+            <TextField
+              label="Username"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={username}
+              InputProps={{ readOnly: true }}
+            />
+            <IconButton
+              color="primary"
+              aria-label="Edit Username"
+              component="span"
+              onClick={() => handleEditClick("username")}
+            >
+              <EditIcon />
+            </IconButton>
+          </div>
+        )}
 
         {/* Mobile */}
-        <TextField
-          label="Mobile"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          defaultValue="123-456-7890"
-        />
-        <IconButton color="primary" aria-label="Edit Mobile" component="span">
-          <EditIcon />
-        </IconButton>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+        {isMobileEditing ? (
+          <TextField
+            label="Mobile"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+          />
+        ) : (
+          <div className="non-edit-mode">
+            <TextField
+              label="Mobile"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={mobile}
+              InputProps={{ readOnly: true }}
+            />
+            <IconButton
+              color="primary"
+              aria-label="Edit Mobile"
+              component="span"
+              onClick={() => handleEditClick("mobile")}
+            >
+              <EditIcon />
+            </IconButton>
+          </div>
+        )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSave} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Avatar Update Dialog */}
+      <AvatarUpdateDialog
+        open={isAvatarUpdateDialogOpen}
+        onClose={handleAvatarEditClose}
+        userEmail={user.email}
+      />
+    </>
   );
 };
 
