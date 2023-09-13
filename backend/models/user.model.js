@@ -39,6 +39,10 @@ const UserSchema = new Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+    lastseen: {
+      type: Date,
+      default: Date.now(),
+    },
     avatar: {
       type: String,
       default: null,

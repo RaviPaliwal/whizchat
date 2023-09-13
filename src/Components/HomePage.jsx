@@ -16,7 +16,9 @@ function HomePage() {
   useEffect(() => {
     joinRoom(state.socket, user._id); // General Purpose Room
   }, [user._id, state.socket]);
+
   if (sessionStorage.getItem("login_status")) {
+    // If the user is logged in
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -28,12 +30,17 @@ function HomePage() {
             <ChatList />
           </SearchContextProvider>
           {/* Chat area */}
-          <ChatTab userid={state.user} />
+          <ChatTab />
         </Container>
       </ThemeProvider>
     );
   } else {
-    return <PageNotFound />;
+    // If the user is not logged in
+    return (
+      <>
+        <PageNotFound />
+      </>
+    );
   }
 }
 

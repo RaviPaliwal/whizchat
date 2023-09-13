@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs/promises");
 const UserModel = require("../models/user.model");
-const { ObjectId } = require('mongoose'); // Import ObjectId from mongoose
+const { ObjectId } = require("mongoose"); // Import ObjectId from mongoose
 const secretKey = "Whizchat@spsu"; // Replace with a secure secret key
 
 // Helper function to generate token
@@ -10,7 +10,7 @@ function generateToken(user) {
   const payload = {
     id: user._id,
     username: user.username,
-    email: user.email
+    email: user.email,
   };
   return jwt.sign(payload, secretKey, { expiresIn: "24h" });
 }
@@ -24,18 +24,20 @@ function handleError(res, error) {
 // Path to avatar directory
 const avatarDir = path.join(__dirname, "..", "UserData", "Avatars");
 
-
 // Register a user
 exports.register = async (req, res) => {
   try {
     const existingUser = await UserModel.findOne({ email: req.body.email });
     if (existingUser) {
-      return res.status(400).json({ success:false,message: "User with this email already exists" });
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists",
+      });
     }
     console.log(req.body);
     const newUser = new UserModel({
       username: req.body.username,
-      name:req.body.name,
+      name: req.body.name,
       email: req.body.email,
       mobile: req.body.mobile,
       password: req.body.password,
@@ -43,8 +45,8 @@ exports.register = async (req, res) => {
 
     const savedUser = await newUser.save();
     const token = generateToken(savedUser);
-
-    res.json({success:true,savedUser,token});
+    const user = savedUser;
+    res.json({ success: true, user, token });
   } catch (error) {
     handleError(res, error);
   }
@@ -57,17 +59,21 @@ exports.login = async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ success:false,message: "User not found with this email" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found with this email" });
     }
 
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      return res.status(400).json({ success:false,message: "Password incorrect" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Password incorrect" });
     }
 
     const token = generateToken(user);
 
-    res.json({success:true,user,token});
+    res.json({ success: true, user, token });
   } catch (error) {
     handleError(res, error);
   }
@@ -120,21 +126,23 @@ exports.updateAvatar = async (req, res) => {
   }
 };
 
-// Delete a user account to be saperated from this as Many Dependecies Should 
-//deleted 
+// Delete a user account to be saperated from this as Many Dependecies Should
+//deleted
 exports.deleteAccount = async (req, res) => {
   try {
     const email = req.params.email;
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ success:false,message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
-    if(user.avatar!=null){
+    if (user.avatar != null) {
       const avatarFilename = user.avatar;
       const avatarPath = path.join(avatarDir, avatarFilename);
-  
+
       await fs.unlink(avatarPath);
     }
 
@@ -146,21 +154,18 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
-
 exports.searchUsers = async (req, res) => {
-  const username  = req.query.username;
+  const username = req.query.username;
   try {
-    const users = await UserModel.find({ username: { $regex: username, $options: 'i' } });
+    const users = await UserModel.find({
+      username: { $regex: username, $options: "i" },
+    });
     res.json(users);
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Error searching users.' });
+    console.log(error);
+    res.status(500).json({ error: "Error searching users." });
   }
 };
-
-
-
-
 
 // Get a user by their ID
 exports.getUserById = async (req, res) => {
@@ -170,7 +175,9 @@ exports.getUserById = async (req, res) => {
     const user = await UserModel.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     res.json({ success: true, user });
@@ -178,5 +185,3 @@ exports.getUserById = async (req, res) => {
     handleError(res, error);
   }
 };
-
-

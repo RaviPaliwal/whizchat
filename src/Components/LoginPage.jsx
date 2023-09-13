@@ -1,3 +1,4 @@
+// Import necessary dependencies and components
 import React, { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,36 +11,37 @@ import Box from "@mui/material/Box";
 import logo from "../Assets/Images/logo.png";
 import "../Assets/Styles/Login.css";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from '../Context/AuthContext';
 import { BaseUrl } from "../config";
 import { Checkbox, FormControlLabel, Link } from "@mui/material";
 
 export default function LoginPage() {
+  // State variables
   const [showSignup, setShowSignup] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
-  // const [avatar, setAvatar] = useState(null);
-
-  const [username, setUsername] = useState(null);
-  const [name, setName] = useState(null);
-
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  
   const navigate = useNavigate();
-  // const auth = useAuth();
 
+  // Function to handle login
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    // Request headers
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
     };
 
+    // Request body content
     const bodyContent = JSON.stringify({
       email,
       password,
     });
 
+    // Request options
     const reqOptions = {
       method: "POST",
       headers: headersList,
@@ -49,11 +51,11 @@ export default function LoginPage() {
     try {
       const response = await fetch(`${BaseUrl}/api/login`, reqOptions);
       const responseData = await response.json();
-      console.log(responseData);
+      console.log(responseData.user);
 
       if (responseData.success === true) {
         const user = JSON.stringify(responseData.user);
-        await sessionStorage.setItem("user", user);
+        sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
         navigate("/chats");
       }
@@ -62,9 +64,11 @@ export default function LoginPage() {
     }
   };
 
+  // Function to handle signup
   const handleSignup = async (event) => {
     event.preventDefault();
 
+    // Request body content
     const bodyContent = JSON.stringify({
       name: name,
       username: username,
@@ -72,8 +76,10 @@ export default function LoginPage() {
       password: password,
       mobile: mobile,
     });
+
     console.log(bodyContent);
 
+    // Request headers
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
@@ -88,8 +94,9 @@ export default function LoginPage() {
 
       const responseData = await response.json();
       console.log(responseData.user);
+
       if (responseData.success === true) {
-        const user = JSON.stringify(responseData.user);
+        const user = await JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
         navigate("/chats");
@@ -99,11 +106,13 @@ export default function LoginPage() {
     }
   };
 
+  // Function to toggle between login and signup
   const toggleSignup = (e) => {
     e.preventDefault();
     setShowSignup(!showSignup);
   };
 
+  // Theme for the UI
   const mytheme = createTheme({
     palette: {
       primary: {
@@ -116,6 +125,7 @@ export default function LoginPage() {
     <ThemeProvider theme={mytheme}>
       <CssBaseline />
       <Grid container sx={{ height: "100vh" }}>
+        {/* Background Image */}
         <Grid
           item
           xs={12}
@@ -155,6 +165,7 @@ export default function LoginPage() {
           </div>
         </Grid>
 
+        {/* Login or Signup Form */}
         {showSignup ? (
           <Grid
             px={8}
@@ -251,7 +262,6 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
@@ -272,7 +282,11 @@ export default function LoginPage() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" onClick={toggleSignup} variant="body2">
+                    <Link
+                      href="#"
+                      onClick={toggleSignup}
+                      variant="body2"
+                    >
                       Already have an account? Log in
                     </Link>
                   </Grid>
@@ -358,7 +372,11 @@ export default function LoginPage() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" onClick={toggleSignup} variant="body2">
+                    <Link
+                      href="#"
+                      onClick={toggleSignup}
+                      variant="body2"
+                    >
                       Don't have an account? Sign Up
                     </Link>
                   </Grid>

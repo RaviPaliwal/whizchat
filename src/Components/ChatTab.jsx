@@ -20,6 +20,7 @@ const ChatTab = () => {
     const fetchMsg = async () => {
       const res = await fetch(`${BaseUrl}/api/conversations/${chat.chat._id}`);
       const data = await res.json();
+
       if (data.error) {
         console.log("Error: " + data.error);
       } else {
@@ -27,6 +28,7 @@ const ChatTab = () => {
         // console.log(data.messages)
       }
     };
+
     if (chat.chat._id !== "Whizchat!!!null") {
       fetchMsg();
     }
@@ -48,6 +50,7 @@ const ChatTab = () => {
 
   const sendMessage = async (text) => {
     const message = text;
+
     // Function to send a message
     let headersList = {
       Accept: "*/*",
@@ -72,7 +75,6 @@ const ChatTab = () => {
     console.log(data);
 
     const newMessage = { message, sender: user._id };
-
     // setMessages([...messages, newMessage]);
 
     sendMessageToRoom(
@@ -82,6 +84,7 @@ const ChatTab = () => {
       newMessage,
       user.name
     );
+
     // You can place your sending logic here if you have an alternative to socket.io
   };
 
@@ -97,7 +100,6 @@ const ChatTab = () => {
       <Paper
         style={{
           //{chat.chat.receiver.username ==="!!!null"?} conditionally setting
-
           backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           height: "100%",
           backgroundPositionX: "center",
@@ -121,9 +123,7 @@ const ChatTab = () => {
             messages.map((message, index) => (
               <Message key={index} message={message} />
             ))}
-
           {/* {messages.length > 0 &&
-        
             messages.map((message, index) => (
               <Message key={index} message={message} />
             ))} */}

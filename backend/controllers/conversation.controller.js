@@ -128,8 +128,9 @@ exports.markAllAsRead = async(req,res) => {
   } catch (error) {
     res.status(404).json({ error: 'Conversation not found.' });
   }
-
 };
+
+exports.lastActivity
 
 
 

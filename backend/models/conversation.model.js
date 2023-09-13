@@ -21,7 +21,7 @@ const ConversationSchema = new mongoose.Schema(
       },
     ],
     lastMessage: {
-      type:"String",
+      type:String,
       default:"Send a message",
     },
     unseenCount: {
@@ -35,10 +35,7 @@ const ConversationSchema = new mongoose.Schema(
     groupName: String,
     groupMembers: [
       {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
+        type:String,
         isAdmin: Boolean,
       },
     ],

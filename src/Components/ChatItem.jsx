@@ -19,19 +19,22 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
   const socket = ctx.socket;
 
   const markRead = async () => {
-    let headersList = {
+    // Set headers for the request
+    const headers = {
       Accept: "*/*",
     };
 
-    let response = await fetch(
+    // Send a POST request to mark the conversation as read
+    const response = await fetch(
       `${BaseUrl}/api/conversation/${chat.chat._id}/markread`,
       {
         method: "POST",
-        headers: headersList,
+        headers: headers,
       }
     );
 
-    let data = await response.json();
+    // Parse the response data
+    const data = await response.json();
     console.log(data);
   };
 
@@ -56,7 +59,6 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
     backgroundColor: "#790100", // Customize the badge background color
     color: "white", // Customize the badge text color
     borderRadius: "50%", // Make it a circle
-    // animation: "",F
     padding: "4px 12px", // Adjust the padding as needed
   };
 
@@ -67,7 +69,6 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
         sx={{ padding: 0, textTransform: "none", color: "inherit" }}
         onClick={() => {
           chat.setChat(newchat);
-          // Should it be good to join the room here using socket
           joinRoom(socket, newchat._id);
           markRead();
           newchat.unseenCount = 0;
@@ -86,14 +87,14 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
           </ListItemAvatar>
           <ListItemText
             primary={name}
-            secondary={`${
+            secondary={`${newchat.messages.length > 0 &&
               newchat.messages[newchat.messages.length - 1].sender ===
-              newchat.receiver._id
+                newchat.receiver._id
                 ? newchat.receiver.name.split(" ")[0] + " :  "
-                : "You :   "
-            }${lastMessage}`}
+                : "You :   "}${lastMessage}`}
           />
-          {newchat.unseenCount !== 0 &&
+          {newchat.messages.length > 0 &&
+            newchat.unseenCount !== 0 &&
             newchat.messages[newchat.messages.length - 1].sender ===
               newchat.receiver._id && (
               <Badge sx={badgeStyle}>{newchat.unseenCount}</Badge>
