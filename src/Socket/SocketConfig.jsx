@@ -9,21 +9,15 @@ export const joinRoom = (socket, room_id) => {
   socket.emit("joinRoom", room_id);
 }
 
+export const setLastSeen = (socket, userId) => {
+  socket.emit("setLastSeen", userId);
+}
+
 // Add event handlers for other events as needed
 export const sendMessageToRoom = (socket, roomId,genRoomId, message,senderName) => {
   socket.emit("sendMessageToRoom", { roomId,genRoomId, message,senderName });
 }
 
-// export const getMessagefromRoom = (socket)=>{
-  // socket.on('message',(data) =>{
-  //   console.log(data.message);
-  //   return Date.now();
-  // })
-// }
 
-// Example of a custom event
-export const sendCustomEvent = (socket, data) => {
-  socket.emit("customEvent", data);
-}
 
 

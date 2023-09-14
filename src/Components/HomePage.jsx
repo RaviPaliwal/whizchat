@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CssBaseline, ThemeProvider, Container } from "@mui/material";
 import ChatList from "./ChatList";
 import ChatTab from "./ChatTab";
@@ -7,15 +7,35 @@ import { theme, appContainerStyle } from "./Theme";
 import { SearchContextProvider } from "../Context/SearchContext";
 import PageNotFound from "./PageNotFound";
 import { useGenContext } from "../Context/GeneralContext";
-import { joinRoom } from "../Socket/SocketConfig";
+import { joinRoom, setLastSeen } from "../Socket/SocketConfig";
+import { setOnlineStatus } from "../Utils/ConversationUtil";
 
 function HomePage() {
+  const [joined, setJoined] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user"));
   const state = useGenContext();
+  const socket = state.socket;
 
   useEffect(() => {
-    joinRoom(state.socket, user._id); // General Purpose Room
-  }, [user._id, state.socket]);
+    if (!joined) {
+      joinRoom(socket, user._id); //General Purpose Room
+      console.log("Joined General Purpose Room " + user._id);
+      setJoined(true);
+      setOnlineStatus(user._id, "Online");
+      setLastSeen(socket, user._id);
+    }
+  }, [joined, socket, user._id]);
+
+  useEffect(() => {
+    return () => {
+      // This code will run when the component unmounts
+      setOnlineStatus(user._id, "Offline"); // Set lastSeen to "Offline"
+      setLastSeen(socket, user._id);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {});
 
   if (sessionStorage.getItem("login_status")) {
     // If the user is logged in

@@ -40,8 +40,8 @@ const UserSchema = new Schema(
       default: "active",
     },
     lastseen: {
-      type: Date,
-      default: Date.now(),
+      type: String,
+      default: "offline",
     },
     avatar: {
       type: String,

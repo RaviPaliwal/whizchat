@@ -11,6 +11,7 @@ export const GenStateProvider = ({ children }) => {
   const [autosetView, setAutoSetView] = useState(true);
   const [handle, setHandle] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  
   const socket = socketConnect();
 
   useEffect(() => {
@@ -20,10 +21,10 @@ export const GenStateProvider = ({ children }) => {
     // Set initial display based on window width
     if (chatList && chatsElement) {
       if (window.innerWidth <= 768) {
-        chatList.style.display = 'none';
+        chatList.style.display = 'block';
         chatList.style.maxWidth = '100%';
         chatList.style.flexGrow = 1;
-        chatsElement.style.display = 'block';
+        chatsElement.style.display = 'none';
       } else {
         chatList.style.display = 'block';
       }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ListItem,
   ListItemAvatar,
@@ -26,7 +26,7 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
 
     // Send a POST request to mark the conversation as read
     const response = await fetch(
-      `${BaseUrl}/api/conversation/${chat.chat._id}/markread`,
+      `${BaseUrl}/api/conversation/${newchat._id}/markread`,
       {
         method: "POST",
         headers: headers,
@@ -35,7 +35,7 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
 
     // Parse the response data
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
   };
 
   const listItemStyle = {
@@ -67,17 +67,18 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
       {/* Wrap the Box with a Button */}
       <Button
         sx={{ padding: 0, textTransform: "none", color: "inherit" }}
-        onClick={() => {
-          chat.setChat(newchat);
-          joinRoom(socket, newchat._id);
-          markRead();
+        onClick={async () => {
           newchat.unseenCount = 0;
+          joinRoom(socket, newchat._id);
+          console.log("Joined New Chat Room " + newchat._id);
+          await chat.setChat(newchat);
           const chatList = document.getElementById("chatList");
           const chatsElement = document.getElementById("chats");
           if (ctx.screenWidth < 768) {
             chatList.style.display = "none";
             chatsElement.style.display = "block";
           }
+          markRead();
         }}
         fullWidth
       >

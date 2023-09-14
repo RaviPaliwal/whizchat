@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs/promises");
 const UserModel = require("../models/user.model");
-const { ObjectId } = require("mongoose"); // Import ObjectId from mongoose
 const secretKey = "Whizchat@spsu"; // Replace with a secure secret key
 
 // Helper function to generate token
@@ -183,5 +182,28 @@ exports.getUserById = async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     handleError(res, error);
+  }
+};
+
+exports.updateLastseen = async (req, res) => {
+  const { userId, status } = req.params;
+  try {
+    const user = await UserModel.findById(userId);
+    user.lastseen = status;
+    await user.save();
+    res.status(200).json({ success: true, message: `Lastseen: ${status}` });
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};
+
+exports.getLastseen = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await UserModel.findById(userId);
+    res.json({lastseen:user.lastseen});
+  } catch (error) {
+    res.json({lastseen:"...fetching"});
+    console.log(error.message);
   }
 };

@@ -22,7 +22,9 @@ export default function LoginPage() {
   const [mobile, setMobile] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
-  
+
+
+
   const navigate = useNavigate();
 
   // Function to handle login
@@ -57,6 +59,9 @@ export default function LoginPage() {
         const user = JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
+
+        //setting Online
+
         navigate("/chats");
       }
     } catch (error) {
@@ -282,11 +287,7 @@ export default function LoginPage() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link
-                      href="#"
-                      onClick={toggleSignup}
-                      variant="body2"
-                    >
+                    <Link href="#" onClick={toggleSignup} variant="body2">
                       Already have an account? Log in
                     </Link>
                   </Grid>
@@ -372,11 +373,7 @@ export default function LoginPage() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link
-                      href="#"
-                      onClick={toggleSignup}
-                      variant="body2"
-                    >
+                    <Link href="#" onClick={toggleSignup} variant="body2">
                       Don't have an account? Sign Up
                     </Link>
                   </Grid>

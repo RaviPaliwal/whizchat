@@ -16,8 +16,10 @@ const ChatTab = () => {
   const socket = ctx.socket;
   const [getMsg, setGetMsg] = useState(5);
 
+
   useEffect(() => {
     const fetchMsg = async () => {
+      if(chat.chat._id!=="Whizchat!!!null"){
       const res = await fetch(`${BaseUrl}/api/conversations/${chat.chat._id}`);
       const data = await res.json();
 
@@ -26,12 +28,9 @@ const ChatTab = () => {
       } else {
         setMessages(data.messages);
         // console.log(data.messages)
-      }
+      }}
     };
-
-    if (chat.chat._id !== "Whizchat!!!null") {
       fetchMsg();
-    }
   }, [chat.chat._id, getMsg]);
 
   useEffect(() => {
@@ -71,11 +70,10 @@ const ChatTab = () => {
       }
     );
 
-    let data = await response.json();
-    console.log(data);
+    // let data = await response.json();
+    // console.log(data);
 
     const newMessage = { message, sender: user._id };
-    // setMessages([...messages, newMessage]);
 
     sendMessageToRoom(
       ctx.socket,
@@ -85,7 +83,6 @@ const ChatTab = () => {
       user.name
     );
 
-    // You can place your sending logic here if you have an alternative to socket.io
   };
 
   const scrollRef = useRef(null);
@@ -130,8 +127,8 @@ const ChatTab = () => {
         </Box>
 
         <Box style={Typerstyle}>
-          {chat.chat.receiver.username === "!!!null" ? (
-            ""
+          {chat.chat.receiver._id === "Whizchat!!!null" ? (
+            null
           ) : (
             <TextField
               label="Type a message"

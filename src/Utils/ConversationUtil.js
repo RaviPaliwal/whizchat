@@ -60,3 +60,17 @@ export const createConversation = async (userIds) => {
 };
 
 // Add other conversation-related functions here
+export const setOnlineStatus = async (userId,status)=>{
+  console.log(`Setting ${status} status`)
+  let headersList = {
+    Accept: "*/*",
+  };
+  
+  await fetch(
+    `${BaseUrl}/api/user/${userId}/${status}`,
+    {
+      method: "PUT",
+      headers: headersList,
+    }
+  );
+}

@@ -28,6 +28,7 @@ const ConversationSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    
     group: {
       type: Boolean,
       default: false,

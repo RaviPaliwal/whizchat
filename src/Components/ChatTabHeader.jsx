@@ -31,15 +31,54 @@ const customTheme = createTheme({
 });
 
 export default function ChatHeader() {
+  const states = useGenContext();
+  const chat = useChatContext();
+  const socket = states.socket;
+  const [lastseen, setLastseen] = useState("");
+
+  React.useEffect(() => {
+    const updateLastSeen = async () => {
+      try {
+        // console.log("Updating last seen...");
+        if (chat.chat.receiver._id !== "Whizchat!!!null") {
+          const ls = await fetch(`${BaseUrl}/api/user/lastseen/${chat.chat.receiver._id}`);
+          const responce = await ls.json();
+          console.log("Last seen response:", responce);
+          setLastseen(responce.lastseen);
+        } 
+        else{
+          // console.log(chat.chat.receiver.lastseen)
+          setLastseen("...fetching");
+        }
+      } catch (error) {
+        console.error("Error fetching last seen:", error);
+        // Handle the error as needed.
+        setLastseen(chat.chat.receiver.lastseen);
+      }
+    };
+    if(chat.chat.receiver._id!=="Whizchat!!!null"){
+      console.log("Updating")
+      updateLastSeen();
+    }
+    updateLastSeen()
+    socket.on("lastseenUpdate", (userId) => {
+      if(chat.chat.receiver._id!=="Whizchat!!!null"&&chat.chat.receiver._id===userId){
+        console.log("IN Skdshdh")
+        updateLastSeen();
+      }
+    });
+    return () => {
+      socket.off("lastseenUpdate", updateLastSeen);
+    };
+  
+  },[socket,chat.chat.receiver._id,chat.chat.receiver.lastseen]);
+
   const handleBack = () => {
     const chatList = document.getElementById("chatList");
     const chatsElement = document.getElementById("chats");
     chatsElement.style.display = "none";
     chatList.style.display = "block";
   };
-
-  const states = useGenContext();
-  const chat = useChatContext();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,7 +99,6 @@ export default function ChatHeader() {
     // Handle clearing the chat here
     handleClose();
   };
-
   return (
     <ThemeProvider theme={customTheme}>
       <Card sx={{ maxWidth: "100%", height: "5rem", borderRadius: "0px" }}>
@@ -77,7 +115,11 @@ export default function ChatHeader() {
               <Grid item>
                 <Avatar
                   sx={{ height: "45px", width: "45px" }}
-                  aria-label={chat.chat.receiver.avatar}
+                  aria-label={
+                    chat.chat.receiver._id !== "Whizchat!!!null"
+                      ? chat.chat.receiver.avatar
+                      : "null.png"
+                  }
                   src={
                     chat.chat.receiver.avatar != null
                       ? `${BaseUrl}/api/user/${chat.chat.receiver.email}/avatar`
@@ -88,15 +130,19 @@ export default function ChatHeader() {
                 </Avatar>
               </Grid>
               <Grid item style={{ display: "flex", flexDirection: "column" }}>
-                {chat.chat.receiver.name}
+                {chat.chat.receiver._id === "Whizchat!!!null"
+                  ? "Whizchat"
+                  : chat.chat.receiver.name}
                 <span style={{ fontSize: "17px" }} className="text-success">
-                  {chat.chat.receiver.status}
+                  {chat.chat.receiver._id === "Whizchat!!!null"
+                    ? "Open a Chat"
+                    : lastseen}
                 </span>
               </Grid>
             </Grid>
           }
           action={
-            chat.chat.receiver.username !== "!!!null" && (
+            chat.chat.receiver._id !== "Whizchat!!!null" && (
               <div>
                 <IconButton aria-label="settings" onClick={handleClick}>
                   <MoreVertIcon />
