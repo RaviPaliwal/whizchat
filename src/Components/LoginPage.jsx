@@ -77,7 +77,7 @@ export default function LoginPage() {
       mobile: mobile,
     });
 
-    console.log(bodyContent);
+    // console.log(bodyContent);
 
     // Request headers
     const headersList = {
@@ -93,7 +93,7 @@ export default function LoginPage() {
       });
 
       const responseData = await response.json();
-      console.log(responseData.user);
+      console.log(responseData);
 
       if (responseData.success === true) {
         const user = await JSON.stringify(responseData.user);

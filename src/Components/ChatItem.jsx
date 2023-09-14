@@ -87,11 +87,13 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
           </ListItemAvatar>
           <ListItemText
             primary={name}
-            secondary={`${newchat.messages.length > 0 &&
+            secondary={`${
+              newchat.messages.length > 0 &&
               newchat.messages[newchat.messages.length - 1].sender ===
                 newchat.receiver._id
                 ? newchat.receiver.name.split(" ")[0] + " :  "
-                : "You :   "}${lastMessage}`}
+                : "You :   "
+            }${lastMessage}`}
           />
           {newchat.messages.length > 0 &&
             newchat.unseenCount !== 0 &&
