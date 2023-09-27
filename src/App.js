@@ -11,7 +11,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" index element={< LoginPage />}/>
+        <Route path="/" index element={<><LoginPage/></>}/>
         <Route path="/chats" element={<GenStateProvider><ChatContextProvider><HomePage/></ChatContextProvider></GenStateProvider>}/>
         {/* Add more routes here if needed */}
 

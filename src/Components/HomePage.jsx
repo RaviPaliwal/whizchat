@@ -35,7 +35,20 @@ function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    // Set user as "Offline" when the tab is closed or navigated away
+    const handleTabClose = () => {
+      setOnlineStatus(user._id, "Offline");
+      setLastSeen(socket, user._id);
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+
+    return () => {
+      // Cleanup: remove the event listener
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [socket, user._id]);
 
   if (sessionStorage.getItem("login_status")) {
     // If the user is logged in
