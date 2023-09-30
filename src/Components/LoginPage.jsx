@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import logo from "../Assets/Images/logo.png";
 import "../Assets/Styles/Login.css";
 import { useNavigate } from "react-router-dom";
-import { BaseUrl } from "../config";
+import { BaseUrl, RandPhotoUrl } from "../config";
 import { Checkbox, FormControlLabel, Link } from "@mui/material";
 import { useAlertContext } from "../Context/AlertContext";
 
@@ -142,8 +142,7 @@ export default function LoginPage() {
           md={6}
           sx={{
             position: "relative",
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage: `url(${RandPhotoUrl})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

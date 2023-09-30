@@ -6,7 +6,7 @@ import ChatHeader from "./ChatTabHeader";
 import { useChatContext } from "../Context/ChatContext";
 import { sendMessageToRoom } from "../Socket/SocketConfig";
 import { useGenContext } from "../Context/GeneralContext";
-import { BaseUrl } from "../config";
+import { BaseUrl, RandPhotoUrlChat } from "../config";
 
 const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
@@ -97,7 +97,7 @@ const ChatTab = () => {
       <Paper
         style={{
           //{chat.chat.receiver.username ==="!!!null"?} conditionally setting
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+          backgroundImage: `url(${RandPhotoUrlChat})`,
           height: "100%",
           backgroundPositionX: "center",
           backgroundPositionY: "center",

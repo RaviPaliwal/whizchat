@@ -57,7 +57,10 @@ function HomePage() {
         <CssBaseline />
         <Container maxWidth={false} disableGutters style={appContainerStyle}>
           {/* Sidebar */}
-          <SideNavbar /> {/* Use the SideNavbar component */}
+          <SearchContextProvider>
+          <SideNavbar />
+          </SearchContextProvider>
+           {/* Use the SideNavbar component */}
           {/* Chat profiles */}
           <SearchContextProvider>
             <ChatList />

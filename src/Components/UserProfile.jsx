@@ -75,7 +75,7 @@ const UserProfile = ({ open, onClose }) => {
     <>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ minHeight: "300px", minWidth: "400px",maxHeight: "400px", maxWidth: "400px" }}>
           {/* Profile Image */}
           <div
             className={`avatar-wrapper ${isAvatarHovered ? "hovered" : ""}`}

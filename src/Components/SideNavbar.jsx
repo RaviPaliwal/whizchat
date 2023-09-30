@@ -3,9 +3,11 @@ import { Paper, Tabs, Tab, SpeedDialIcon } from "@mui/material";
 import { AccountCircle, Chat } from "@mui/icons-material";
 import { sidebarStyle } from "./Theme";
 import UserProfile from "./UserProfile"; // Import the UserProfile component
+import AddGroupChat from "./AddGroupChat";
 
 const SideNavbar = () => {
   const [openProfileDialog, setOpenProfileDialog] = useState(false);
+  const [groupDialog,setGroupDialog] = useState(false);
 
   const handleProfileDialogOpen = () => {
     setOpenProfileDialog(true);
@@ -13,6 +15,14 @@ const SideNavbar = () => {
 
   const handleProfileDialogClose = () => {
     setOpenProfileDialog(false);
+  };
+
+  const handleGroupDialogOpen = () => {
+    setGroupDialog(true);
+  };
+
+  const handleGroupDialogClose = () => {
+    setGroupDialog(false);
   };
 
   return (
@@ -45,8 +55,9 @@ const SideNavbar = () => {
         />
         <Tab
           sx={{ typography: { fontSize: 10 } }}
-          label="Add Chat"
+          label="Group"
           icon={<SpeedDialIcon className="customNavicon" />}
+          onClick={handleGroupDialogOpen}
         />
       </Tabs>
 
@@ -55,6 +66,14 @@ const SideNavbar = () => {
         open={openProfileDialog}
         onClose={handleProfileDialogClose}
       />
+
+      {/* Add Group Chat */}
+      <AddGroupChat
+        open = {groupDialog}
+        onClose={handleGroupDialogClose}
+      />
+
+
     </Paper>
   );
 };

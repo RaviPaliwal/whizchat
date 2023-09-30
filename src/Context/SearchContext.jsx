@@ -36,6 +36,7 @@ export const SearchContextProvider = ({ children }) => {
     } else {
       setSearchResults([]); // Clear search results if query is less than 3 characters
     }
+    return searchResults;
   };
 
   const value = {

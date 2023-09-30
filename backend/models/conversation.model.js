@@ -36,7 +36,7 @@ const ConversationSchema = new mongoose.Schema(
     groupName: String,
     groupMembers: [
       {
-        type:String,
+        type:String, //ID Goes Here
         isAdmin: Boolean,
       },
     ],
