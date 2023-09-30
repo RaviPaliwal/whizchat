@@ -8,7 +8,7 @@ module.exports = function (server) {
   });
 
   io.on("connection", (socket) => {
-    console.log("User connected");
+    // console.log("User connected");
 
     // Handle events when a user disconnects
     socket.on("disconnect", () => {

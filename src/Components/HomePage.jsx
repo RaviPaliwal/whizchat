@@ -8,7 +8,7 @@ import { SearchContextProvider } from "../Context/SearchContext";
 import PageNotFound from "./PageNotFound";
 import { useGenContext } from "../Context/GeneralContext";
 import { joinRoom, setLastSeen } from "../Socket/SocketConfig";
-import { setOnlineStatus } from "../Utils/ConversationUtil";
+import { getCurrentDateTime, setOnlineStatus } from "../Utils/ConversationUtil";
 
 function HomePage() {
   const [joined, setJoined] = useState(false);
@@ -27,18 +27,9 @@ function HomePage() {
   }, [joined, socket, user._id]);
 
   useEffect(() => {
-    return () => {
-      // This code will run when the component unmounts
-      setOnlineStatus(user._id, "Offline"); // Set lastSeen to "Offline"
-      setLastSeen(socket, user._id);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     // Set user as "Offline" when the tab is closed or navigated away
     const handleTabClose = () => {
-      setOnlineStatus(user._id, "Offline");
+      setOnlineStatus(user._id, Date.now());
       setLastSeen(socket, user._id);
     };
 

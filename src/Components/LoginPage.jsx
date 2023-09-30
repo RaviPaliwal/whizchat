@@ -1,5 +1,5 @@
 // Import necessary dependencies and components
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -14,8 +14,23 @@ import { useNavigate } from "react-router-dom";
 import { BaseUrl, RandPhotoUrl } from "../config";
 import { Checkbox, FormControlLabel, Link } from "@mui/material";
 import { useAlertContext } from "../Context/AlertContext";
+import { setOnlineStatus,getCurrentDateTime } from "../Utils/ConversationUtil";
+import { setLastSeen, socketConnect } from "../Socket/SocketConfig";
 
 export default function LoginPage() {
+  //setting the lastseen when someone press back button
+  const socket = socketConnect();
+  useEffect(() => {
+    if (sessionStorage.getItem('user')) {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    
+      setOnlineStatus(user._id,Date.now() );
+      setLastSeen(socket, user._id);
+    }
+  });
+
+  //end setting the lastseen
+
   // State variables
   const Ac = useAlertContext();
   const [showSignup, setShowSignup] = useState(false);

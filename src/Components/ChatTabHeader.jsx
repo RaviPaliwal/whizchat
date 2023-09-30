@@ -14,6 +14,7 @@ import { useGenContext } from "../Context/GeneralContext";
 import { useChatContext } from "../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
 import { BaseUrl } from "../config";
+import { getLastSeenTime} from "../Utils/ConversationUtil";
 const customTheme = createTheme({
   components: {
     MuiCardHeader: {
@@ -139,7 +140,7 @@ export default function ChatHeader() {
                 <span style={{ fontSize: "17px" }} className="text-success">
                   {chat.chat.receiver._id === "Whizchat!!!null"
                     ? "Open a Chat"
-                    : lastseen}
+                    : getLastSeenTime(lastseen)}
                 </span>
               </Grid>
             </Grid>
