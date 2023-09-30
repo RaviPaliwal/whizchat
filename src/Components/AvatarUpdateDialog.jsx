@@ -63,11 +63,7 @@ const AvatarUploadDialog = ({ open, onClose, userEmail }) => {
           value={userEmail}
           InputProps={{ readOnly: true }}
         />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-        />
+        <input type="file" accept="image/*" onChange={handleFileChange} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleUpload} color="primary">

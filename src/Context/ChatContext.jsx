@@ -14,7 +14,7 @@ export const useChatContext = () => {
 export const ChatContextProvider = ({ children }) => {
   // Define your chat object and setChat function
   const [chat, setChat] = useState({
-    _id: "Whizchat!!!null",//Dont Change Sensitive
+    _id: "Whizchat!!!null", //Dont Change Sensitive
     members: ["64dsdssdsdd", "64ec4sascsa"],
     unseenCount: 0,
     group: false,

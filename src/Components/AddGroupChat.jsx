@@ -4,15 +4,12 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
   CardHeader,
-  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
-  ListItemAvatar,
   Stack,
   TextField,
   Typography,
@@ -28,6 +25,7 @@ const AddGroupChat = ({ open, onClose }) => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const Sc = useSearchContext();
 
+  // Handle search input
   const handleSearch = async (e) => {
     e.preventDefault();
     const searchTerm = e.target.value;
@@ -40,21 +38,22 @@ const AddGroupChat = ({ open, onClose }) => {
     }
   };
 
+  // Handle member selection
   const handleSelectMember = (member) => {
-    // Check if the member is not already in selectedMembers
     if (!selectedMembers.some((selected) => selected._id === member._id)) {
       setSelectedMembers([...selectedMembers, member]);
     }
   };
 
+  // Handle member removal
   const handleRemoveMember = (member) => {
-    // Filter out the selected member to remove from the array
     const updatedMembers = selectedMembers.filter(
       (selected) => selected._id !== member._id
     );
     setSelectedMembers(updatedMembers);
   };
 
+  // Define steps for the dialog
   const steps = [
     {
       title: "Group Details",
@@ -82,7 +81,12 @@ const AddGroupChat = ({ open, onClose }) => {
           <Typography variant="subtitle1" color="primary">
             <Search /> Search Users
           </Typography>
-          <TextField variant="standard" fullWidth onChange={handleSearch} />
+          <TextField
+            value={searchTerm}
+            variant="standard"
+            fullWidth
+            onChange={handleSearch}
+          />
 
           {/* Display search results */}
           {searchResults.map((result) => (
@@ -90,21 +94,31 @@ const AddGroupChat = ({ open, onClose }) => {
               key={result._id}
               variant="outlined"
               sx={{ marginBottom: 2 }}
-              style={{ display: "flex", marginTop: "5px", justifyContent:"space-between", height:"4rem" }}
+              style={{
+                display: "flex",
+                marginTop: "5px",
+                justifyContent: "space-between",
+                height: "4rem",
+              }}
             >
               <CardHeader
-                style={{marginTop: "15px", alignSelf:"center"}}
+                style={{ marginTop: "15px", alignSelf: "center" }}
                 avatar={
-                    result.avatar !==null?
-                  (<Avatar
-                    style={{marginBottom: "15px"}}
-                    alt={result.username}
-                    src={`${BaseUrl}/api/user/${result.email}/avatar`}
-                    aria-label="userAvatar"
-                  />):(<Avatar
-                    style={{marginBottom: "15px"}}
-                    alt={result.username}
-                  >{result.name[0]}</Avatar>)
+                  result.avatar !== null ? (
+                    <Avatar
+                      style={{ marginBottom: "15px" }}
+                      alt={result.username}
+                      src={`${BaseUrl}/api/user/${result.email}/avatar`}
+                      aria-label="userAvatar"
+                    />
+                  ) : (
+                    <Avatar
+                      style={{ marginBottom: "15px" }}
+                      alt={result.username}
+                    >
+                      {result.name[0]}
+                    </Avatar>
+                  )
                 }
                 action={<IconButton aria-label=""></IconButton>}
                 title={result.name}
@@ -112,7 +126,6 @@ const AddGroupChat = ({ open, onClose }) => {
                   <p style={{ color: "#af9faf" }}>{result.username}</p>
                 }
               />
-
               <CardActions>
                 <IconButton
                   color="primary"
@@ -131,44 +144,52 @@ const AddGroupChat = ({ open, onClose }) => {
               Selected Members:
             </Typography>
             {selectedMembers.map((result) => (
-               <Card
-               key={result._id}
-               variant="outlined"
-               sx={{ marginBottom: 2 }}
-               style={{ display: "flex", marginTop: "5px",justifyContent:"space-between", height:"4rem" }}
-             >
-               <CardHeader
-                 style={{marginTop: "15px"}}
-                 avatar={
-                    result.avatar !==null?
-                    (<Avatar
-                        style={{marginBottom: "15px"}}
-                      alt={result.username}
-                      src={`${BaseUrl}/api/user/${result.email}/avatar`}
-                      aria-label="userAvatar"
-                    />):(<Avatar
-                        style={{marginBottom: "15px"}}
-                      alt={result.username}
-                    >{result.name[0]}</Avatar>)
-                 }
-                 action={<IconButton aria-label=""></IconButton>}
-                 title={result.name}
-                 subheader={
-                   <p style={{ color: "#af9faf" }}>{result.username}</p>
-                 }
-               />
- 
-               <CardActions>
-                 <IconButton
-
-                   color="primary"
-                   variant="outlined"
-                   onClick={() => handleRemoveMember(result)}
-                 >
-                   <Remove/>
-                 </IconButton>
-               </CardActions>
-             </Card>
+              <Card
+                key={result._id}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+                style={{
+                  display: "flex",
+                  marginTop: "5px",
+                  justifyContent: "space-between",
+                  height: "4rem",
+                }}
+              >
+                <CardHeader
+                  style={{ marginTop: "15px" }}
+                  avatar={
+                    result.avatar !== null ? (
+                      <Avatar
+                        style={{ marginBottom: "15px" }}
+                        alt={result.username}
+                        src={`${BaseUrl}/api/user/${result.email}/avatar`}
+                        aria-label="userAvatar"
+                      />
+                    ) : (
+                      <Avatar
+                        style={{ marginBottom: "15px" }}
+                        alt={result.username}
+                      >
+                        {result.name[0]}
+                      </Avatar>
+                    )
+                  }
+                  action={<IconButton aria-label=""></IconButton>}
+                  title={result.name}
+                  subheader={
+                    <p style={{ color: "#af9faf" }}>{result.username}</p>
+                  }
+                />
+                <CardActions>
+                  <IconButton
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => handleRemoveMember(result)}
+                  >
+                    <Remove />
+                  </IconButton>
+                </CardActions>
+              </Card>
             ))}
           </div>
         </>
@@ -176,10 +197,12 @@ const AddGroupChat = ({ open, onClose }) => {
     },
   ];
 
+  // Handle next step
   const handleNext = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
 
+  // Handle previous step
   const handleBack = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };

@@ -16,21 +16,23 @@ const ChatTab = () => {
   const socket = ctx.socket;
   const [getMsg, setGetMsg] = useState(5);
 
-
   useEffect(() => {
     const fetchMsg = async () => {
-      if(chat.chat._id!=="Whizchat!!!null"){
-      const res = await fetch(`${BaseUrl}/api/conversations/${chat.chat._id}`);
-      const data = await res.json();
+      if (chat.chat._id !== "Whizchat!!!null") {
+        const res = await fetch(
+          `${BaseUrl}/api/conversations/${chat.chat._id}`
+        );
+        const data = await res.json();
 
-      if (data.error) {
-        console.log("Error: " + data.error);
-      } else {
-        setMessages(data.messages);
-        // console.log(data.messages)
-      }}
+        if (data.error) {
+          console.log("Error: " + data.error);
+        } else {
+          setMessages(data.messages);
+          // console.log(data.messages)
+        }
+      }
     };
-      fetchMsg();
+    fetchMsg();
   }, [chat.chat._id, getMsg]);
 
   useEffect(() => {
@@ -61,14 +63,12 @@ const ChatTab = () => {
       content: message,
     });
 
-    let response = await fetch(
-      `${BaseUrl}/api/conversations/${chat.chat._id}/messages`,
-      {
-        method: "POST",
-        body: bodyContent,
-        headers: headersList,
-      }
-    );
+    // let response =
+    await fetch(`${BaseUrl}/api/conversations/${chat.chat._id}/messages`, {
+      method: "POST",
+      body: bodyContent,
+      headers: headersList,
+    });
 
     // let data = await response.json();
     // console.log(data);
@@ -82,7 +82,6 @@ const ChatTab = () => {
       newMessage,
       user.name
     );
-
   };
 
   const scrollRef = useRef(null);
@@ -127,9 +126,7 @@ const ChatTab = () => {
         </Box>
 
         <Box style={Typerstyle}>
-          {chat.chat.receiver._id === "Whizchat!!!null" ? (
-            null
-          ) : (
+          {chat.chat.receiver._id === "Whizchat!!!null" ? null : (
             <TextField
               label="Type a message"
               style={{

@@ -35,14 +35,13 @@ export const AlertContextProvider = ({ children }) => {
     </React.Fragment>
   );
 
-
-  const showPopup = (msg,sevierity)=>{
+  const showPopup = (msg, sevierity) => {
     setOpen(true);
-    setMsg(msg)
-    setSevirity(sevierity)
-  }
+    setMsg(msg);
+    setSevirity(sevierity);
+  };
   const value = {
-    showPopup
+    showPopup,
   };
 
   return (

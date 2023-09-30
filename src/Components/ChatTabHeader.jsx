@@ -41,12 +41,13 @@ export default function ChatHeader() {
       try {
         // console.log("Updating last seen...");
         if (chat.chat.receiver._id !== "Whizchat!!!null") {
-          const ls = await fetch(`${BaseUrl}/api/user/lastseen/${chat.chat.receiver._id}`);
+          const ls = await fetch(
+            `${BaseUrl}/api/user/lastseen/${chat.chat.receiver._id}`
+          );
           const responce = await ls.json();
           console.log("Last seen response:", responce);
           setLastseen(responce.lastseen);
-        } 
-        else{
+        } else {
           // console.log(chat.chat.receiver.lastseen)
           setLastseen("...fetching");
         }
@@ -56,22 +57,24 @@ export default function ChatHeader() {
         setLastseen(chat.chat.receiver.lastseen);
       }
     };
-    if(chat.chat.receiver._id!=="Whizchat!!!null"){
-      console.log("Updating")
+    if (chat.chat.receiver._id !== "Whizchat!!!null") {
+      console.log("Updating");
       updateLastSeen();
     }
-    updateLastSeen()
+    updateLastSeen();
     socket.on("lastseenUpdate", (userId) => {
-      if(chat.chat.receiver._id!=="Whizchat!!!null"&&chat.chat.receiver._id===userId){
-        console.log("IN Skdshdh")
+      if (
+        chat.chat.receiver._id !== "Whizchat!!!null" &&
+        chat.chat.receiver._id === userId
+      ) {
+        console.log("IN Skdshdh");
         updateLastSeen();
       }
     });
     return () => {
       socket.off("lastseenUpdate", updateLastSeen);
     };
-  
-  },[socket,chat.chat.receiver._id,chat.chat.receiver.lastseen]);
+  }, [socket, chat.chat.receiver._id, chat.chat.receiver.lastseen]);
 
   const handleBack = () => {
     const chatList = document.getElementById("chatList");

@@ -1,5 +1,5 @@
-import React, { useState, useContext, createContext, useEffect } from 'react';
-import { socketConnect } from '../Socket/SocketConfig';
+import React, { useState, useContext, createContext, useEffect } from "react";
+import { socketConnect } from "../Socket/SocketConfig";
 
 const GeneralContext = createContext();
 
@@ -11,22 +11,22 @@ export const GenStateProvider = ({ children }) => {
   const [autosetView, setAutoSetView] = useState(true);
   const [handle, setHandle] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  
+
   const socket = socketConnect();
 
   useEffect(() => {
-    const chatList = document.getElementById('chatList');
-    const chatsElement = document.getElementById('chats');
+    const chatList = document.getElementById("chatList");
+    const chatsElement = document.getElementById("chats");
 
     // Set initial display based on window width
     if (chatList && chatsElement) {
       if (window.innerWidth <= 768) {
-        chatList.style.display = 'block';
-        chatList.style.maxWidth = '100%';
+        chatList.style.display = "block";
+        chatList.style.maxWidth = "100%";
         chatList.style.flexGrow = 1;
-        chatsElement.style.display = 'none';
+        chatsElement.style.display = "none";
       } else {
-        chatList.style.display = 'block';
+        chatList.style.display = "block";
       }
     }
 
@@ -41,8 +41,8 @@ export const GenStateProvider = ({ children }) => {
           setHandle(newScreenWidth);
         } else {
           setHandle(newScreenWidth);
-          chatsElement.style.display = 'block';
-          chatList.style.maxWidth = '40%';
+          chatsElement.style.display = "block";
+          chatList.style.maxWidth = "40%";
           chatList.style.flexGrow = 0;
           chatsElement.style.flexGrow = 1;
         }
@@ -53,11 +53,11 @@ export const GenStateProvider = ({ children }) => {
     handleResize();
 
     // Add event listener to handle window resize
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Clean up the event listener when component unmounts
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [handle]);
 

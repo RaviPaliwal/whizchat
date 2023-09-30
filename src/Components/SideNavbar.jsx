@@ -7,7 +7,7 @@ import AddGroupChat from "./AddGroupChat";
 
 const SideNavbar = () => {
   const [openProfileDialog, setOpenProfileDialog] = useState(false);
-  const [groupDialog,setGroupDialog] = useState(false);
+  const [groupDialog, setGroupDialog] = useState(false);
 
   const handleProfileDialogOpen = () => {
     setOpenProfileDialog(true);
@@ -68,12 +68,7 @@ const SideNavbar = () => {
       />
 
       {/* Add Group Chat */}
-      <AddGroupChat
-        open = {groupDialog}
-        onClose={handleGroupDialogClose}
-      />
-
-
+      <AddGroupChat open={groupDialog} onClose={handleGroupDialogClose} />
     </Paper>
   );
 };

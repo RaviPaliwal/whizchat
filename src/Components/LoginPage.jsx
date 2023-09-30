@@ -54,20 +54,20 @@ export default function LoginPage() {
       const response = await fetch(`${BaseUrl}/api/login`, reqOptions);
       const responseData = await response.json();
       console.log(responseData.user);
-      if(responseData.message ==="User not found with this email"){
-        Ac.showPopup(responseData.message,"warning")
+      if (responseData.message === "User not found with this email") {
+        Ac.showPopup(responseData.message, "warning");
       }
 
       if (responseData.success === true) {
         const user = JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
-        Ac.showPopup("Login Success","success") //takes (message,seviarity)
+        Ac.showPopup("Login Success", "success"); //takes (message,seviarity)
         navigate("/chats");
       }
     } catch (error) {
       console.error("Login error:", error);
-      Ac.showPopup(error.message,"error") //takes (message,seviarity)
+      Ac.showPopup(error.message, "error"); //takes (message,seviarity)
     }
   };
 
@@ -106,13 +106,13 @@ export default function LoginPage() {
         const user = await JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
         sessionStorage.setItem("login_status", true);
-        Ac.showPopup("Signup Success","success") //takes (message,seviarity)
+        Ac.showPopup("Signup Success", "success"); //takes (message,seviarity)
         //setting Online
         navigate("/chats");
       }
     } catch (error) {
       console.error("Signup error:", error);
-      Ac.showPopup(error.message,"error") //takes (message,seviarity)
+      Ac.showPopup(error.message, "error"); //takes (message,seviarity)
     }
   };
 

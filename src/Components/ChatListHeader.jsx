@@ -12,8 +12,7 @@ const ChatListHeader = () => {
   const handlequeryChange = async (e) => {
     e.preventDefault();
     setQuery(e.target.value); // set query
-    search.handleSearch(query);// handle query change
-
+    search.handleSearch(query); // handle query change
   };
 
   return (

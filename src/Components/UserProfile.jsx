@@ -60,7 +60,7 @@ const UserProfile = ({ open, onClose }) => {
     console.log("Name:", name);
     console.log("Username:", username);
     console.log("Mobile:", mobile);
-    //TODO: Handle Update 
+    //TODO: Handle Update
 
     // Reset editing states
     setIsNameEditing(false);
@@ -75,7 +75,14 @@ const UserProfile = ({ open, onClose }) => {
     <>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent style={{ minHeight: "300px", minWidth: "400px",maxHeight: "400px", maxWidth: "400px" }}>
+        <DialogContent
+          style={{
+            minHeight: "300px",
+            minWidth: "400px",
+            maxHeight: "400px",
+            maxWidth: "400px",
+          }}
+        >
           {/* Profile Image */}
           <div
             className={`avatar-wrapper ${isAvatarHovered ? "hovered" : ""}`}
