@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Paper, TextField } from "@mui/material";
+import { Box, Paper, TextField, Typography } from "@mui/material";
 import Message from "./Message";
 import { Typerstyle, chatAreaStyle } from "./Theme";
-import ChatHeader from "./ChatTabHeader";
+import ChatHeader from "./ChatHeader";
 import { useChatContext } from "../Context/ChatContext";
 import { sendMessageToRoom } from "../Socket/SocketConfig";
 import { useGenContext } from "../Context/GeneralContext";
 import { BaseUrl, RandPhotoUrlChat } from "../config";
+import { groupMessagesByDate } from "../Utils/ConversationUtil";
 
 const ChatTab = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
@@ -15,6 +16,7 @@ const ChatTab = () => {
   const ctx = useGenContext();
   const socket = ctx.socket;
   const [getMsg, setGetMsg] = useState(5);
+  const currentdate = new Date();
 
   useEffect(() => {
     const fetchMsg = async () => {
@@ -23,11 +25,12 @@ const ChatTab = () => {
           `${BaseUrl}/api/conversations/${chat.chat._id}`
         );
         const data = await res.json();
-
+        console.log(data);
         if (data.error) {
           console.log("Error: " + data.error);
         } else {
-          setMessages(data.messages);
+          const groupedMessages = groupMessagesByDate(data.messages);
+          setMessages(groupedMessages);
           // console.log(data.messages)
         }
       }
@@ -104,7 +107,7 @@ const ChatTab = () => {
           // borderLeft: ".8px solid gray",
         }}
       >
-        <ChatHeader />
+        <ChatHeader refresh={setGetMsg}/>
 
         <Box
           ref={scrollRef}
@@ -115,14 +118,27 @@ const ChatTab = () => {
           }}
           className="messages-container"
         >
-          {messages.length > 0 &&
-            messages.map((message, index) => (
-              <Message key={index} message={message} />
-            ))}
-          {/* {messages.length > 0 &&
-            messages.map((message, index) => (
-              <Message key={index} message={message} />
-            ))} */}
+          {Object.entries(messages).map(([date, dateMessages]) => (
+            <div key={date}>
+              <Typography
+                style={{
+                  backgroundColor: "rgb(255, 255, 255,0.2)",
+                  textAlign: "center",
+                }}
+                variant="subtitle1"
+              >
+                {currentdate.toLocaleDateString() !== date
+                  ? new Date(currentdate.getDate() - 3).toLocaleDateString() !==
+                    date
+                    ? date
+                    : "Yesterday"
+                  : "Today"}
+              </Typography>
+              {dateMessages.map((message, index) => (
+                <Message key={index} message={message} />
+              ))}
+            </div>
+          ))}
         </Box>
 
         <Box style={Typerstyle}>

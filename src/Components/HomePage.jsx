@@ -8,7 +8,7 @@ import { SearchContextProvider } from "../Context/SearchContext";
 import PageNotFound from "./PageNotFound";
 import { useGenContext } from "../Context/GeneralContext";
 import { joinRoom, setLastSeen } from "../Socket/SocketConfig";
-import { getCurrentDateTime, setOnlineStatus } from "../Utils/ConversationUtil";
+import {setOnlineStatus } from "../Utils/ConversationUtil";
 
 function HomePage() {
   const [joined, setJoined] = useState(false);

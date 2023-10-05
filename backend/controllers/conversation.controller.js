@@ -130,7 +130,28 @@ exports.markAllAsRead = async(req,res) => {
   }
 };
 
-exports.lastActivity
+exports.clearChat = async (req,res) => {
+  const { conversationId } = req.params;
+  try {
+    const conversation = await Conversation.findById(conversationId);
+    conversation.messages=[];
+    conversation.lastMessage="Send a message"
+    conversation.save();
+    res.json({success:true,message:"Chat Cleared"});
+  } catch (error) {
+    res.status(404).json({ error: 'Conversation not found.' });
+  }
+};
+
+exports.deleteChat = async (req,res) => {
+  const { conversationId } = req.params;
+  try {
+    await Conversation.findOneAndDelete(conversationId);
+    res.json({success:true,message:"Chat Deleted"});
+  } catch (error) {
+    res.status(404).json({ error: 'Conversation not found.' });
+  }
+};
 
 
 

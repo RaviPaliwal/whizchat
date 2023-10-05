@@ -14,7 +14,9 @@ import { useGenContext } from "../Context/GeneralContext";
 import { useChatContext } from "../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
 import { BaseUrl } from "../config";
-import { getLastSeenTime} from "../Utils/ConversationUtil";
+import { getLastSeenTime } from "../Utils/ConversationUtil";
+import { useAlertContext } from "../Context/AlertContext";
+
 const customTheme = createTheme({
   components: {
     MuiCardHeader: {
@@ -31,7 +33,8 @@ const customTheme = createTheme({
   },
 });
 
-export default function ChatHeader() {
+export default function ChatHeader({ refresh }) {
+  const Alert = useAlertContext();
   const states = useGenContext();
   const chat = useChatContext();
   const socket = states.socket;
@@ -68,7 +71,6 @@ export default function ChatHeader() {
         chat.chat.receiver._id !== "Whizchat!!!null" &&
         chat.chat.receiver._id === userId
       ) {
-        console.log("IN Skdshdh");
         updateLastSeen();
       }
     });
@@ -94,15 +96,47 @@ export default function ChatHeader() {
     setAnchorEl(null);
   };
 
-  const handleDeleteChat = () => {
+  const handleDeleteChat = async() => {
     // Handle deleting the chat here
+    let headersList = {
+      Accept: "*/*",
+    };
+    let response = await fetch(
+      `${BaseUrl}/api/conversation/${chat.chat._id}/delete`,
+      {
+        method: "DELETE",
+        headers: headersList,
+      }
+    );
+    if (response.status === 200) {
+      refresh(Date.now());
+      Alert.showPopup("Chat Deleted", "success");
+    } else {
+      Alert.showPopup("Something Went Wrong", "error");
+    }
     handleClose();
   };
 
-  const handleClearChat = () => {
-    // Handle clearing the chat here
+  const handleClearChat = async (e) => {
+    let headersList = {
+      Accept: "*/*",
+    };
+    let response = await fetch(
+      `${BaseUrl}/api/conversation/${chat.chat._id}/clear`,
+      {
+        method: "PUT",
+        headers: headersList,
+      }
+    );
+    if (response.status === 200) {
+      refresh(Date.now());
+      Alert.showPopup("Chat Cleared", "success");
+    } else {
+      Alert.showPopup("Something Went Wrong", "error");
+    }
     handleClose();
   };
+
   return (
     <ThemeProvider theme={customTheme}>
       <Card sx={{ maxWidth: "100%", height: "5rem", borderRadius: "0px" }}>

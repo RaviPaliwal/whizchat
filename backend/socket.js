@@ -3,7 +3,9 @@ const { Server } = require("socket.io");
 module.exports = function (server) {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000", // Update with your frontend's origin
+      origin: "http://localhost:3000",
+       // Update with your frontend's origin
+      // Update with your frontend's origin
     },
   });
 
@@ -12,7 +14,7 @@ module.exports = function (server) {
 
     // Handle events when a user disconnects
     socket.on("disconnect", () => {
-      console.log("User disconnected");
+      // console.log("User disconnected");
       // You can perform cleanup or other actions here
     });
 

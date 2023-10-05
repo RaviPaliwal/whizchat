@@ -7,6 +7,28 @@ const Message = ({ message }) => {
 
   // Check if the message is from the current user
   const isUserMessage = message.sender === user._id;
+  function timestampToTimeString(timestamp) {
+    const date = new Date(timestamp);
+
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+
+    // Determine if it's AM or PM
+    const amOrPm = hours >= 12 ? "pm" : "am";
+
+    // Convert to 12-hour format
+    if (hours > 12) {
+      hours -= 12;
+    }
+
+    // Add leading zeros if necessary
+    hours = hours < 10 ? `${hours}` : hours;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${hours}:${minutes} ${amOrPm}`;
+  }
+
+  const timeString = timestampToTimeString(message.timestamp);
 
   return (
     <Box
@@ -17,11 +39,12 @@ const Message = ({ message }) => {
       alignItems={isUserMessage ? "flex-end" : "flex-start"} // Adjust alignment based on user message or not
       marginRight={isUserMessage ? ".35rem" : "0.35rem"} // Adjust margin based on user message or not
     >
+
       <Typography
         variant="body1"
         // Apply common styles to the message container
         sx={{
-          display: "block",
+          display: "inline-block",
           padding: "8px 12px",
           position: "relative",
           marginLeft: isUserMessage ? "auto" : "1rem", // Align user messages to the right
@@ -38,6 +61,25 @@ const Message = ({ message }) => {
         }}
       >
         {message.content}
+
+        <p style={{
+            display: "inline-block",
+            width: "2.2rem",
+          }}></p>
+
+        <div
+          style={{
+            position: "absolute",
+            display: "block",
+            marginLeft:"7px",
+            right: "3px",
+            bottom:"0",
+            color: isUserMessage?"white":"gray",
+            fontSize: "60%",
+          }}
+        >
+          {timeString}
+        </div>
       </Typography>
     </Box>
   );
