@@ -5,11 +5,8 @@ import { Paper, List, Button, Skeleton, Box } from "@mui/material";
 import { chatListStyle } from "./Theme";
 import ChatListHeader from "./ChatListHeader";
 import { useSearchContext } from "../Context/SearchContext";
-import { BaseUrl } from "../config";
-import {
-  createConversation,
-  getAllConversations,
-} from "../Utils/ConversationUtil";
+import { BaseUrl, InitialChat } from "../config";
+import { createConversation, getAllConversations } from "../Utils/ConversationUtil";
 import { useGenContext } from "../Context/GeneralContext";
 import { useAlertContext } from "../Context/AlertContext";
 
@@ -30,32 +27,24 @@ const ChatList = () => {
   const search = useSearchContext();
   const ctx = useGenContext();
   const [conversations, setConversations] = useState([]);
-  const [call, setCall] = useState(3);
+  const [call, setCall] = useState(Date.now());
   const socket = ctx.socket;
   const Ac = useAlertContext();
 
   useEffect(() => {
-    const handleSocketMessage = (data, call) => {
-      setCall(Date.now());
-    };
-
-    socket.on("message", handleSocketMessage);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      socket.off("message", handleSocketMessage);
-    };
+    socket.on("message", async () => {
+      await setCall(Date.now());
+    });
   }, [socket, setCall]);
 
   useEffect(() => {
     const fetchData = async () => {
       const user = JSON.parse(sessionStorage.getItem("user"));
-
       try {
         const data = await getAllConversations(user._id);
         setConversations(data);
       } catch (error) {
-        Ac.showPopup("Error fetching conversations", "error");
+        Ac.showPopup("Error fetching conversations", error);
       }
     };
 
@@ -80,7 +69,7 @@ const ChatList = () => {
                 e.preventDefault();
                 const user = JSON.parse(sessionStorage.getItem("user"));
                 await createConversation([resultItem._id, user._id]);
-                setCall(call + 2);
+                setCall(Date.now());
                 search.setSearchResults([]);
               }}
             >
@@ -117,12 +106,28 @@ const ChatList = () => {
               lastMessage={resultItem.lastMessage}
             />
           ))}
+
         {conversations.length === 0 && (
           <>
+            <ChatItem
+              key={InitialChat._id}
+              newchat={InitialChat}
+              itemId={InitialChat._id + "xyz"}
+              avatarUrl={
+                InitialChat.receiver.avatar != null
+                  ? `${BaseUrl}/api/user/${InitialChat.receiver.email}/avatar`
+                  : "Url to avatar.jpg"
+              }
+              name={InitialChat.receiver.name}
+              lastMessage={"Welcome To Whizchat !!!"}
+            />
+
             <CustomSkeleton />
             <CustomSkeleton />
             <CustomSkeleton />
             <CustomSkeleton />
+
+            <p className="text-center pt-5">Search And Create Chat</p>
           </>
         )}
       </List>

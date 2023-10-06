@@ -5,26 +5,21 @@ module.exports = function (server) {
     cors: {
       origin: "http://localhost:3000",
        // Update with your frontend's origin
-      // Update with your frontend's origin
     },
   });
 
   io.on("connection", (socket) => {
     // console.log("User connected");
-
     // Handle events when a user disconnects
     socket.on("disconnect", () => {
       // console.log("User disconnected");
-      // You can perform cleanup or other actions here
     });
 
-    // Handle custom events from the client
     socket.on("setLastSeen", (userId) => {
       // console.log("Lastseen Updated "+ userId);
       io.emit("lastseenUpdate", userId);
     });
 
-    // Add more event handlers as needed for your application
 
     // Example: Joining a room
     socket.on("joinRoom", (roomId) => {
@@ -37,13 +32,16 @@ module.exports = function (server) {
     socket.on(
       "sendMessageToRoom",
       ({ roomId, genRoomId, message, senderName }) => {
-        io.to(genRoomId).emit("message", `Message From ${senderName}`);
-        console.log(`New message By ${senderName}`);
+        io.to(genRoomId).emit("message", `Invokation Message`);
+        // console.log(`New message By ${senderName}`);
         io.to(roomId).emit("message", message);
-        console.log(
-          `Message sent to room ${roomId}: ${message.message} by ${message.sender}`
-        );
+        // console.log(
+        //   `Message sent to room ${roomId}: ${message.message} by ${message.sender}`
+        // );
       }
     );
   });
+
+
+
 };

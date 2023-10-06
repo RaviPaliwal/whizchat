@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -13,9 +13,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { useGenContext } from "../Context/GeneralContext";
 import { useChatContext } from "../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
-import { BaseUrl } from "../config";
+import { BaseUrl, InitialChat } from "../config";
 import { getLastSeenTime } from "../Utils/ConversationUtil";
 import { useAlertContext } from "../Context/AlertContext";
+import { sendMessageToRoom } from "../Socket/SocketConfig";
 
 const customTheme = createTheme({
   components: {
@@ -40,32 +41,29 @@ export default function ChatHeader({ refresh }) {
   const socket = states.socket;
   const [lastseen, setLastseen] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     const updateLastSeen = async () => {
       try {
-        // console.log("Updating last seen...");
+        // Fetch last seen
         if (chat.chat.receiver._id !== "Whizchat!!!null") {
           const ls = await fetch(
             `${BaseUrl}/api/user/lastseen/${chat.chat.receiver._id}`
           );
-          const responce = await ls.json();
-          console.log("Last seen response:", responce);
-          setLastseen(responce.lastseen);
+          const response = await ls.json();
+          setLastseen(response.lastseen);
         } else {
-          // console.log(chat.chat.receiver.lastseen)
           setLastseen("...fetching");
         }
       } catch (error) {
         console.error("Error fetching last seen:", error);
-        // Handle the error as needed.
         setLastseen(chat.chat.receiver.lastseen);
       }
     };
+
     if (chat.chat.receiver._id !== "Whizchat!!!null") {
-      console.log("Updating");
       updateLastSeen();
     }
-    updateLastSeen();
+
     socket.on("lastseenUpdate", (userId) => {
       if (
         chat.chat.receiver._id !== "Whizchat!!!null" &&
@@ -74,6 +72,7 @@ export default function ChatHeader({ refresh }) {
         updateLastSeen();
       }
     });
+
     return () => {
       socket.off("lastseenUpdate", updateLastSeen);
     };
@@ -96,11 +95,12 @@ export default function ChatHeader({ refresh }) {
     setAnchorEl(null);
   };
 
-  const handleDeleteChat = async() => {
+  const handleDeleteChat = async () => {
     // Handle deleting the chat here
     let headersList = {
       Accept: "*/*",
     };
+
     let response = await fetch(
       `${BaseUrl}/api/conversation/${chat.chat._id}/delete`,
       {
@@ -108,12 +108,16 @@ export default function ChatHeader({ refresh }) {
         headers: headersList,
       }
     );
+
     if (response.status === 200) {
       refresh(Date.now());
+      sendMessageToRoom(socket, chat.chat.receiver._id, chat.chat._id, "Bot");
+      await chat.setChat(InitialChat);
       Alert.showPopup("Chat Deleted", "success");
     } else {
       Alert.showPopup("Something Went Wrong", "error");
     }
+
     handleClose();
   };
 
@@ -121,6 +125,7 @@ export default function ChatHeader({ refresh }) {
     let headersList = {
       Accept: "*/*",
     };
+
     let response = await fetch(
       `${BaseUrl}/api/conversation/${chat.chat._id}/clear`,
       {
@@ -128,12 +133,17 @@ export default function ChatHeader({ refresh }) {
         headers: headersList,
       }
     );
+
     if (response.status === 200) {
       refresh(Date.now());
       Alert.showPopup("Chat Cleared", "success");
     } else {
       Alert.showPopup("Something Went Wrong", "error");
     }
+
+    sendMessageToRoom(socket, chat.chat.receiver._id, null, "Bot");
+    // For other end chat clear;
+
     handleClose();
   };
 
@@ -167,7 +177,10 @@ export default function ChatHeader({ refresh }) {
                   {chat.chat.receiver.name[0]}
                 </Avatar>
               </Grid>
-              <Grid item style={{ display: "flex", flexDirection: "column" }}>
+              <Grid
+                item
+                style={{ display: "flex", flexDirection: "column" }}
+              >
                 {chat.chat.receiver._id === "Whizchat!!!null"
                   ? "Whizchat"
                   : chat.chat.receiver.name}

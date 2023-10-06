@@ -20,21 +20,20 @@ const ChatTab = () => {
 
   useEffect(() => {
     const fetchMsg = async () => {
+      try{
       if (chat.chat._id !== "Whizchat!!!null") {
         const res = await fetch(
           `${BaseUrl}/api/conversations/${chat.chat._id}`
         );
         const data = await res.json();
         console.log(data);
-        if (data.error) {
-          console.log("Error: " + data.error);
-        } else {
-          const groupedMessages = groupMessagesByDate(data.messages);
-          setMessages(groupedMessages);
-          // console.log(data.messages)
-        }
-      }
-    };
+        const groupedMessages = groupMessagesByDate(data.messages);
+        setMessages(groupedMessages);
+        // console.log(data.messages)
+      }}
+      catch (error){
+        console.log("Error: " + error);
+      }  }
     fetchMsg();
   }, [chat.chat._id, getMsg]);
 

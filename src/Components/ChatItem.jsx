@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ListItem,
   ListItemAvatar,
@@ -12,6 +12,7 @@ import { useChatContext } from "../Context/ChatContext";
 import { useGenContext } from "../Context/GeneralContext";
 import { joinRoom } from "../Socket/SocketConfig";
 import { BaseUrl } from "../config";
+import Logo from "../Assets/Images/logo2.png";
 
 const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
   const chat = useChatContext();
@@ -25,17 +26,15 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
     };
 
     // Send a POST request to mark the conversation as read
-    const response = await fetch(
-      `${BaseUrl}/api/conversation/${newchat._id}/markread`,
-      {
-        method: "POST",
-        headers: headers,
-      }
-    );
+    // const response =
+    await fetch(`${BaseUrl}/api/conversation/${newchat._id}/markread`, {
+      method: "POST",
+      headers: headers,
+    });
 
-    // Parse the response data
-    const data = await response.json();
-    // console.log(data);
+    // // Parse the response data
+    // const data = await response.json();
+    // // console.log(data);
   };
 
   const listItemStyle = {
@@ -70,7 +69,7 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
         onClick={async () => {
           newchat.unseenCount = 0;
           joinRoom(socket, newchat._id);
-          console.log("Joined New Chat Room " + newchat._id);
+          // console.log("Joined New Chat Room " + newchat._id);
           await chat.setChat(newchat);
           const chatList = document.getElementById("chatList");
           const chatsElement = document.getElementById("chats");
@@ -84,7 +83,10 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
       >
         <ListItem sx={{ ...listItemStyle }} id={itemId} component="div">
           <ListItemAvatar>
-            <Avatar alt={`user_avatar_${itemId}`} src={avatarUrl} />
+            <Avatar
+              alt={`user_avatar_${itemId}`}
+              src={newchat._id === "Whizchat!!!null" ? Logo : avatarUrl}
+            />
           </ListItemAvatar>
           <ListItemText
             primary={name}
@@ -93,6 +95,8 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
               newchat.messages[newchat.messages.length - 1].sender ===
                 newchat.receiver._id
                 ? newchat.receiver.name.split(" ")[0] + " :  "
+                : newchat._id === "Whizchat!!!null"
+                ? ""
                 : "You :   "
             }${lastMessage}`}
           />
