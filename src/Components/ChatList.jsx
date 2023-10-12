@@ -71,8 +71,8 @@ const ChatList = () => {
               onClick={async (e) => {
                 e.preventDefault();
                 const user = JSON.parse(sessionStorage.getItem("user"));
-                await createConversation([resultItem._id, user._id]);
                 search.setSearchResults([]);
+                await createConversation([resultItem._id, user._id]);
                 setCall(Date.now());
               }}
             >
@@ -93,7 +93,7 @@ const ChatList = () => {
       {/* Display existing chats */}
       <List>
         <p className="mx-3">Chats</p>
-        {conversations.length !== 0 &&
+        {typeof(conversations)==="object" && conversations.length !== 0 &&
           conversations &&
           conversations.map((resultItem) => (
             <ChatItem

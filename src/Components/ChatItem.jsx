@@ -119,7 +119,7 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
                 src={newchat._id === "Whizchat!!!null" ? Logo : avatarUrl}
               />
             </ListItemAvatar>
-            <ListItemText primary={name} secondary={lastMessage} />
+            <ListItemText primary={name} secondary={newchat.messages[newchat.messages.length-1].sender.name+" : "+lastMessage} />
           </ListItem>
         )}
       </Button>

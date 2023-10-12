@@ -1,4 +1,5 @@
 const Conversation = require("../models/conversation.model");
+const User = require('../models/user.model'); // Import your User model
 
 exports.createConversation = async (req, res) => {
   try {
@@ -96,6 +97,7 @@ exports.createGroupConversation = async (req, res) => {
 //   }
 // };
 
+//With name of message sender
 exports.getConversationById = async (req, res) => {
   const { conversationId } = req.params;
   try {
@@ -129,17 +131,58 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
+// exports.getConversationsByUser = async (req, res) => {
+//   const { userId } = req.params;
+//   try {
+//     const conversations = await Conversation.find({
+//       $or: [{ groupMembers: userId }, { members: userId }],
+//     });
+//     res.json(conversations);
+//   } catch (error) {
+//     res.status(500).json({ error: "Could not retrieve conversations." });
+//   }
+// };
+
+//With Receiver Appended
+
 exports.getConversationsByUser = async (req, res) => {
   const { userId } = req.params;
   try {
     const conversations = await Conversation.find({
       $or: [{ groupMembers: userId }, { members: userId }],
     });
-    res.json(conversations);
+
+    const conversationsWithUserInfo = [];
+
+    for (const conversation of conversations) {
+      let conversationData = conversation.toObject();
+
+      if (!conversationData.group) {
+        // Fetch user information and append it to the conversation data
+        const user = await User.findById(conversationData.members.find(memberId => memberId != userId));
+        conversationData.receiver = user; // Assuming you want to append the entire user object
+      }
+
+      // Populate sender field inside each message with sender ID and name
+      for (const message of conversationData.messages) {
+        const sender = await User.findById(message.sender);
+        message.sender = {
+          id: sender._id,
+          name: sender.name,
+        };
+      }
+
+      conversationsWithUserInfo.push(conversationData);
+    }
+
+    res.json(conversationsWithUserInfo);
   } catch (error) {
     res.status(500).json({ error: "Could not retrieve conversations." });
   }
 };
+
+
+
 
 exports.markAllAsRead = async (req, res) => {
   const { conversationId } = req.params;

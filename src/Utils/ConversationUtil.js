@@ -1,34 +1,35 @@
 // ConversationUtility.js
 import { BaseUrl } from "../config";
 
+// if (data && data[0] != null) {
+//   // Loop through each object in the data array
+//   for (let i = 0; i < data.length; i++) {
+//     const currentData = data[i];
+//     // Check if currentData.members exists and is not null
+//     if (currentData.members && !currentData.group) {
+//       let headersList = {
+//         Accept: "*/*",
+//       };
+//       const newArray = currentData.members.filter((UID) => UID !== userId);
+//       if (newArray.length > 0) {
+//         let response = await fetch(`${BaseUrl}/api/user/${newArray[0]}`, {
+//           method: "GET",
+//           headers: headersList,
+//         });
+
+//         let receiver = await response.json();
+//         // Set the receiver property for the current object
+//         currentData.receiver = receiver.user;
+//       }
+//     }
+//   }
+// }
+
 export const getAllConversations = async (userId) => {
   try {
     const response = await fetch(`${BaseUrl}/api/user/${userId}/conversations`);
     const data = await response.json();
-    
-    if (data && data[0] != null) {
-      // Loop through each object in the data array
-      for (let i = 0; i < data.length; i++) {
-        const currentData = data[i];
-        // Check if currentData.members exists and is not null
-        if (currentData.members && !currentData.group) {
-          let headersList = {
-            Accept: "*/*",
-          };
-          const newArray = currentData.members.filter((UID) => UID !== userId);
-          if (newArray.length > 0) {
-            let response = await fetch(`${BaseUrl}/api/user/${newArray[0]}`, {
-              method: "GET",
-              headers: headersList,
-            });
-
-            let receiver = await response.json();
-            // Set the receiver property for the current object
-            currentData.receiver = receiver.user;
-          }
-        }
-      }
-    }
+    //Here REmoved Code to add Receiver to Conversation Controller
     console.log(data);
     return data;
   } catch (error) {
