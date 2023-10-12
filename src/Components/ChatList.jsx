@@ -34,7 +34,6 @@ const ChatList = () => {
   const socket = ctx.socket;
   const Ac = useAlertContext();
 
-
   useEffect(() => {
     socket.on("message", async () => {
       await setCall(Date.now());
@@ -54,7 +53,7 @@ const ChatList = () => {
 
     fetchData();
     //eslint-disable-next-line
-  }, [call,Ac.refresh]);
+  }, [call, Ac.refresh]);
 
   return (
     <Paper id="chatList" style={{ ...chatListStyle, borderRadius: "0px" }}>
@@ -73,8 +72,8 @@ const ChatList = () => {
                 e.preventDefault();
                 const user = JSON.parse(sessionStorage.getItem("user"));
                 await createConversation([resultItem._id, user._id]);
-                setCall(Date.now());
                 search.setSearchResults([]);
+                setCall(Date.now());
               }}
             >
               <SearchItem

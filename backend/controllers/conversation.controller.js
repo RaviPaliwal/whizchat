@@ -86,15 +86,33 @@ exports.createGroupConversation = async (req, res) => {
   }
 };
 
+// exports.getConversationById = async (req, res) => {
+//   const { conversationId } = req.params;
+//   try {
+//     const conversation = await Conversation.findById(conversationId);
+//     res.json(conversation);
+//   } catch (error) {
+//     res.status(404).json({ error: "Conversation not found." });
+//   }
+// };
+
 exports.getConversationById = async (req, res) => {
   const { conversationId } = req.params;
   try {
-    const conversation = await Conversation.findById(conversationId);
+    const conversation = await Conversation.findById(conversationId)
+      .populate('messages.sender', 'name') // Populate sender's name
+      .exec();
+
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found." });
+    }
+
     res.json(conversation);
   } catch (error) {
-    res.status(404).json({ error: "Conversation not found." });
+    res.status(500).json({ error: "An error occurred while fetching the conversation." });
   }
 };
+
 
 exports.sendMessage = async (req, res) => {
   const { conversationId } = req.params;

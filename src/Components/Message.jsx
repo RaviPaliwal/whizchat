@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const Message = ({ message }) => {
+const Message = ({ message, group }) => {
   // Retrieve user from session storage
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   // Check if the message is from the current user
-  const isUserMessage = message.sender === user._id;
+  const isUserMessage = message.sender._id === user._id;
   function timestampToTimeString(timestamp) {
     const date = new Date(timestamp);
 
@@ -60,6 +60,7 @@ const Message = ({ message }) => {
             : "linear-gradient(135deg, lightgreen, lavender)",
         }}
       >
+        
         {message.content}
 
         <p style={{
@@ -78,6 +79,8 @@ const Message = ({ message }) => {
             fontSize: "60%",
           }}
         >
+          {!isUserMessage&&group&&message.sender.name+"   "}
+          {/* Find Proper Place */}
           {timeString}
         </div>
       </Typography>

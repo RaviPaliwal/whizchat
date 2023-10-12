@@ -136,7 +136,7 @@ const ChatTab = () => {
                   : "Today"}
               </Typography>
               {dateMessages.map((message, index) => (
-                <Message key={index} message={message} />
+                <Message key={index} message={message} group={chat.chat.group} />
               ))}
             </div>
           ))}
