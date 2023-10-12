@@ -2,7 +2,7 @@ const Conversation = require("../models/conversation.model");
 
 exports.createConversation = async (req, res) => {
   try {
-    const { members, group,} = req.body;
+    const { members, group, groupName } = req.body;
 
     // Ensure uniqueness of members (irrespective of order)
     const uniqueMembers = [...new Set(members)];
@@ -30,6 +30,7 @@ exports.createConversation = async (req, res) => {
     const conversation = new Conversation({
       members: sortedMembers,
       group,
+      groupName,
     });
 
     await conversation.save();
@@ -42,7 +43,7 @@ exports.createConversation = async (req, res) => {
 
 exports.createGroupConversation = async (req, res) => {
   try {
-    const { groupMembers, groupName, about,admins } = req.body;
+    const { groupMembers, groupName, about, admins } = req.body;
 
     // Ensure uniqueness of group members (irrespective of order)
     const uniqueGroupMembers = [...new Set(groupMembers)];
@@ -63,12 +64,10 @@ exports.createGroupConversation = async (req, res) => {
     });
 
     if (existingGroupConversation) {
-      return res
-        .status(409)
-        .json({
-          message:"Duplicate conversation",
-          error: "Group conversation with the same members already exists.",
-        });
+      return res.status(409).json({
+        message: "Duplicate conversation",
+        error: "Group conversation with the same members already exists.",
+      });
     }
 
     const groupConversation = new Conversation({
@@ -76,11 +75,11 @@ exports.createGroupConversation = async (req, res) => {
       group: true,
       groupName,
       about,
-      admins:admins
+      admins: admins,
     });
 
     await groupConversation.save();
-    res.json({message: "Group Created Successfully"})
+    res.json({ message: "Group Created Successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Could not create group conversation." });
