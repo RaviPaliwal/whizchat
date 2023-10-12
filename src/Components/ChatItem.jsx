@@ -81,32 +81,47 @@ const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
         }}
         fullWidth
       >
-        <ListItem sx={{ ...listItemStyle }} id={itemId} component="div">
-          <ListItemAvatar>
-            <Avatar
-              alt={`user_avatar_${itemId}`}
-              src={newchat._id === "Whizchat!!!null" ? Logo : avatarUrl}
+        {!newchat.group && (
+          <ListItem sx={{ ...listItemStyle }} id={itemId} component="div">
+            <ListItemAvatar>
+              <Avatar
+                alt={`user_avatar_${itemId}`}
+                src={newchat._id === "Whizchat!!!null" ? Logo : avatarUrl}
+              />
+            </ListItemAvatar>
+            <ListItemText
+              primary={name}
+              secondary={`${
+                newchat.messages.length > 0 &&
+                newchat.messages[newchat.messages.length - 1].sender ===
+                  newchat.receiver._id
+                  ? newchat.receiver.name.split(" ")[0] + " :  "
+                  : newchat._id === "Whizchat!!!null"
+                  ? ""
+                  : "You :   "
+              }${lastMessage}`}
             />
-          </ListItemAvatar>
-          <ListItemText
-            primary={name}
-            secondary={`${
-              newchat.messages.length > 0 &&
+            {newchat.messages.length > 0 &&
+              newchat.unseenCount !== 0 &&
               newchat.messages[newchat.messages.length - 1].sender ===
-                newchat.receiver._id
-                ? newchat.receiver.name.split(" ")[0] + " :  "
-                : newchat._id === "Whizchat!!!null"
-                ? ""
-                : "You :   "
-            }${lastMessage}`}
-          />
-          {newchat.messages.length > 0 &&
-            newchat.unseenCount !== 0 &&
-            newchat.messages[newchat.messages.length - 1].sender ===
-              newchat.receiver._id && (
-              <Badge sx={badgeStyle}>{newchat.unseenCount}</Badge>
-            )}
-        </ListItem>
+                newchat.receiver._id && (
+                <Badge sx={badgeStyle}>{newchat.unseenCount}</Badge>
+              )}
+          </ListItem>
+        )}
+        {/* IF Group Chat */}
+
+        {newchat.group && (
+          <ListItem sx={{ ...listItemStyle }} id={itemId} component="div">
+            <ListItemAvatar>
+              <Avatar
+                alt={`user_avatar_${itemId}`}
+                src={newchat._id === "Whizchat!!!null" ? Logo : avatarUrl}
+              />
+            </ListItemAvatar>
+            <ListItemText primary={name} secondary={lastMessage} />
+          </ListItem>
+        )}
       </Button>
     </Box>
   );

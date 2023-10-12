@@ -12,6 +12,7 @@ export const useAlertContext = () => {
 };
 export const AlertContextProvider = ({ children }) => {
   const [msg, setMsg] = useState("Hello");
+  const [refresh,setRefresh] = useState(Date.now());
   const [sevirity, setSevirity] = useState("success"); //error warning info
   const [open, setOpen] = useState(false);
   const handleClose = (event, reason) => {
@@ -41,6 +42,8 @@ export const AlertContextProvider = ({ children }) => {
     setSevirity(sevierity);
   };
   const value = {
+    refresh,
+    setRefresh,
     showPopup,
   };
 

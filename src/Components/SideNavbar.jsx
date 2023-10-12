@@ -3,7 +3,7 @@ import { Paper, Tabs, Tab, SpeedDialIcon } from "@mui/material";
 import { AccountCircle, Chat } from "@mui/icons-material";
 import { sidebarStyle } from "./Theme";
 import UserProfile from "./UserProfile"; // Import the UserProfile component
-import AddGroupChat from "./AddGroupChat";
+import AddGroupChat from "./GroupChat/AddGroupChat";
 
 const SideNavbar = () => {
   const [openProfileDialog, setOpenProfileDialog] = useState(false);

@@ -8,11 +8,13 @@ const {
   markAllAsRead,
   clearChat,
   deleteChat,
+  createGroupConversation,
 } = require('../controllers/conversation.controller');
 
 const router = express.Router();
 
 router.post('/conversations/create', createConversation);
+router.post('/conversations/createGroup', createGroupConversation);
 router.get('/conversations/:conversationId', getConversationById);
 router.post('/conversations/:conversationId/messages', sendMessage);
 router.get('/user/:userId/conversations', getConversationsByUser);

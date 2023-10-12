@@ -3,6 +3,7 @@ import { Box, Paper, TextField, Typography } from "@mui/material";
 import Message from "./Message";
 import { Typerstyle, chatAreaStyle } from "./Theme";
 import ChatHeader from "./ChatHeader";
+import GroupChatHeader from "./GroupChat/GroupChatHeader";
 import { useChatContext } from "../Context/ChatContext";
 import { sendMessageToRoom } from "../Socket/SocketConfig";
 import { useGenContext } from "../Context/GeneralContext";
@@ -80,7 +81,7 @@ const ChatTab = () => {
     sendMessageToRoom(
       ctx.socket,
       chat.chat._id,
-      chat.chat.receiver._id,
+      chat.chat.group?null:chat.chat.receiver._id,//Change 1
       newMessage,
       user.name
     );
@@ -106,7 +107,8 @@ const ChatTab = () => {
           // borderLeft: ".8px solid gray",
         }}
       >
-        <ChatHeader refresh={setGetMsg}/>
+        {!chat.chat.group&&<ChatHeader refresh={setGetMsg}/>}
+        {chat.chat.group&&<GroupChatHeader/>}
 
         <Box
           ref={scrollRef}
@@ -141,7 +143,7 @@ const ChatTab = () => {
         </Box>
 
         <Box style={Typerstyle}>
-          {chat.chat.receiver._id === "Whizchat!!!null" ? null : (
+          {!chat.chat.group&&chat.chat.receiver._id === "Whizchat!!!null" ? null : (
             <TextField
               label="Type a message"
               style={{

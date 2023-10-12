@@ -6,7 +6,10 @@ import { chatListStyle } from "./Theme";
 import ChatListHeader from "./ChatListHeader";
 import { useSearchContext } from "../Context/SearchContext";
 import { BaseUrl, InitialChat } from "../config";
-import { createConversation, getAllConversations } from "../Utils/ConversationUtil";
+import {
+  createConversation,
+  getAllConversations,
+} from "../Utils/ConversationUtil";
 import { useGenContext } from "../Context/GeneralContext";
 import { useAlertContext } from "../Context/AlertContext";
 
@@ -31,6 +34,7 @@ const ChatList = () => {
   const socket = ctx.socket;
   const Ac = useAlertContext();
 
+
   useEffect(() => {
     socket.on("message", async () => {
       await setCall(Date.now());
@@ -50,7 +54,7 @@ const ChatList = () => {
 
     fetchData();
     //eslint-disable-next-line
-  }, [call]);
+  }, [call,Ac.refresh]);
 
   return (
     <Paper id="chatList" style={{ ...chatListStyle, borderRadius: "0px" }}>
@@ -98,11 +102,17 @@ const ChatList = () => {
               newchat={resultItem}
               itemId={resultItem._id + "xyz"}
               avatarUrl={
-                resultItem.receiver.avatar != null
+                resultItem.group && resultItem.groupavatar !== null
+                  ? "GroupImageURl"
+                  : !resultItem.group && resultItem.receiver.avatar != null
                   ? `${BaseUrl}/api/user/${resultItem.receiver.email}/avatar`
-                  : "Url to avatar.jpg"
+                  : "URL to default avatar.jpg"
               }
-              name={resultItem.receiver.name}
+              name={
+                resultItem.group
+                  ? resultItem.groupName
+                  : resultItem.receiver.name
+              }
               lastMessage={resultItem.lastMessage}
             />
           ))}

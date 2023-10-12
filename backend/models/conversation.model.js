@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ConversationSchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const ConversationSchema = new mongoose.Schema(
       {
         sender: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: "User",
         },
         content: String,
         timestamp: {
@@ -21,23 +21,31 @@ const ConversationSchema = new mongoose.Schema(
       },
     ],
     lastMessage: {
-      type:String,
-      default:"Send a message",
+      type: String,
+      default: "Send a message",
     },
     unseenCount: {
       type: Number,
       default: 0,
     },
-    
+
     group: {
       type: Boolean,
       default: false,
     },
     groupName: String,
+    groupavatar: {
+      type: String,
+      default: null,
+    },
     groupMembers: [
       {
-        type:String, //ID Goes Here
-        isAdmin: Boolean,
+        type: String,
+      },
+    ],
+    admins: [
+      {
+        type: String,
       },
     ],
     lastActivity: {
@@ -63,6 +71,6 @@ const ConversationSchema = new mongoose.Schema(
   }
 );
 
-const Conversation = mongoose.model('Conversation', ConversationSchema);
+const Conversation = mongoose.model("Conversation", ConversationSchema);
 
 module.exports = Conversation;

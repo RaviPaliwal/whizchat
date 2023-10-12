@@ -15,15 +15,57 @@ import {
   Typography,
 } from "@mui/material";
 import { Add, Remove, Search } from "@mui/icons-material";
-import { useSearchContext } from "../Context/SearchContext";
-import { BaseUrl } from "../config";
+import { useSearchContext } from "../../Context/SearchContext";
+import { BaseUrl } from "../../config";
+import { useAlertContext } from "../../Context/AlertContext";
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 const AddGroupChat = ({ open, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
+  const [about, setAbout] = useState("");
+  const [gname, setGName] = useState("");
+
+  const alert = useAlertContext();
   const Sc = useSearchContext();
+
+  const handleCreateGroupChat = async () => {
+    if (gname === "" || about === "" || selectedMembers.length < 2) {
+      alert.showPopup("Please fill the data and try again", "warning");
+      return;
+    } else {
+      let headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+
+      let bodyContent = JSON.stringify({
+        groupMembers: selectedMembers,
+        groupName: gname,
+        about: about,
+        admins: [user._id],
+      });
+      console.log(bodyContent);
+
+      let response = await fetch(`${BaseUrl}/api/conversations/createGroup`, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+
+      let data = await response.json();
+      alert.showPopup(
+        data.message,
+        data.message === "Group Created Successfully" ? "success" : "error"
+      );
+      if (data.message === "Group Created Successfully") {
+        alert.setRefresh(Date.now());
+        onClose();
+      }
+    }
+  };
 
   // Handle search input
   const handleSearch = async (e) => {
@@ -53,7 +95,16 @@ const AddGroupChat = ({ open, onClose }) => {
     setSelectedMembers(updatedMembers);
   };
 
+  const handleGnameChange = (e) => {
+    setGName(e.target.value);
+  };
+
+  const handleAboutChange = (e) => {
+    setAbout(e.target.value);
+  };
+
   // Define steps for the dialog
+
   const steps = [
     {
       title: "Group Details",
@@ -62,15 +113,23 @@ const AddGroupChat = ({ open, onClose }) => {
           <Typography variant="subtitle1" color="initial">
             GroupName
           </Typography>
-          <TextField variant="outlined" fullWidth />
-          <Typography variant="subtitle1" color="initial">
-            Profile
-          </Typography>
-          <TextField variant="outlined" fullWidth />
+          <TextField
+            name="groupname"
+            onChange={handleGnameChange}
+            variant="outlined"
+            fullWidth
+          />
           <Typography variant="subtitle1" color="initial">
             Description
           </Typography>
-          <TextField variant="outlined" fullWidth multiline rows={3} />
+          <TextField
+            name="about"
+            onChange={handleAboutChange}
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={3}
+          />
         </>
       ),
     },
@@ -229,7 +288,11 @@ const AddGroupChat = ({ open, onClose }) => {
               </Button>
             )}
             {isLastStep && (
-              <Button onClick={onClose} variant="contained" color="primary">
+              <Button
+                onClick={handleCreateGroupChat}
+                variant="contained"
+                color="primary"
+              >
                 Create Group Chat
               </Button>
             )}

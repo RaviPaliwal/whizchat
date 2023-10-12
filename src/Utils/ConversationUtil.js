@@ -5,14 +5,13 @@ export const getAllConversations = async (userId) => {
   try {
     const response = await fetch(`${BaseUrl}/api/user/${userId}/conversations`);
     const data = await response.json();
-
-    if (data && data[0] != null && !data.group) {
+    
+    if (data && data[0] != null) {
       // Loop through each object in the data array
       for (let i = 0; i < data.length; i++) {
         const currentData = data[i];
-
         // Check if currentData.members exists and is not null
-        if (currentData.members) {
+        if (currentData.members && !currentData.group) {
           let headersList = {
             Accept: "*/*",
           };
@@ -30,7 +29,7 @@ export const getAllConversations = async (userId) => {
         }
       }
     }
-
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching conversations:", error);
