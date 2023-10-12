@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -19,6 +19,7 @@ import { useSearchContext } from "../../Context/SearchContext";
 import { BaseUrl } from "../../config";
 import { useAlertContext } from "../../Context/AlertContext";
 const user = JSON.parse(sessionStorage.getItem("user"));
+// console.log(user)
 
 const AddGroupChat = ({ open, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,20 +28,19 @@ const AddGroupChat = ({ open, onClose }) => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [about, setAbout] = useState("");
   const [gname, setGName] = useState("");
-
   const alert = useAlertContext();
   const Sc = useSearchContext();
 
   const handleCreateGroupChat = async () => {
-    if (gname === "" || about === "" || selectedMembers.length < 2) {
-      alert.showPopup("Please fill the data and try again", "warning");
+    if (gname === "" || about === "" || selectedMembers.length <2) {
+      selectedMembers.length <2?alert.showPopup("Atleast 2 Members Required", "warning"):alert.showPopup("Please fill the data and try again", "warning");
       return;
     } else {
       let headersList = {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-
+      
       let bodyContent = JSON.stringify({
         groupMembers: selectedMembers,
         groupName: gname,
@@ -72,7 +72,7 @@ const AddGroupChat = ({ open, onClose }) => {
     e.preventDefault();
     const searchTerm = e.target.value;
     setSearchTerm(searchTerm);
-    if (searchTerm === "") {
+    if (searchTerm === "" || searchTerm.length < 3) {
       setSearchResults([]);
     } else {
       const results = await Sc.handleSearch(searchTerm);
@@ -89,6 +89,9 @@ const AddGroupChat = ({ open, onClose }) => {
 
   // Handle member removal
   const handleRemoveMember = (member) => {
+    if (user._id === member._id) {
+      return;
+    }
     const updatedMembers = selectedMembers.filter(
       (selected) => selected._id !== member._id
     );
@@ -140,6 +143,9 @@ const AddGroupChat = ({ open, onClose }) => {
           <Typography variant="subtitle1" color="primary">
             <Search /> Search Users
           </Typography>
+          <Typography variant="subtitle2" color="#afafaf">
+            *Add yourself also.
+          </Typography>
           <TextField
             value={searchTerm}
             variant="standard"
@@ -148,6 +154,7 @@ const AddGroupChat = ({ open, onClose }) => {
           />
 
           {/* Display search results */}
+
           {searchResults.map((result) => (
             <Card
               key={result._id}

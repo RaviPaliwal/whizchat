@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { BaseUrl, RandPhotoUrl } from "../config";
 import { Checkbox, FormControlLabel, Link } from "@mui/material";
 import { useAlertContext } from "../Context/AlertContext";
-import { setOnlineStatus,getCurrentDateTime } from "../Utils/ConversationUtil";
+import { setOnlineStatus } from "../Utils/ConversationUtil";
 import { setLastSeen, socketConnect } from "../Socket/SocketConfig";
 
 export default function LoginPage() {
@@ -153,7 +153,7 @@ export default function LoginPage() {
         {/* Background Image */}
         <Grid
           item
-          xs={12}
+          xs={0}
           md={6}
           sx={{
             position: "relative",
@@ -188,7 +188,7 @@ export default function LoginPage() {
             </Typography>
           </div>
         </Grid>
-
+        
         {/* Login or Signup Form */}
         {showSignup ? (
           <Grid
@@ -197,6 +197,7 @@ export default function LoginPage() {
             item
             xs={12}
             md={6}
+            style={{}}
             component={Paper}
             elevation={6}
             square

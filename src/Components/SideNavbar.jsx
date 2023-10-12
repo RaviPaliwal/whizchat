@@ -4,10 +4,11 @@ import { AccountCircle, Chat } from "@mui/icons-material";
 import { sidebarStyle } from "./Theme";
 import UserProfile from "./UserProfile"; // Import the UserProfile component
 import AddGroupChat from "./GroupChat/AddGroupChat";
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 const SideNavbar = () => {
-  const [openProfileDialog, setOpenProfileDialog] = useState(false);
   const [groupDialog, setGroupDialog] = useState(false);
+  const [openProfileDialog, setOpenProfileDialog] = useState(false);
 
   const handleProfileDialogOpen = () => {
     setOpenProfileDialog(true);
@@ -68,7 +69,7 @@ const SideNavbar = () => {
       />
 
       {/* Add Group Chat */}
-      <AddGroupChat open={groupDialog} onClose={handleGroupDialogClose} />
+        <AddGroupChat open={groupDialog} onClose={handleGroupDialogClose} />
     </Paper>
   );
 };
