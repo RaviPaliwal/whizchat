@@ -27,8 +27,9 @@ function HomePage() {
 
   useEffect(() => {
     // Set user as "Offline" when the tab is closed or navigated away
-    const handleTabClose = () => {
-      setOnlineStatus(user._id, Date.now());
+    const handleTabClose = async () => {
+      setLastSeen(socket, user._id);
+      await setOnlineStatus(user._id, Date.now());
       setLastSeen(socket, user._id);
     };
 

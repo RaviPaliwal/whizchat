@@ -24,7 +24,7 @@ export default function App() {
           element={
             <GenStateProvider>
               <ChatContextProvider>
-                <Redirector/>
+                <Redirector />
               </ChatContextProvider>
             </GenStateProvider>
           }

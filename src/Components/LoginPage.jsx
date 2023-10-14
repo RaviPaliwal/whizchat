@@ -21,11 +21,14 @@ export default function LoginPage() {
   //setting the lastseen when someone press back button
   const socket = socketConnect();
   useEffect(() => {
-    if (sessionStorage.getItem('user')) {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    
-      setOnlineStatus(user._id,Date.now() );
+    if (sessionStorage.getItem("user")) {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      setOnlineStatus(user._id, Date.now());
       setLastSeen(socket, user._id);
+      sessionStorage.clear();
+      //clearing data when backed
+      sessionStorage.clear();
+      sessionStorage.setItem("login_status", "false");
     }
   });
 
@@ -188,7 +191,7 @@ export default function LoginPage() {
             </Typography>
           </div>
         </Grid>
-        
+
         {/* Login or Signup Form */}
         {showSignup ? (
           <Grid
