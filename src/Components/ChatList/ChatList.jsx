@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import ChatItem from "./ChatItem";
+import ChatItem from "./ChatListItem";
 import SearchItem from "./SearchItem";
 import { Paper, List, Button, Skeleton, Box } from "@mui/material";
-import { chatListStyle } from "./Theme";
+import { chatListStyle } from "../../Utils/Theme";
 import ChatListHeader from "./ChatListHeader";
-import { useSearchContext } from "../Context/SearchContext";
-import { BaseUrl, InitialChat } from "../config";
+import { useSearchContext } from "../../Context/SearchContext";
+import { BaseUrl } from "../../config";
 import {
   createConversation,
   getAllConversations,
-} from "../Utils/ConversationUtil";
-import { useGenContext } from "../Context/GeneralContext";
-import { useAlertContext } from "../Context/AlertContext";
-
+} from "../../Utils/ConversationUtil";
+import { useGenContext } from "../../Context/GeneralContext";
+import { useAlertContext } from "../../Context/AlertContext";
+import { InitialChat } from "../../Utils/InitializationDefaults";
 const CustomSkeleton = () => {
   return (
     <Box className="d-flex mt-3">
@@ -93,7 +93,8 @@ const ChatList = () => {
       {/* Display existing chats */}
       <List>
         <p className="mx-3">Chats</p>
-        {typeof(conversations)==="object" && conversations.length !== 0 &&
+        {typeof conversations === "object" &&
+          conversations.length !== 0 &&
           conversations &&
           conversations.map((resultItem) => (
             <ChatItem

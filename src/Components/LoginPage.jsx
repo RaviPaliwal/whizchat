@@ -76,7 +76,7 @@ export default function LoginPage() {
       if (responseData.success === true) {
         const user = JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
-        sessionStorage.setItem("login_status", true);
+        sessionStorage.setItem("login_status", "true");
         Ac.showPopup("Login Success", "success"); //takes (message,seviarity)
         navigate("/chats");
       }
@@ -120,7 +120,7 @@ export default function LoginPage() {
       if (responseData.success === true) {
         const user = await JSON.stringify(responseData.user);
         sessionStorage.setItem("user", user);
-        sessionStorage.setItem("login_status", true);
+        sessionStorage.setItem("login_status", "true");
         Ac.showPopup("Signup Success", "success"); //takes (message,seviarity)
         //setting Online
         navigate("/chats");

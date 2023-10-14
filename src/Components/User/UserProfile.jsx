@@ -9,10 +9,10 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { BaseUrl } from "../config";
+import { BaseUrl } from "../../config";
 import EditIcon from "@mui/icons-material/Edit";
 import AvatarUpdateDialog from "./AvatarUpdateDialog"; // Import the AvatarUpdateDialog component
-import "../Assets/Styles/UserProfile.css";
+import "../../Assets/Styles/UserProfile.css";
 
 const UserProfile = ({ open, onClose }) => {
   let user = JSON.parse(sessionStorage.getItem("user"));

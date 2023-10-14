@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
-import IMG from "../Assets/Images/404.svg";
+import IMG from "../../Assets/Images/404.svg";
 
 const PageNotFound = () => {
   return (

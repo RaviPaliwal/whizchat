@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Paper, TextField, Typography } from "@mui/material";
 import Message from "./Message";
-import { Typerstyle, chatAreaStyle } from "./Theme";
-import ChatHeader from "./ChatHeader";
-import GroupChatHeader from "./GroupChat/GroupChatHeader";
-import { useChatContext } from "../Context/ChatContext";
-import { sendMessageToRoom } from "../Socket/SocketConfig";
-import { useGenContext } from "../Context/GeneralContext";
-import { BaseUrl, RandPhotoUrlChat } from "../config";
-import { groupMessagesByDate } from "../Utils/ConversationUtil";
+import { Typerstyle, chatAreaStyle } from "../../Utils/Theme";
+import ChatHeader from "../Chat/ChatHeader";
+import GroupChatHeader from "../GroupChat/GroupChatHeader";
+import { useChatContext } from "../../Context/ChatContext";
+import { sendMessageToRoom } from "../../Socket/SocketConfig";
+import { useGenContext } from "../../Context/GeneralContext";
+import { BaseUrl, RandPhotoUrlChat } from "../../config";
+import { groupMessagesByDate } from "../../Utils/ConversationUtil";
 
-const ChatTab = () => {
+const ChatSection = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
+  // console.log(messages);
   const user = JSON.parse(sessionStorage.getItem("user"));
   const chat = useChatContext();
   const ctx = useGenContext();
@@ -21,20 +22,21 @@ const ChatTab = () => {
 
   useEffect(() => {
     const fetchMsg = async () => {
-      try{
-      if (chat.chat._id !== "Whizchat!!!null") {
-        const res = await fetch(
-          `${BaseUrl}/api/conversations/${chat.chat._id}`
-        );
-        const data = await res.json();
-        console.log(data);
-        const groupedMessages = groupMessagesByDate(data.messages);
-        setMessages(groupedMessages);
-        // console.log(data.messages)
-      }}
-      catch (error){
+      try {
+        if (chat.chat._id !== "Whizchat!!!null") {
+          const res = await fetch(
+            `${BaseUrl}/api/conversations/${chat.chat._id}`
+          );
+          const data = await res.json();
+          // console.log(data);
+          const groupedMessages = groupMessagesByDate(data.messages);
+          setMessages(groupedMessages);
+          // console.log(data.messages)
+        }
+      } catch (error) {
         console.log("Error: " + error);
-      }  }
+      }
+    };
     fetchMsg();
   }, [chat.chat._id, getMsg]);
 
@@ -81,7 +83,7 @@ const ChatTab = () => {
     sendMessageToRoom(
       ctx.socket,
       chat.chat._id,
-      chat.chat.group?null:chat.chat.receiver._id,//Change 1
+      chat.chat.group ? null : chat.chat.receiver._id, //Change 1
       newMessage,
       user.name
     );
@@ -107,8 +109,8 @@ const ChatTab = () => {
           // borderLeft: ".8px solid gray",
         }}
       >
-        {!chat.chat.group&&<ChatHeader refresh={setGetMsg}/>}
-        {chat.chat.group&&<GroupChatHeader/>}
+        {!chat.chat.group && <ChatHeader refresh={setGetMsg} />}
+        {chat.chat.group && <GroupChatHeader />}
 
         <Box
           ref={scrollRef}
@@ -136,14 +138,19 @@ const ChatTab = () => {
                   : "Today"}
               </Typography>
               {dateMessages.map((message, index) => (
-                <Message key={index} message={message} group={chat.chat.group} />
+                <Message
+                  key={index}
+                  message={message}
+                  group={chat.chat.group}
+                />
               ))}
             </div>
           ))}
         </Box>
 
         <Box style={Typerstyle}>
-          {!chat.chat.group&&chat.chat.receiver._id === "Whizchat!!!null" ? null : (
+          {!chat.chat.group &&
+          chat.chat.receiver._id === "Whizchat!!!null" ? null : (
             <TextField
               label="Type a message"
               style={{
@@ -170,4 +177,4 @@ const ChatTab = () => {
   );
 };
 
-export default ChatTab;
+export default ChatSection;

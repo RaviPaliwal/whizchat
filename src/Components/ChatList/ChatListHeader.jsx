@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import { Search } from "@mui/icons-material";
 import { Button, InputAdornment, Paper, TextField } from "@mui/material";
-import logo from "../Assets/Images/logo.png";
-import { useSearchContext } from "../Context/SearchContext";
+import logo from "../../Assets/Images/logo.png";
+import { useSearchContext } from "../../Context/SearchContext";
 
 const ChatListHeader = () => {
   const search = useSearchContext();

@@ -21,7 +21,7 @@ function handleError(res, error) {
 }
 
 // Path to avatar directory
-const avatarDir = path.join(__dirname, "..", "UserData", "Avatars");
+const avatarDir = path.join(__dirname, ".." ,"UserData", "Avatars");
 
 // Register a user
 exports.register = async (req, res) => {
@@ -201,9 +201,9 @@ exports.getLastseen = async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await UserModel.findById(userId);
-    res.json({lastseen:user.lastseen});
+    res.json({ lastseen: user.lastseen });
   } catch (error) {
-    res.json({lastseen:"...fetching"});
+    res.json({ lastseen: "...fetching" });
     console.log(error.message);
   }
 };

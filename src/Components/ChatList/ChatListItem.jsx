@@ -8,11 +8,11 @@ import {
   Button,
   Badge,
 } from "@mui/material";
-import { useChatContext } from "../Context/ChatContext";
-import { useGenContext } from "../Context/GeneralContext";
-import { joinRoom } from "../Socket/SocketConfig";
-import { BaseUrl } from "../config";
-import Logo from "../Assets/Images/logo2.png";
+import { useChatContext } from "../../Context/ChatContext";
+import { useGenContext } from "../../Context/GeneralContext";
+import { joinRoom } from "../../Socket/SocketConfig";
+import { BaseUrl } from "../../config";
+import Logo from "../../Assets/Images/logo2.png";
 
 const ChatItem = ({ itemId, avatarUrl, name, lastMessage, newchat }) => {
   const chat = useChatContext();

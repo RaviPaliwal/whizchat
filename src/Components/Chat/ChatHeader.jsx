@@ -10,13 +10,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Grid from "@mui/material/Grid";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useGenContext } from "../Context/GeneralContext";
-import { useChatContext } from "../Context/ChatContext";
+import { useGenContext } from "../../Context/GeneralContext";
+import { useChatContext } from "../../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
-import { BaseUrl, InitialChat } from "../config";
-import { getLastSeenTime } from "../Utils/ConversationUtil";
-import { useAlertContext } from "../Context/AlertContext";
-import { sendMessageToRoom } from "../Socket/SocketConfig";
+import { BaseUrl} from "../../config";
+import { getLastSeenTime } from "../../Utils/ConversationUtil";
+import { useAlertContext } from "../../Context/AlertContext";
+import { sendMessageToRoom } from "../../Socket/SocketConfig";
+import { InitialChat } from "../../Utils/InitializationDefaults";
 
 const customTheme = createTheme({
   components: {

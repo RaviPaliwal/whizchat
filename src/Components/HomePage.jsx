@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { CssBaseline, ThemeProvider, Container } from "@mui/material";
-import ChatList from "./ChatList";
-import ChatTab from "./ChatTab";
-import SideNavbar from "./SideNavbar";
-import { theme, appContainerStyle } from "./Theme";
+import ChatList from "./ChatList/ChatList";
+import ChatSection from "./Common/ChatSection";
+import SideNavbar from "./Common/SideNavbar";
+import { theme, appContainerStyle } from "../Utils/Theme";
 import { SearchContextProvider } from "../Context/SearchContext";
-import PageNotFound from "./PageNotFound";
 import { useGenContext } from "../Context/GeneralContext";
 import { joinRoom, setLastSeen } from "../Socket/SocketConfig";
-import {setOnlineStatus } from "../Utils/ConversationUtil";
+import { setOnlineStatus } from "../Utils/ConversationUtil";
 
 function HomePage() {
   const [joined, setJoined] = useState(false);
@@ -19,7 +18,7 @@ function HomePage() {
   useEffect(() => {
     if (!joined) {
       joinRoom(socket, user._id); //General Purpose Room
-      console.log("Joined General Purpose Room " + user._id);
+      // console.log("Joined General Purpose Room " + user._id);
       setJoined(true);
       setOnlineStatus(user._id, "Online");
       setLastSeen(socket, user._id);
@@ -41,34 +40,24 @@ function HomePage() {
     };
   }, [socket, user._id]);
 
-  if (sessionStorage.getItem("login_status")) {
-    // If the user is logged in
-    return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Container maxWidth={false} disableGutters style={appContainerStyle}>
-          {/* Sidebar */}
-          <SearchContextProvider>
-            <SideNavbar />
-          </SearchContextProvider>
-          {/* Use the SideNavbar component */}
-          {/* Chat profiles */}
-          <SearchContextProvider>
-            <ChatList />
-          </SearchContextProvider>
-          {/* Chat area */}
-          <ChatTab />
-        </Container>
-      </ThemeProvider>
-    );
-  } else {
-    // If the user is not logged in
-    return (
-      <>
-        <PageNotFound />
-      </>
-    );
-  }
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth={false} disableGutters style={appContainerStyle}>
+        {/* Sidebar */}
+        <SearchContextProvider>
+          <SideNavbar />
+        </SearchContextProvider>
+        {/* Use the SideNavbar component */}
+        {/* Chat profiles */}
+        <SearchContextProvider>
+          <ChatList />
+        </SearchContextProvider>
+        {/* Chat area */}
+        <ChatSection />
+      </Container>
+    </ThemeProvider>
+  );
 }
 
 export default HomePage;

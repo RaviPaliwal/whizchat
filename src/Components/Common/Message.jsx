@@ -63,12 +63,12 @@ const Message = ({ message, group }) => {
         
         {message.content}
 
-        <p style={{
+        <span style={{
             display: "inline-block",
             width: "2.2rem",
-          }}></p>
+          }}></span>
 
-        <div
+        <Box
           style={{
             position: "absolute",
             display: "block",
@@ -82,7 +82,7 @@ const Message = ({ message, group }) => {
           {!isUserMessage&&group&&message.sender.name+"   "}
           {/* Find Proper Place */}
           {timeString}
-        </div>
+        </Box>
       </Typography>
     </Box>
   );

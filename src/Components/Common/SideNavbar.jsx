@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Paper, Tabs, Tab, SpeedDialIcon } from "@mui/material";
 import { AccountCircle, Chat } from "@mui/icons-material";
-import { sidebarStyle } from "./Theme";
-import UserProfile from "./UserProfile"; // Import the UserProfile component
-import AddGroupChat from "./GroupChat/AddGroupChat";
-const user = JSON.parse(sessionStorage.getItem("user"));
+import { sidebarStyle } from "../../Utils/Theme";
+import UserProfile from "../User/UserProfile"; // Import the UserProfile component
+import AddGroupChat from "../GroupChat/AddGroupChat";
+// const user = JSON.parse(sessionStorage.getItem("user"));
 
 const SideNavbar = () => {
   const [groupDialog, setGroupDialog] = useState(false);

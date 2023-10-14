@@ -1,5 +1,5 @@
 const Conversation = require("../models/conversation.model");
-const User = require('../models/user.model'); // Import your User model
+const User = require("../models/user.model"); // Import your User model
 
 exports.createConversation = async (req, res) => {
   try {
@@ -102,7 +102,7 @@ exports.getConversationById = async (req, res) => {
   const { conversationId } = req.params;
   try {
     const conversation = await Conversation.findById(conversationId)
-      .populate('messages.sender', 'name') // Populate sender's name
+      .populate("messages.sender", "name") // Populate sender's name
       .exec();
 
     if (!conversation) {
@@ -111,10 +111,11 @@ exports.getConversationById = async (req, res) => {
 
     res.json(conversation);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while fetching the conversation." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the conversation." });
   }
 };
-
 
 exports.sendMessage = async (req, res) => {
   const { conversationId } = req.params;
@@ -159,7 +160,9 @@ exports.getConversationsByUser = async (req, res) => {
 
       if (!conversationData.group) {
         // Fetch user information and append it to the conversation data
-        const user = await User.findById(conversationData.members.find(memberId => memberId != userId));
+        const user = await User.findById(
+          conversationData.members.find((memberId) => memberId != userId)
+        );
         conversationData.receiver = user; // Assuming you want to append the entire user object
       }
 
@@ -180,9 +183,6 @@ exports.getConversationsByUser = async (req, res) => {
     res.status(500).json({ error: "Could not retrieve conversations." });
   }
 };
-
-
-
 
 exports.markAllAsRead = async (req, res) => {
   const { conversationId } = req.params;

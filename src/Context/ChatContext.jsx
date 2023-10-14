@@ -1,8 +1,7 @@
 // ChatContext.js
 
 import React, { createContext, useContext, useState } from "react";
-import { InitialChat } from "../config";
-
+import { InitialChat } from "../Utils/InitializationDefaults";
 // Create the ChatContext
 const ChatContext = createContext();
 

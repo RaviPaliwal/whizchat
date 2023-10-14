@@ -1,36 +1,13 @@
 // ConversationUtility.js
 import { BaseUrl } from "../config";
 
-// if (data && data[0] != null) {
-//   // Loop through each object in the data array
-//   for (let i = 0; i < data.length; i++) {
-//     const currentData = data[i];
-//     // Check if currentData.members exists and is not null
-//     if (currentData.members && !currentData.group) {
-//       let headersList = {
-//         Accept: "*/*",
-//       };
-//       const newArray = currentData.members.filter((UID) => UID !== userId);
-//       if (newArray.length > 0) {
-//         let response = await fetch(`${BaseUrl}/api/user/${newArray[0]}`, {
-//           method: "GET",
-//           headers: headersList,
-//         });
-
-//         let receiver = await response.json();
-//         // Set the receiver property for the current object
-//         currentData.receiver = receiver.user;
-//       }
-//     }
-//   }
-// }
 
 export const getAllConversations = async (userId) => {
   try {
     const response = await fetch(`${BaseUrl}/api/user/${userId}/conversations`);
     const data = await response.json();
     //Here REmoved Code to add Receiver to Conversation Controller
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching conversations:", error);
@@ -74,7 +51,7 @@ export function groupMessagesByDate(messages) {
 
 // Add other conversation-related functions here
 export const setOnlineStatus = async (userId, status) => {
-  console.log(`Setting ${status} status`);
+  // console.log(`Setting ${status} status`);
   let headersList = {
     Accept: "*/*",
   };
