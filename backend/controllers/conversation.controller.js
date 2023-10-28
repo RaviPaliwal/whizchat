@@ -1,5 +1,7 @@
 const Conversation = require("../models/conversation.model");
 const User = require("../models/user.model"); // Import your User model
+const path =require("path");
+const fs = require("fs/promises");
 
 exports.createConversation = async (req, res) => {
   try {
@@ -208,7 +210,7 @@ exports.clearChat = async (req, res) => {
     res.status(404).json({ error: "Conversation not found." });
   }
 };
-
+ 
 exports.deleteChat = async (req, res) => {
   const { conversationId } = req.params;
   try {
@@ -218,3 +220,56 @@ exports.deleteChat = async (req, res) => {
     res.status(404).json({ error: "Conversation not found." });
   }
 };
+
+const avatarDir = path.join(__dirname, ".." ,"GroupData", "Avatars");
+
+
+exports.setgroupProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const group = await Conversation.findById(id);
+
+    const newAvatarFile = req.file;
+    if (!newAvatarFile) {
+      return res.status(400).json({ message: "No new avatar file provided" });
+    }
+
+    const newExt = path.extname(newAvatarFile.originalname);
+    const newFilename = id + newExt;
+    group.groupavatar = newFilename;
+    await group.save();
+    
+    const newAvatarPath = path.join(avatarDir, newFilename);
+    try{await fs.rename(newAvatarFile.path, newAvatarPath);}
+    catch(e){
+      console.log(e.message);
+    }
+
+    res.json({ success: true, message: "Group updated successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getgroupProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const chat = await Conversation.findById(id);
+
+    if (!chat) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const avatarFilename = chat.groupavatar;
+    if (!avatarFilename) {
+      return res.status(404).json({ message: "User has no avatar" });
+    }
+
+    let avatarPath = path.join(avatarDir, avatarFilename);
+    res.sendFile(avatarPath);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+}
+

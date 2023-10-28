@@ -13,6 +13,8 @@ import { BaseUrl } from "../../config";
 import EditIcon from "@mui/icons-material/Edit";
 import AvatarUpdateDialog from "./AvatarUpdateDialog"; // Import the AvatarUpdateDialog component
 import "../../Assets/Styles/UserProfile.css";
+import { useAlertContext } from "../../Context/AlertContext";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = ({ open, onClose }) => {
   let user = JSON.parse(sessionStorage.getItem("user"));
@@ -23,10 +25,11 @@ const UserProfile = ({ open, onClose }) => {
   const [isAvatarUpdateDialogOpen, setIsAvatarUpdateDialogOpen] = useState(
     false
   );
-
+  const Ac = useAlertContext();
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
   const [mobile, setMobile] = useState(user.mobile);
+  const goto = useNavigate();
 
   const handleEditClick = (field) => {
     switch (field) {
@@ -55,13 +58,29 @@ const UserProfile = ({ open, onClose }) => {
     setIsAvatarUpdateDialogOpen(false);
   };
 
-  const handleSave = () => {
-    // Log the values of name, username, and mobile
-    console.log("Name:", name);
-    console.log("Username:", username);
-    console.log("Mobile:", mobile);
+  const handleSave = async () => {
     //TODO: Handle Update
+    if(username!==user.username||mobile!==user.mobile||name!==user.name)
+    {try {
+      let headersList = {
+        Accept: "*/*",
+      };
 
+      let response = await fetch(
+        `${BaseUrl}/api/user/update/${user.email}/${username}/${name}/${mobile}`,
+        {
+          method: "PUT",
+          headers: headersList,
+        }
+      );
+      //  let data = await response.json();
+      if (response.status === 200) {
+        Ac.showPopup("User Updated Successfully Login Again", "success");
+        goto("/");
+      }
+    } catch (e) {
+      Ac.showPopup(`${e.message}`, "error");
+    }}
     // Reset editing states
     setIsNameEditing(false);
     setIsMobileEditing(false);
@@ -90,6 +109,7 @@ const UserProfile = ({ open, onClose }) => {
             onMouseLeave={() => setIsAvatarHovered(false)}
           >
             <Avatar
+              style={{width:"80px",height:"80px"}}
               src={`${BaseUrl}/api/user/${user.email}/avatar`}
               alt="Profile Image"
               className="avatar"
@@ -206,7 +226,7 @@ const UserProfile = ({ open, onClose }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSave} color="primary">
-            Save
+          {username!==user.username||mobile!==user.mobile||name!==user.name?"Save":"Ok"}
           </Button>
         </DialogActions>
       </Dialog>

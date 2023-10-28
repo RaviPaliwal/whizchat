@@ -39,7 +39,7 @@ const Message = ({ message, group }) => {
       alignItems={isUserMessage ? "flex-end" : "flex-start"} // Adjust alignment based on user message or not
       marginRight={isUserMessage ? ".35rem" : "0.35rem"} // Adjust margin based on user message or not
     >
-
+     
       <Typography
         variant="body1"
         // Apply common styles to the message container
@@ -59,8 +59,22 @@ const Message = ({ message, group }) => {
             ? "linear-gradient(135deg, rgba(157, 65, 225, 0.95), rgba(104, 62, 247, .9))"
             : "linear-gradient(135deg, lightgreen, lavender)",
         }}
-      >
-        
+        >
+        <Box
+          style={{
+            position: "absolute",
+            display: "block",
+            marginLeft:"3px",
+            left: "3px",
+            top:"0",
+            fontWeight: "bold",
+            color: isUserMessage?"white":"gray",
+            fontSize: "60%",
+          }}
+        >
+        {!isUserMessage&&group&&message.sender.name+"   "}
+        </Box>
+
         {message.content}
 
         <span style={{
@@ -79,7 +93,6 @@ const Message = ({ message, group }) => {
             fontSize: "60%",
           }}
         >
-          {!isUserMessage&&group&&message.sender.name+"   "}
           {/* Find Proper Place */}
           {timeString}
         </Box>

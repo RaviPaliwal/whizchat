@@ -28,4 +28,5 @@ router.get('/users/search',UserController.searchUsers);
 router.get('/user/:id',UserController.getUserById);
 router.put('/user/:userId/:status',UserController.updateLastseen)
 router.get('/user/lastseen/:userId',UserController.getLastseen)
+router.put('/user/update/:email/:username/:name/:mobile',UserController.updateUserDetails)
 module.exports = router;

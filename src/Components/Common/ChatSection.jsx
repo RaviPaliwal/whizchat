@@ -9,6 +9,7 @@ import { sendMessageToRoom } from "../../Socket/SocketConfig";
 import { useGenContext } from "../../Context/GeneralContext";
 import { BaseUrl, RandPhotoUrlChat } from "../../config";
 import { groupMessagesByDate } from "../../Utils/ConversationUtil";
+import AIChatSection from "../AI_Chat/AIChatSection";
 
 const ChatSection = () => {
   const [messages, setMessages] = useState([]); // Store the chat messages
@@ -91,7 +92,7 @@ const ChatSection = () => {
 
   const scrollRef = useRef(null);
 
-  return (
+  return chat.chat.receiver._id !== "Whizchat!!!null" ? (
     <div
       style={{
         ...chatAreaStyle,
@@ -149,31 +150,30 @@ const ChatSection = () => {
         </Box>
 
         <Box style={Typerstyle}>
-          {!chat.chat.group &&
-          chat.chat.receiver._id === "Whizchat!!!null" ? null : (
-            <TextField
-              label="Type a message"
-              style={{
-                width: "100%",
-              }}
-              InputProps={{
-                style: {
-                  color: "white",
-                  // Change this color to the color you want
-                },
-              }}
-              variant="standard"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && e.target.value.trim() !== "") {
-                  sendMessage(e.target.value);
-                  e.target.value = "";
-                }
-              }}
-            />
-          )}
+          <TextField
+            label="Type a message"
+            style={{
+              width: "100%",
+            }}
+            InputProps={{
+              style: {
+                color: "white",
+                // Change this color to the color you want
+              },
+            }}
+            variant="standard"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.target.value.trim() !== "") {
+                sendMessage(e.target.value);
+                e.target.value = "";
+              }
+            }}
+          />
         </Box>
       </Paper>
     </div>
+  ) : (
+    <AIChatSection />
   );
 };
 

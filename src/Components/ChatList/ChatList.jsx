@@ -13,6 +13,7 @@ import {
 import { useGenContext } from "../../Context/GeneralContext";
 import { useAlertContext } from "../../Context/AlertContext";
 import { InitialChat } from "../../Utils/InitializationDefaults";
+import AIChatListItem from "../AI_Chat/AIChatListItem";
 const CustomSkeleton = () => {
   return (
     <Box className="d-flex mt-3">
@@ -93,6 +94,7 @@ const ChatList = () => {
       {/* Display existing chats */}
       <List>
         <p className="mx-3">Chats</p>
+        <AIChatListItem/>
         {typeof conversations === "object" &&
           conversations.length !== 0 &&
           conversations &&
@@ -103,7 +105,7 @@ const ChatList = () => {
               itemId={resultItem._id + "xyz"}
               avatarUrl={
                 resultItem.group && resultItem.groupavatar !== null
-                  ? "GroupImageURl"
+                  ? `${BaseUrl}/api/getgroupavatar/${resultItem._id}`
                   : !resultItem.group && resultItem.receiver.avatar != null
                   ? `${BaseUrl}/api/user/${resultItem.receiver.email}/avatar`
                   : "URL to default avatar.jpg"

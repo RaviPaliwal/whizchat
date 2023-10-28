@@ -11,7 +11,7 @@ const getFilename = async (req, res, next) => {
     }
     // Extract username from the user (you might have a different field for username)
     const username = user.username; // Update this line based on your user schema
-    console.log(username);
+    // console.log(username);
     req.username = username;
     next();
   } catch (error) {

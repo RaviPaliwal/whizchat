@@ -6,6 +6,7 @@ const config = require('./config.json');
 const userRoute = require('./routes/user.route');
 const createSocket = require('./socket');
 const conversationRoute = require('./routes/conversation.route');
+const AiRoute = require('./routes/Ai.routes');
 const app = express();
 const server = http.createServer(app);
 // const path = require('path');
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 app.use(config.apiPrefix, userRoute);
 app.use(config.apiPrefix, conversationRoute);
+app.use(config.apiPrefix, AiRoute);
 
 // app.get('/hello', (req, res) => {
 //   res.json("hello");

@@ -138,7 +138,7 @@ exports.deleteAccount = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    if (user.avatar != null) {
+    if (user.avatar !== null) {
       const avatarFilename = user.avatar;
       const avatarPath = path.join(avatarDir, avatarFilename);
 
@@ -206,4 +206,21 @@ exports.getLastseen = async (req, res) => {
     res.json({ lastseen: "...fetching" });
     console.log(error.message);
   }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  try {
+  const {email,username,name,mobile} = req.params;
+  const user = await UserModel.findOne({ email: email});
+  if(user){
+    user.name = name;
+    user.username = username;
+    user.mobile = mobile;
+    user.save();
+  }
+  res.json({ user: user });
+  }
+catch(e){
+  res.json({ success:false,message:e.message });
+}
 };

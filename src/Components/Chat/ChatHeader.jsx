@@ -13,12 +13,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { useGenContext } from "../../Context/GeneralContext";
 import { useChatContext } from "../../Context/ChatContext";
 import { Clear, Delete } from "@mui/icons-material";
-import { BaseUrl} from "../../config";
+import { BaseUrl } from "../../config";
 import { getLastSeenTime } from "../../Utils/ConversationUtil";
 import { useAlertContext } from "../../Context/AlertContext";
 import { sendMessageToRoom } from "../../Socket/SocketConfig";
 import { InitialChat } from "../../Utils/InitializationDefaults";
-
+// 
 const customTheme = createTheme({
   components: {
     MuiCardHeader: {
@@ -41,7 +41,28 @@ export default function ChatHeader({ refresh }) {
   const chat = useChatContext();
   const socket = states.socket;
   const [lastseen, setLastseen] = useState("");
+  const [url,setUrl] = useState("");
+  useEffect(() => {
+    const generateImage = async (prompt) => {
+      const headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+      const bodyContent = JSON.stringify({
+        inputs: `${prompt}`,
+      });
+      const response = await fetch(`${BaseUrl}/api/generateImage`, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+      const data = await response.blob();
+      const imageUrl = URL.createObjectURL(data);
+      setUrl(imageUrl);
+    };
 
+    generateImage("AI and Neural Network Brain Image Logo");
+  }, []);
   useEffect(() => {
     const updateLastSeen = async () => {
       try {
@@ -172,22 +193,19 @@ export default function ChatHeader({ refresh }) {
                   src={
                     chat.chat.receiver.avatar != null
                       ? `${BaseUrl}/api/user/${chat.chat.receiver.email}/avatar`
-                      : "noavatar.jpg"
+                      : url
                   }
                 >
                   {chat.chat.receiver.name[0]}
                 </Avatar>
               </Grid>
-              <Grid
-                item
-                style={{ display: "flex", flexDirection: "column" }}
-              >
+              <Grid item style={{ display: "flex", flexDirection: "column" }}>
                 {chat.chat.receiver._id === "Whizchat!!!null"
                   ? "Whizchat"
                   : chat.chat.receiver.name}
                 <span style={{ fontSize: "17px" }} className="text-success">
                   {chat.chat.receiver._id === "Whizchat!!!null"
-                    ? "Open a Chat"
+                    ? "AI powered chat app"
                     : getLastSeenTime(lastseen)}
                 </span>
               </Grid>

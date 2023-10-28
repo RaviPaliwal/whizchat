@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import HomePage from "../HomePage"; // Import your HomePage component
 import PageNotFound from "./PageNotFound"; // Import your PageNotFound component
 
