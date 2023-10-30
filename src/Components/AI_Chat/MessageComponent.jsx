@@ -16,7 +16,7 @@ const MessageComponent = ({ message, isUserMessage }) => {
         // Apply common styles to the message container
         sx={{
           display: "inline-block",
-          padding: "8px 12px",
+          padding: "8px 8px",
           position: "relative",
           marginLeft: isUserMessage ? "auto" : "1rem", // Align user messages to the right
           marginRight: isUserMessage ? "1rem" : "auto", // Align other messages to the left

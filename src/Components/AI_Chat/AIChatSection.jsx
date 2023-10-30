@@ -14,13 +14,19 @@ import MessageComponent from "./MessageComponent";
 
 const AIChatSection = () => {
   const [mode, setMode] = React.useState("TextToText");
-  const [loading,setLoading]=useState("none")
+  const [loading, setLoading] = useState("none");
+  const scrollRef = useRef(null);
   const handleMode = (event, mode) => {
     setMode(mode);
   };
 
   const [messages, setMessages] = useState([
-    { _id: Date.now(), isUserMessage: false, message: "Welcome User!" },
+    { _id: Date.now(), isUserMessage: false, message: "😍Welcome User!" },
+    {
+      _id: Date.now(),
+      isUserMessage: false,
+      message: "👋Info: This Chat will not be stored",
+    },
   ]);
 
   const generateImage = async (prompt) => {
@@ -39,16 +45,40 @@ const AIChatSection = () => {
     const data = await response.blob();
     const imageUrl = URL.createObjectURL(data);
 
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.height = "250px";
-    image.style.marginLeft = "8px";
-    image.style.borderRadius = "12px";
+    const newMessage = {
+      _id: Date.now(),
+      isUserMessage: false,
+      message: (
+        <img
+          src={imageUrl}
+          alt="Generated_Img"
+          style={{
+            height: "250px",
+            borderRadius: "8px",
+            backgroundPosition: "center",
+          }}
+        />
+      ),
+    };
 
-    image.style.backgroundPosition = "center";
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
 
-    const div = document.getElementById("messages-box");
-      div.appendChild(image);
+  const sendMessage = async (text) => {
+    setMessages([
+      ...messages,
+      { _id: Date.now(), isUserMessage: true, message: text },
+    ]);
+    if (mode === "TextToImage") {
+      setLoading("block");
+      await generateImage(text);
+      setLoading("none");
+    }
+    if (mode === "TextToText") {
+      setLoading("block");
+      await generateImage(text);
+      setLoading("none");
+    }
   };
 
   useEffect(() => {
@@ -56,16 +86,6 @@ const AIChatSection = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
-  const sendMessage = async (text) => {
-    setMessages([...messages, {_id:Date.now(),isUserMessage:true, message:text}]);
-    if(mode ==="TextToImage"){
-      setLoading("block");
-      await generateImage(text)
-      setLoading("none");
-    }
-  };
-  const scrollRef = useRef(null);
 
   return (
     <div
@@ -105,19 +125,17 @@ const AIChatSection = () => {
               />
             );
           })}
-          
         </Box>
-        <Box style={{marginBottom:"20%"}}>
-        <CircularProgress style={{marginLeft:"25%",display:loading} }/>
+        <Box style={{ marginBottom: "20%" }}>
+          <CircularProgress style={{ marginLeft: "25%", display: loading }} />
         </Box>
-        
 
         <Box style={Typerstyle}>
           <TextField
             label="Type a message"
             style={{
               width: "100%",
-              marginBottom:"7px"
+              marginBottom: "7px",
             }}
             InputProps={{
               style: {
@@ -134,21 +152,33 @@ const AIChatSection = () => {
             }}
           />
           <Paper>
-          <ToggleButtonGroup
-            style={{display: "flex",flexDirection:"row",justifyContent:"space-between",}}
-            value={mode}
-            exclusive
-            onChange={handleMode}
-            aria-label="mode-select"
-          >
-            <ToggleButton value="TextToText" aria-label="Text-to-Text" style={{width:"50%"}}>
-            Text To Text
-            </ToggleButton>
-            <ToggleButton value="TextToImage" aria-label="Text-to-Text"  style={{width:"50%"}}>
-            Text To Image
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Paper>
+            <ToggleButtonGroup
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+              value={mode}
+              exclusive
+              onChange={handleMode}
+              aria-label="mode-select"
+            >
+              <ToggleButton
+                value="TextToText"
+                aria-label="Text-to-Text"
+                style={{ width: "50%" }}
+              >
+                Text To Text
+              </ToggleButton>
+              <ToggleButton
+                value="TextToImage"
+                aria-label="Text-to-Image"
+                style={{ width: "50%" }}
+              >
+                Text To Image
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Paper>
         </Box>
       </Paper>
     </div>

@@ -17,7 +17,7 @@ exports.generateImage = async (req, res) => {
     if (response.ok) {
       // Assuming the response is an image in binary format
       const imageBuffer = await response.buffer();
-
+      console.log(imageBuffer);
       // Set the content type in the response
       res.set('Content-Type', 'image/jpeg'); // Adjust the content type as needed
 
