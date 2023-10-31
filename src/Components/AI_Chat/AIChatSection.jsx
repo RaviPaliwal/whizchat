@@ -64,6 +64,26 @@ const AIChatSection = () => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
+  const chatWithBot = async (prompt) => {
+    let headersList = {
+      Accept: "*/*",
+    };
+
+    let response = await fetch(`${BaseUrl}/api/chatwithbot/${prompt}`, {
+      method: "GET",
+      headers: headersList,
+    });
+    let data = await response.json();
+    const newMessage = {
+      _id: Date.now(),
+      isUserMessage: false,
+      message: data[0],
+    };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+    // console.log(data);
+  };
+
   const sendMessage = async (text) => {
     setMessages([
       ...messages,
@@ -76,7 +96,7 @@ const AIChatSection = () => {
     }
     if (mode === "TextToText") {
       setLoading("block");
-      await generateImage(text);
+      await chatWithBot(text);
       setLoading("none");
     }
   };

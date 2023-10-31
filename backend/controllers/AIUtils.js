@@ -1,5 +1,5 @@
-// // import { pipeline } from "@xenova/transformers";
-// const fs = require('fs');
+import { pipeline } from "@xenova/transformers";
+const fs = require('fs');
 
 // const sentimentAnalysis = async () => {
 //   let { pipeline, env } = await import('@xenova/transformers');
@@ -9,26 +9,26 @@
 //   console.log(out);
 // };
 
-// const chatwithbot = async () => {
-//   // Allocate a pipeline for text2text-generation
-//   let { pipeline, env } = await import('@xenova/transformers');
-//   let poet = await pipeline(
-//     "text2text-generation",
-//     "Xenova/LaMini-Flan-T5-783M"
-//   );
-//   let result = await poet(["Suggest Next Message", "Hello, Hi ,How are you?", "i am fine and you?","i am also fine"], {
-//     max_new_tokens: 200,
-//     temperature: 0.9,
-//     repetition_penalty: 2.0,
-//     no_repeat_ngram_size: 3,
-//     // top_k: 20,
-//     // do_sample: true,
-//   });
-//   console.log(result);
-// };
+const chatwithbot = async () => {
+  // Allocate a pipeline for text2text-generation
+  let { pipeline, env } = await import('@xenova/transformers');
+  let poet = await pipeline(
+    "text2text-generation",
+    "Xenova/LaMini-Flan-T5-783M"
+  );
+  let result = await poet(["Suggest Next Message", "Hello, Hi ,How are you?", "i am fine and you?","i am also fine"], {
+    max_new_tokens: 200,
+    temperature: 0.9,
+    repetition_penalty: 2.0,
+    no_repeat_ngram_size: 3,
+    // top_k: 20,
+    // do_sample: true,
+  });
+  console.log(result);
+};
 
-// sentimentAnalysis();
-// // chatwithbot()
+sentimentAnalysis();
+// chatwithbot()
 
 // async function query(data) {
 // 	const response = await fetch(

@@ -92,7 +92,7 @@ const ChatSection = () => {
 
   const scrollRef = useRef(null);
 
-  return chat.chat.receiver._id !== "Whizchat!!!null" ? (
+  return chat.chat.group||chat.chat.receiver._id !== "Whizchat!!!null" ? (
     <div
       style={{
         ...chatAreaStyle,
