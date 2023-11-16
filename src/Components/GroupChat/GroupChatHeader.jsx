@@ -10,7 +10,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useChatContext } from "../../Context/ChatContext";
-
+import { BaseUrl } from "../../config";
 const customTheme = createTheme({
   components: {
     MuiCardHeader: {
@@ -63,7 +63,7 @@ export default function GroupChatHeader({ groupName }) {
                   <Avatar
                     sx={{ height: "45px", width: "45px" }}
                     aria-label="group-avatar"
-                    src={"url-to-group-avatar.jpg"} // Provide the URL to the group avatar
+                    src={`${BaseUrl}/api/getgroupavatar/${chat.chat._id}`} // Provide the URL to the group avatar
                   >
                     {chat.chat.groupName.slice(0, 4)}
                   </Avatar>
