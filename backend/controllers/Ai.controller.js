@@ -1,9 +1,9 @@
 const fetch = require("node-fetch"); // Assuming you're using Node.js
-
+// "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
 exports.generateImage = async (req, res) => {
   try {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
+      "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1",
       {
         headers: {
           Authorization: "Bearer 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",
