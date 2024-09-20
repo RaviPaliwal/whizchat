@@ -71,4 +71,5 @@ Looking ahead, the future scope includes efficient media transfer, language tran
 
 ## Contact
 GitHub: [RaviPaliwal/whizchat](https://github.com/RaviPaliwal/whizchat)  
-Email: ravi.paliwal@spsu.ac.in  
+Email: ravipaliwal885078@gmail.com
+
